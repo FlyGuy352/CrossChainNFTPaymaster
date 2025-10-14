@@ -88,4 +88,6 @@ contract CrossChainNFTPaymaster is PaymasterCore, Ownable {
             }
         }
     }
+
+    function _authorizeWithdraw() internal virtual override onlyOwner {}
 }
