@@ -11,15 +11,6 @@ export const signMint = async owner => {
     const tokenId = await nftContract.latestTokenId();
 
     const hash = ethers.solidityPackedKeccak256(['uint256', 'address'], [tokenId + BigInt(1), owner]);
-    const signature = await new ethers.Wallet(process.env.HEDERA_TESTNET_PRIVATE_KEY_ADMIN).signMessage(ethers.toBeArray(hash));
-    
-    return signature;
-};
 
-export const hashUserOp = async () => {
-
-};
-
-export const transmitUserOp = async () => {
-
+    return await wait new ethers.Wallet(process.env.HEDERA_TESTNET_PRIVATE_KEY_ADMIN).signMessage(ethers.toBeArray(hash));
 };
