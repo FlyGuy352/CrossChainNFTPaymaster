@@ -1,6 +1,10 @@
 'use server';
 
-export const signMint = async () => {
+import { ethers } from 'ethers';
+import contractAddresses from '@/constants/contractAddresses.json';
+import networks from '@/constants/networks.json';
+
+export const signMint = async owner => {
 
 };
 
