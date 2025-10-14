@@ -1,4 +1,4 @@
 {
-    "NFTChain": { "id": 0, "rpcUrl": "0" },
-    "TransactionChain": { "id": 0, "rpcUrl": "0" }
+    "NFTChain": { "id": 296, "rpcUrl": "https://testnet.hashio.io/api" },
+    "TransactionChain": { "id": 11155111, "rpcUrl": "https://ethereum-sepolia-rpc.publicnode.com" }
 }

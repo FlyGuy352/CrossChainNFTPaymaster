@@ -3,6 +3,7 @@
 import { ethers } from 'ethers';
 import contractAddresses from '@/constants/contractAddresses.json';
 import networks from '@/constants/networks.json';
+import nftAbi from '@/constants/DummyNFT.json';
 
 export const signMint = async owner => {
 
