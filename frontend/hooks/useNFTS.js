@@ -1,12 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
 import { createPublicClient, http } from 'viem';
-import { localhost } from 'viem/chains';
+import { hederaTestnet } from 'viem/chains';
 import contractAddresses from '@/constants/contractAddresses.json';
 import nftAbi from '@/constants/DummyNFT.json';
 
 export default function useNFTs(ownerAddress) {
     const client = createPublicClient({
-        chain: localhost,
+        chain: hederaTestnet,
         transport: http(),
     });
 
