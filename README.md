@@ -1,1 +1,0 @@
-forge script script/DeployNFT.sol --rpc-url https://testnet.hashio.io/api --broadcast
