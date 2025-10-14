@@ -11,8 +11,10 @@ contract DummyNFT is ERC721URIStorage {
 
     using ECDSA for bytes32;
     using MessageHashUtils for bytes32;
+
     uint256 public latestTokenId;
     mapping(uint256 tokenId => bytes signature) public signatures;
+    
     address private immutable _admin;
 
     constructor(address admin) ERC721("DummyNFT", "NFT") {
