@@ -5,7 +5,7 @@
 @layer base {
   @font-face {
     font-family: 'BDOGrotesk';
-    src: url(/assets/fonts/BDOGrotesk-VF.woff2) format('woff2');
+    src: url(/assets/fonts/BDOGrotesk-Regular.woff2) format('woff2');
   }
   button:not([disabled]),
   [role='button']:not([disabled]) {
