@@ -18,8 +18,20 @@ import { signMint } from '@/actions/actions';
 export default function MintSection() {
 
     const { address, isConnected } = useAccount();
-    const { data: hash, writeContract } = useWriteContract();
-    const [ startTransition] = useTransition();
+    const isMounted = useIsMounted();
+    const { data: nfts, error: loadNFTsError, isFetching, refetch } = useNFTs(address);
+    const { data: hash, error: writeError, isPending, writeContract } = useWriteContract();
+    const { isLoading: isConfirming, isSuccess: isConfirmed } = useWaitForTransactionReceipt({ hash });
+    const [isPendingTransition, startTransition] = useTransition();
+    useEffect(() => {
+        if (isConfirmed) {
+            const refetchNFTs = async () => {
+                await refetch();
+            }
+    
+            refetchNFTs().catch(console.error);
+        }
+    }, [isConfirmed]);
 
     const mint = () => {
         if (!isConnected) {
@@ -46,8 +58,26 @@ export default function MintSection() {
     };
 
     return (
-        <button>
-            Mint
-        </button>
+        <div className='h-160 bg-[#4DD2FF]'>
+            <div className='h-136 flex justify-center items-center'>
+                {
+                    (isMounted() && (isFetching || isConfirming)) ? <Spinner/> : (!!nfts?.length && <Image src={nfts[0].uri} width={375} height={375} alt='NFT'/>)
+                }
+            </div>
+            <div className='flex justify-center'>
+                {
+                    !!nfts?.length ? 
+                        <span className='text-2xl font-DynaPuff p-3 tracking-wide'>You have NFT Token ID {nfts[0].id.toString()} on Hedera</span> :                 
+                        <button 
+                            className='border border-black rounded-3xl bg-white text-xl font-semibold w-96 p-3 tracking-wide disabled:bg-slate-300 disabled:border-slate-600 disabled:text-slate-700 disabled:cursor-not-allowed enabled:hover:scale-[1.025] transition' 
+                            onClick={mint}
+                            disabled={isPendingTransition || isPending || isFetching || isConfirming}
+                            suppressHydrationWarning
+                        >
+                            Mint NFT on Hedera
+                        </button>
+                }
+            </div>
+        </div>
     );
 }

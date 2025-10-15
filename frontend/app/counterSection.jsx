@@ -64,7 +64,7 @@ export default function CounterSection() {
         <div>
             {newCount}
             <button onClick={increment}>
-                Increment Counter on Chain B
+                Increment Counter on Ethereum
             </button>
         </div>
     );
