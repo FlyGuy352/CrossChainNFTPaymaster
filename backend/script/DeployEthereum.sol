@@ -6,7 +6,7 @@ import '../src/CrossChainNFTPaymaster.sol';
 import '../src/SimpleCounter.sol';
 import { SmartContractWallet } from '../src/SmartContractWallet.sol';
 
-contract DeployCrossChainContracts is Script {
+contract DeployEthereum is Script {
     function run() external {
         uint256 deployerPrivateKey = vm.envUint('ETHEREUM_SEPOLIA_PRIVATE_KEY_ADMIN');
         
@@ -20,7 +20,7 @@ contract DeployCrossChainContracts is Script {
 
         console.log('Counter: ', address(counter));
         console.log('PayMaster: ', address(paymaster));
-        console.log('Account: ', address(account));
+        console.log('SmartContractWallet: ', address(account));
 
         vm.stopBroadcast();
     }

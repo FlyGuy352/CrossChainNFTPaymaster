@@ -1,7 +1,7 @@
 {
-    "PayMaster": "",
-    "SmartContractWallet": "",
-    "SimpleCounter": "",
+    "PayMaster": "0xA3dcCd4Db05b8D88D378BCB1CB3bC3402e1d9B72",
+    "SmartContractWallet": "0x6c7e82f8BA3B515C5b352ce5cE53dF688d9841ef",
+    "SimpleCounter": "0x125C2e7166F68ACc58DDc0eb0102E1B2742352a2",
     "EntryPoint": "0x4337084D9E255Ff0702461CF8895CE9E3b5Ff108",
     "DummyNFT": "0x343C7ea74CBA8943D79a9705E7e6af45FBf39d19"  
 }

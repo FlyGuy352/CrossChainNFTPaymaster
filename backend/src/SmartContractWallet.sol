@@ -4,7 +4,7 @@ pragma solidity ^0.8.30;
 import {Account} from "@openzeppelin/contracts/account/Account.sol";
 import {ECDSA} from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 
-contract SimpleAccount is Account {
+contract SmartContractWallet is Account {
 
     using ECDSA for bytes32;
     address private immutable _owner;

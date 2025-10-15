@@ -4,7 +4,7 @@ pragma solidity ^0.8.30;
 import 'forge-std/Script.sol';
 import '../src/DummyNFT.sol';
 
-contract DeployNFT is Script {
+contract DeployHedera is Script {
     function run() external {
         uint256 deployerPrivateKey = vm.envUint('HEDERA_TESTNET_PRIVATE_KEY_ADMIN');
         vm.startBroadcast(deployerPrivateKey);
