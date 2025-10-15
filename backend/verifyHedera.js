@@ -11,7 +11,6 @@ async function verifyContract(
     metadataFilePath,
     verifierBaseUrl = "https://server-verify.hashscan.io"
 ) {
-    // Read files
     if (!fs.existsSync(sourceFilePath)) throw new Error(`Missing ${sourceFilePath}`);
     if (!fs.existsSync(metadataFilePath)) throw new Error(`Missing ${metadataFilePath}`);
 
@@ -33,7 +32,6 @@ async function verifyContract(
     console.log(`Verification result: ${result}`);
 }
 
-// --- CLI arguments ---
 const [,, contractAddress, sourceFilePath, metadataFilePath] = process.argv;
 
 if (!contractAddress || !sourceFilePath || !metadataFilePath) {
