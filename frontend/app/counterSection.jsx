@@ -45,27 +45,41 @@ export default function CounterSection() {
         chainId: networks.TransactionChain.id
     });
 
-    const [startTransition] = useTransition();
+    const [isPending, startTransition] = useTransition();
 
     const increment = () => {
         startTransition(async () => {
-            const nonceSignature = await signMessage(wagmiConfig, { message: { raw: keccak256(encodePacked(['address', 'uint256'], [contractAddresses.PayMaster, nonce])) } });
-            const { userOp, userOpHash } = await hashUserOp(nfts[0].id, address, nonceSignature);
-            const userOpHashSignature = await signMessage(wagmiConfig, { message: { raw: userOpHash } });
-            userOp.signature = userOpHashSignature;
-            const error = await transmitUserOp(userOp);
-            if (error) {
-                return toast.error(JSON.stringify(error));
+            try {
+                const nonceSignature = await signMessage(wagmiConfig, { message: { raw: keccak256(encodePacked(['address', 'uint256'], [contractAddresses.PayMaster, nonce])) } });
+                const { userOp, userOpHash } = await hashUserOp(nfts[0].id, address, nonceSignature);
+                const userOpHashSignature = await signMessage(wagmiConfig, { message: { raw: userOpHash } });
+                userOp.signature = userOpHashSignature;
+                const error = await transmitUserOp(userOp);
+                if (error) {
+                    return toast.error(JSON.stringify(error));
+                }
+            } catch(error) {
+                toast.error(error.message);
             }
         });
     };
 
     return (
-        <div>
-            {newCount}
-            <button onClick={increment}>
-                Increment Counter on Ethereum
-            </button>
+        <div className='h-160 bg-[#C0FF02]'>
+            <div className='h-136'>
+                <div className='w-full h-full bg-[url("/assets/images/Smart_Contract.png")] bg-no-repeat bg-center flex justify-center items-center'>
+                    <span className='text-9xl'>{newCount ?? count?.toString() ?? 0}</span>
+                </div>
+            </div>
+            <div className='flex justify-center'>
+                <button 
+                    className='border border-black rounded-3xl bg-white text-xl font-semibold w-96 p-3 tracking-wide disabled:bg-slate-300 disabled:border-slate-600 disabled:text-slate-700 disabled:cursor-not-allowed enabled:hover:scale-[1.025] transition' 
+                    onClick={increment}
+                    disabled={isPending || nfts === undefined || nfts.length === 0}
+                >
+                    Increment Counter on Ethereum
+                </button>
+            </div>
         </div>
     );
 }
