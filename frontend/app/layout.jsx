@@ -1,4 +1,4 @@
-import '@/styles/globals.css';
+import './globals.css';
 import '@rainbow-me/rainbowkit/styles.css';
 import Header from './header';
 import Providers from './providers';
