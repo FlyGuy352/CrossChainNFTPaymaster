@@ -8,4 +8,4 @@ forge script script/DeployEthereum.sol --rpc-url https://ethereum-sepolia-rpc.pu
 
 ### Verify NFT Contract on Hedera Testnet
 
-node verifyHedera.js 0x343C7ea74CBA8943D79a9705E7e6af45FBf39d19 src/DummyNFT.sol out/DummyNFT.sol/DummyNFT.json
+node verifyHedera.js <address> src/DummyNFT.sol out/DummyNFT.sol/DummyNFT.json
