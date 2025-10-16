@@ -2,11 +2,14 @@
 pragma solidity ^0.8.30;
 
 import {Account} from "@openzeppelin/contracts/account/Account.sol";
-import {ECDSA} from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
+import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
+import "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
 
 contract SmartContractWallet is Account {
 
     using ECDSA for bytes32;
+    using MessageHashUtils for bytes32;
+    
     address private immutable _owner;
 
     constructor(address owner) {
@@ -30,7 +33,7 @@ contract SmartContractWallet is Account {
         bytes32 hash,
         bytes calldata signature
     ) internal view override returns (bool) {
-        address recovered = ECDSA.recover(hash, signature);
+        address recovered = hash.toEthSignedMessageHash().recover(signature);
         return recovered == _owner;
     }
 }

@@ -40,7 +40,7 @@ export default function CounterSection() {
         abi: counterAbi,
         eventName: 'Incremented',
         onLogs(logs) {
-          setNewCount(logs[0].args.newCount);
+            setNewCount(logs[0].args.newCount);
         },
         chainId: networks.TransactionChain.id
     });
