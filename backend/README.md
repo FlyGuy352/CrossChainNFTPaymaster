@@ -2,9 +2,9 @@
 
 forge script script/DeployHedera.sol --rpc-url https://testnet.hashio.io/api --broadcast
 
-## Deploy Paymaster, Smart Contract Wallet, and Counter Contracts to Ethereum Sepolia
+## Deploy and Verify Paymaster, Smart Contract Wallet, and Counter Contracts to Ethereum Sepolia
 
-forge script script/DeployEthereum.sol --rpc-url https://ethereum-sepolia-rpc.publicnode.com --broadcast
+forge script script/DeployEthereum.sol --rpc-url https://ethereum-sepolia-rpc.publicnode.com --broadcast --verify
 
 ### Verify NFT Contract on Hedera Testnet
 

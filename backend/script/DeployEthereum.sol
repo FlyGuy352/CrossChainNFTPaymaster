@@ -17,6 +17,7 @@ contract DeployEthereum is Script {
         SimpleCounter counter = new SimpleCounter();
         CrossChainNFTPaymaster paymaster = new CrossChainNFTPaymaster(deployerAddress, vm.envAddress('HEDERA_TESTNET_PUBLIC_KEY_ADMIN'));
         SmartContractWallet account = new SmartContractWallet(vm.envAddress('PUBLIC_KEY_USER'));
+        paymaster.deposit{ value: 0.001 ether }();
 
         console.log('Counter: ', address(counter));
         console.log('PayMaster: ', address(paymaster));
