@@ -71,7 +71,7 @@ export default function MintSection() {
                         <button 
                             className='border border-black rounded-3xl bg-white text-xl font-semibold w-96 p-3 tracking-wide disabled:bg-slate-300 disabled:border-slate-600 disabled:text-slate-700 disabled:cursor-not-allowed enabled:hover:scale-[1.025] transition' 
                             onClick={mint}
-                            disabled={isPendingTransition || isPending || isFetching || isConfirming}
+                            disabled={!isMounted() || isPendingTransition || isPending || isFetching || isConfirming}
                             suppressHydrationWarning
                         >
                             Mint NFT on Hedera

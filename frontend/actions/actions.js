@@ -69,12 +69,15 @@ export const hashUserOp = async (tokenId, userAddress, userSignature) => {
 
 export const transmitUserOp = async userOp => {
     const provider = new ethers.JsonRpcProvider(networks.TransactionChain.rpcUrl, networks.TransactionChain.id);
-    const wallet = new ethers.Wallet(process.env.HEDERA_TESTNET_PRIVATE_KEY_ADMIN, provider);
+    const wallet = new ethers.Wallet(process.env.ETHEREUM_SEPOLIA_PRIVATE_KEY_ADMIN, provider);
     const entryPoint = new ethers.Contract(contractAddresses.EntryPoint, entryPointAbi, wallet);
+    console.log('transmitting...')
     try {
-        const tx = await entryPoint.handleOps([userOp], process.env.HEDERA_TESTNET_PUBLIC_KEY_ADMIN);
+        const tx = await entryPoint.handleOps([userOp], process.env.ETHEREUM_SEPOLIA_PUBLIC_KEY_ADMIN);
+        console.log('yes')
         await tx.wait();
     } catch (error) {
+        console.log('error ', error)
         return error;
     }
 };

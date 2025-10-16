@@ -10,7 +10,6 @@
   "dependencies": {
     "@alchemy/aa-alchemy": "^3.19.0",
     "@alchemy/aa-core": "^3.19.0",
-    "@hashgraph/sdk": "^2.74.0",
     "@rainbow-me/rainbowkit": "^2.2.9",
     "@tanstack/react-query": "^5.90.3",
     "ethers": "^6.15.0",

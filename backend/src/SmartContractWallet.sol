@@ -13,6 +13,19 @@ contract SmartContractWallet is Account {
         _owner = owner;
     }
 
+    function execute(address dest, uint256 value, bytes calldata func) external onlyEntryPointOrSelf {
+        _call(dest, value, func);
+    }
+
+    function _call(address target, uint256 value, bytes memory data) internal {
+        (bool success, bytes memory result) = target.call{value: value}(data);
+        if (!success) {
+            assembly {
+                revert(add(result, 32), mload(result))
+            }
+        }
+    }
+
     function _rawSignatureValidation(
         bytes32 hash,
         bytes calldata signature
