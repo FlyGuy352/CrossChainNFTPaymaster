@@ -8,9 +8,7 @@ export default function useSendUserOp() {
     const [isPending, setIsPending] = useState(false);
     const [error, setError] = useState(null);
 
-    const sendUserOp = useCallback(async ({
-        accountGasLimits, callData, gasFees, initCode, nonce, paymasterAndData, preVerificationGas, sender, signature
-    }) => {
+    const sendUserOp = useCallback(async ({ ...userOp }) => {
         try {
             setIsPending(true);
             setError(null);
@@ -23,11 +21,8 @@ export default function useSendUserOp() {
                     jsonrpc: '2.0',
                     method: 'eth_sendUserOperation',
                     params: [
-                        {
-                            accountGasLimits, callData, gasFees, initCode, nonce, paymasterAndData,
-                            preVerificationGas, sender, signature
-                        },
-                        contractAddresses.EntryPoint
+                        { ...userOp },
+                        contractAddresses.EntryPointLegacy
                     ],
                     id: 1
                 }),
