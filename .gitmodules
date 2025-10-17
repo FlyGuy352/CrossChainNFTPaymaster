@@ -1,6 +1,12 @@
+[submodule "backend/lib/forge-std"]
+	path = backend/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
 [submodule "backend/lib/openzeppelin-contracts"]
 	path = backend/lib/openzeppelin-contracts
 	url = https://github.com/OpenZeppelin/openzeppelin-contracts
 [submodule "backend/lib/openzeppelin-community-contracts"]
 	path = backend/lib/openzeppelin-community-contracts
 	url = https://github.com/OpenZeppelin/openzeppelin-community-contracts
+[submodule "backend/lib/hedera-smart-contracts"]
+	path = backend/lib/hedera-smart-contracts
+	url = https://github.com/hashgraph/hedera-smart-contracts
