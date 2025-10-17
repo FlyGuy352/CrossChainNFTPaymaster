@@ -1,0 +1,47 @@
+{
+  "_format": "hh3-artifact-1",
+  "contractName": "SimpleCounter",
+  "sourceName": "contracts/SimpleCounter.sol",
+  "abi": [
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "newCount",
+          "type": "uint256"
+        }
+      ],
+      "name": "Incremented",
+      "type": "event"
+    },
+    {
+      "inputs": [],
+      "name": "count",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "increment",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x6080604052348015600e575f5ffd5b5060fa8061001b5f395ff3fe6080604052348015600e575f5ffd5b50600436106030575f3560e01c806306661abd146034578063d09de08a14604d575b5f5ffd5b603b5f5481565b60405190815260200160405180910390f35b60536055565b005b5f8054908060618360a1565b91905055507f20d8a6f5a693f9d1d627a598e8820f7a55ee74c183aa8f1a30e8d4e8dd9a8d845f54604051609791815260200190565b60405180910390a1565b5f6001820160bd57634e487b7160e01b5f52601160045260245ffd5b506001019056fea2646970667358221220c5d03f58c26a85d8e47dd88efc14b7acd93e9f36370b0190920c7415a785350864736f6c634300081e0033",
+  "deployedBytecode": "0x6080604052348015600e575f5ffd5b50600436106030575f3560e01c806306661abd146034578063d09de08a14604d575b5f5ffd5b603b5f5481565b60405190815260200160405180910390f35b60536055565b005b5f8054908060618360a1565b91905055507f20d8a6f5a693f9d1d627a598e8820f7a55ee74c183aa8f1a30e8d4e8dd9a8d845f54604051609791815260200190565b60405180910390a1565b5f6001820160bd57634e487b7160e01b5f52601160045260245ffd5b506001019056fea2646970667358221220c5d03f58c26a85d8e47dd88efc14b7acd93e9f36370b0190920c7415a785350864736f6c634300081e0033",
+  "linkReferences": {},
+  "deployedLinkReferences": {},
+  "immutableReferences": {},
+  "inputSourceName": "project/contracts/SimpleCounter.sol",
+  "buildInfoId": "solc-0_8_30-84e3b4c6a95e28eea9b27da1c84b5c8dde093ee2"
+}
