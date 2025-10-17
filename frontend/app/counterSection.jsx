@@ -1,8 +1,9 @@
 'use client';
 
 import { useState, useTransition } from 'react';
-import { useAccount, useReadContract, useWatchContractEvent } from 'wagmi';
+import { useAccount, useReadContract, useWatchContractEvent, useWalletClient } from 'wagmi';
 import { signMessage } from '@wagmi/core';
+//import { sepolia, WalletClientSigner } from '@alchemy/aa-core';
 import { wagmiConfig } from './wagmiConfig';
 import { encodePacked, keccak256 } from 'viem';
 import contractAddresses from '@/constants/contractAddresses.json';
@@ -10,8 +11,9 @@ import paymasterAbi from '@/constants/CrossChainNFTPaymaster.json';
 import networks from '@/constants/networks.json';
 import counterAbi from '@/constants/SimpleCounter.json';
 import { toast } from 'sonner';
-import { hashUserOp, transmitUserOp } from '@/actions/actions';
+import { constructLegacyUserOp, constructUserOp, transmitUserOp } from '@/actions/actions';
 import useNFTs from '@/hooks/useNFTs'; 
+import useSendUserOp from '@/hooks/useSendUserOp'; 
 
 export default function CounterSection() {
 
@@ -45,19 +47,34 @@ export default function CounterSection() {
         chainId: networks.TransactionChain.id
     });
 
+    const { sendUserOpToBundler } = useSendUserOp();
+
+    /*const { data: walletClient } = useWalletClient();
+    const { 
+        txHash, isPending: isUserOpPending, error: sendUserOpError, sendUserOp 
+    } = useSendUserOps({
+        contractAddress: contractAddresses.SimpleCounter,
+        abi: counterAbi,
+        functionName: 'increment',
+        chain: sepolia,
+        signer: new WalletClientSigner(walletClient, 'wallet')
+    });*/
     const [isPending, startTransition] = useTransition();
 
     const increment = () => {
         startTransition(async () => {
             try {
                 const nonceSignature = await signMessage(wagmiConfig, { message: { raw: keccak256(encodePacked(['address', 'uint256'], [contractAddresses.PayMaster, nonce])) } });
-                const { userOp, userOpHash } = await hashUserOp(nfts[0].id, address, nonceSignature);
+                /*const { userOp, userOpHash } = await constructUserOp(nfts[0].id, address, nonceSignature);
                 const userOpHashSignature = await signMessage(wagmiConfig, { message: { raw: userOpHash } });
                 userOp.signature = userOpHashSignature;
-                const error = await transmitUserOp(userOp);
+                console.log(userOp);*/
+                await sendUserOpToBundler(userOp);
+                /*const error = await transmitUserOp(userOp);
                 if (error) {
                     return toast.error(JSON.stringify(error));
-                }
+                }*/
+                //await sendUserOp();
             } catch(error) {
                 toast.error(error.message);
             }

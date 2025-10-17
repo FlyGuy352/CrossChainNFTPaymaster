@@ -19,7 +19,10 @@ export const signMint = async owner => {
     return signature;
 };
 
-export const hashUserOp = async (tokenId, userAddress, userSignature) => {
+export const constructLegacyUserOp = async (tokenId, userAddress, userSignature) => {
+};
+
+export const constructUserOp = async (tokenId, userAddress, userSignature) => {
     const transactionChainProvider = new ethers.JsonRpcProvider(
         networks.TransactionChain.rpcUrl, networks.TransactionChain.id
     );

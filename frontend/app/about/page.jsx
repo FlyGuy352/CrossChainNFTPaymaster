@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import portraitImage from '@/public/assets/images/Portrait.png';
+import portraitImage from '@/public/assets/images/Portrait.jpg';
 
 export default function Page() {
 
@@ -15,7 +15,9 @@ export default function Page() {
             <div>
                 <p className='font-bold text-center text-lg mb-5'>Tom Lin</p>
                 <p className='leading-tight'>
-                    Tom Lin is a senior developer based in Singapore. He has a wide range of technical interests including operating systems, language design, container technologies, cloud computing, DevOps, site reliability engineering and blockchain.
+                    Tom Lin is a senior developer based in Singapore. He has a wide range of technical interests including blockchain, cloud computing, programming languages, and AI.
+                    <br/><br/>
+                    He dreams of one day quitting his day job and travelling for a living, together with his wife and four year old son.
                 </p>
             </div>
         </div>
