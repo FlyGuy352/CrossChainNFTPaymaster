@@ -1,13 +1,10 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.28;
+pragma solidity ^0.8.30;
 
-// Admin/ownership like the OZ example
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
-// Read/transfer via ERC721 facade exposed at the HTS token EVM address
 import {IERC721} from "@openzeppelin/contracts/interfaces/IERC721.sol";
-
-// Hedera HTS system contracts (as in your setup)
-// Hedera HTS system contracts (v1, NOT v2)
+import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
+import "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
 import {HederaTokenService} from "@hashgraph/smart-contracts/contracts/system-contracts/hedera-token-service/HederaTokenService.sol";
 import {IHederaTokenService} from "@hashgraph/smart-contracts/contracts/system-contracts/hedera-token-service/IHederaTokenService.sol";
 import {HederaResponseCodes} from "@hashgraph/smart-contracts/contracts/system-contracts/HederaResponseCodes.sol";
@@ -17,31 +14,27 @@ contract HederaHybridNFT is HederaTokenService, KeyHelper, Ownable {
 
     error TokenAlreadyCreated(address tokenAddress);
     error TokenCreationFailed(int responseCode);
-    
-    address public tokenAddress;
+    error TokenNotDeployed();
+    error SignatureFailed(bytes receivedSignature, bytes32 hash, bytes32 ethSignedMessageHash, address recoveredAddress);
+    error MintFailed(int responseCode, uint256 serialsLength);
 
-    // Small non-empty default metadata for simple mints (<=100 bytes as per HTS limit)
-    bytes private constant DEFAULT_METADATA = hex"01";
-    uint256 private constant INT64_MAX = 0x7fffffffffffffff;
+    using ECDSA for bytes32;
+    using MessageHashUtils for bytes32;
+
+    address public tokenAddress;
+    uint256 public latestTokenId;
+    mapping(uint256 tokenId => bytes signature) public signatures;
 
     address private immutable _admin;
 
     event NFTCollectionCreated(address indexed token);
-    event NFTMinted(
-        address indexed to,
-        uint256 indexed tokenId,
-        int64 newTotalSupply
-    );
-    event NFTBurned(uint256 indexed tokenId, int64 newTotalSupply);
-    event HBARReceived(address indexed from, uint256 amount);
-    event HBARFallback(address sender, uint256 amount, bytes data);
-    event HBARWithdrawn(address indexed to, uint256 amount);
+    event NFTMinted(address indexed to, uint256 indexed tokenId);
 
     constructor(address admin) Ownable(msg.sender) {
         _admin = admin;
     }
 
-    function createNFTCollection(string memory name, string memory symbol) external payable onlyOwner {
+    function createNFTCollection(string memory name, string memory symbol) external onlyOwner {
         if (tokenAddress != address(0)) {
             revert TokenAlreadyCreated(tokenAddress);
         }
@@ -66,116 +59,51 @@ contract HederaHybridNFT is HederaTokenService, KeyHelper, Ownable {
         emit NFTCollectionCreated(created);
     }
 
-    // ---------------------------------------------------------------------------
-    // ERC721-like minting (admin via Ownable + SUPPLY key on contract)
-    // ---------------------------------------------------------------------------
+    function mint(address owner, string memory tokenURI, bytes memory signature)
+        external
+        returns (uint256)
+    {
+        if (tokenAddress == address(0)) {
+            revert TokenNotDeployed();
+        }
+        uint256 newTokenId = latestTokenId + 1;
+        bytes32 hash = keccak256(abi.encodePacked(newTokenId, owner));
+        address recovered = hash.toEthSignedMessageHash().recover(signature);
+        if (recovered != _admin) {
+            revert SignatureFailed(signature, hash, hash.toEthSignedMessageHash(), recovered);
+        }
+        
+        bytes memory metadata = bytes(tokenURI);
+        _mintAndSend(owner, metadata);
 
-    // Minimal API parity: mintNFT(to) onlyOwner -> returns new tokenId (serial)
-    function mintNFT(address to) public onlyOwner returns (uint256) {
-        return _mintAndSend(to, DEFAULT_METADATA);
-    }
+        signatures[newTokenId] = signature;
 
-    // Optional overload with custom metadata (<= 100 bytes)
-    function mintNFT(
-        address to,
-        bytes memory metadata
-    ) public onlyOwner returns (uint256) {
-        require(metadata.length <= 100, "HTS: metadata >100 bytes");
-        return _mintAndSend(to, metadata);
+        latestTokenId++;
+        return newTokenId;
     }
 
     function _mintAndSend(
         address to,
         bytes memory metadata
-    ) internal returns (uint256 tokenId) {
-        require(tokenAddress != address(0), "HTS: not created");
-
+    ) private returns (uint256 tokenId) {
         // 1) Mint to treasury (this contract)
         bytes[] memory arr = new bytes[](1);
         arr[0] = metadata;
-        (int rc, int64 newTotalSupply, int64[] memory serials) = mintToken(
+        (int responseCode, , int64[] memory serials) = mintToken(
             tokenAddress,
             0,
             arr
         );
-        require(
-            rc == HederaResponseCodes.SUCCESS && serials.length == 1,
-            "HTS: mint failed"
-        );
+        if (responseCode != HederaResponseCodes.SUCCESS || serials.length != 1) {
+            revert MintFailed(responseCode, serials.length);
+        }
 
         // 2) Transfer from treasury -> recipient via ERC721 facade
         uint256 serial = uint256(uint64(serials[0]));
         // Recipient must be associated (or have auto-association available)
         IERC721(tokenAddress).transferFrom(address(this), to, serial);
 
-        emit NFTMinted(to, serial, newTotalSupply);
+        emit NFTMinted(to, serial);
         return serial;
-    }
-
-    // ---------------------------------------------------------------------------
-    // ERC721Burnable-like flow for holders
-    // ---------------------------------------------------------------------------
-
-    // Holder-initiated burn:
-    // - User approves this contract for tokenId (approve or setApprovalForAll)
-    // - Calls burn(tokenId); contract pulls to treasury and burns via HTS
-    function burnNFT(uint256 tokenId) external {
-        require(tokenAddress != address(0), "HTS: not created");
-
-        address owner_ = IERC721(tokenAddress).ownerOf(tokenId);
-
-        // Match ERC721Burnable semantics: only the token owner or an approved operator may trigger burn
-        require(
-            msg.sender == owner_ ||
-                IERC721(tokenAddress).getApproved(tokenId) == msg.sender ||
-                IERC721(tokenAddress).isApprovedForAll(owner_, msg.sender),
-            "caller not owner nor approved"
-        );
-
-        // If not already in treasury, ensure this contract is approved to pull the token and then pull it
-        if (owner_ != address(this)) {
-            bool contractApproved = IERC721(tokenAddress).getApproved(
-                tokenId
-            ) ==
-                address(this) ||
-                IERC721(tokenAddress).isApprovedForAll(owner_, address(this));
-            require(contractApproved, "contract not approved to transfer");
-            IERC721(tokenAddress).transferFrom(owner_, address(this), tokenId);
-        }
-
-        // Burn via HTS (requires token to be in treasury)
-        int64[] memory serials = new int64[](1);
-        serials[0] = _toI64(tokenId);
-        (int rc, int64 newTotalSupply) = burnToken(tokenAddress, 0, serials);
-        require(rc == HederaResponseCodes.SUCCESS, "HTS: burn failed");
-
-        emit NFTBurned(tokenId, newTotalSupply);
-    }
-
-    // ---------------------------------------------------------------------------
-    // HBAR handling
-    // ---------------------------------------------------------------------------
-
-    // Accept HBAR
-    receive() external payable {
-        emit HBARReceived(msg.sender, msg.value);
-    }
-
-    fallback() external payable {
-        emit HBARFallback(msg.sender, msg.value, msg.data);
-    }
-
-    function withdrawHBAR() external onlyOwner {
-        uint256 balance = address(this).balance;
-        require(balance > 0, "No HBAR to withdraw");
-        (bool success, ) = owner().call{value: balance}("");
-        require(success, "Failed to withdraw HBAR");
-        emit HBARWithdrawn(owner(), balance);
-    }
-
-    // --------------------- internal helpers ---------------------
-    function _toI64(uint256 x) internal pure returns (int64) {
-        require(x <= INT64_MAX, "cast: > int64.max");
-        return int64(uint64(x));
     }
 }

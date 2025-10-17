@@ -6,7 +6,7 @@ contract SimpleCounter {
     uint256 public count;
     event Incremented(uint256 newCount);
 
-    function increment() public {
+    function increment() external {
         count++;
         emit Incremented(count);
     }
