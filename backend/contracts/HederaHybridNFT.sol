@@ -34,7 +34,7 @@ contract HederaHybridNFT is HederaTokenService, KeyHelper, Ownable {
         _admin = admin;
     }
 
-    function createNFTCollection(string memory name, string memory symbol) external onlyOwner {
+    function createNFTCollection(string memory name, string memory symbol) external payable onlyOwner {
         if (tokenAddress != address(0)) {
             revert TokenAlreadyCreated(tokenAddress);
         }

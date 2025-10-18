@@ -1,14 +1,24 @@
 import { network } from "hardhat";
+import dotenv from "dotenv";
 
-async function main() {
-    const { viem } = await network.connect();
-    const [deployer] = await viem.getWalletClients();
-    console.log(`Deploying contract with the account: ${deployer.account.address}`);
+dotenv.config();
 
-    const nft = await viem.deployContract("HederaHybridNFT");
-    console.log(`NFT Contract Address: ${nft.address}`);
+const { ethers } = await network.connect({ network: "hederaTestnet" });
+const [deployer] = await ethers.getSigners();
 
-    await nft.write.createNFTCollection(["HederaNFT", "HNFT"]);
-}
+const hederaHybridNft = await ethers.getContractFactory("HederaHybridNFT", deployer);
+const contract = await hederaHybridNft.deploy(process.env.HEDERA_TESTNET_PUBLIC_KEY_ADMIN!);
+await contract.waitForDeployment();
 
-main().catch(console.error);
+console.log('Calling createNFTCollection() to create the HTS collection...');
+const tx = await contract.createNFTCollection("MyHederaNFT", "HNFT", {
+    gasLimit: 250_000,
+    value: ethers.parseEther("15")
+});
+await tx.wait();
+console.log(`createNFTCollection() tx hash: ${tx.hash}`);
+
+const contractAddress = await contract.getAddress();
+console.log(`HederaHybridNFT address: ${contractAddress}`);
+const tokenAddress = await contract.tokenAddress();
+console.log(`Underlying HTS NFT Collection (ERC721 facade) deployed at: ${tokenAddress}`);

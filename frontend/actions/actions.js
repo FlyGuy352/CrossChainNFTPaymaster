@@ -3,23 +3,20 @@
 import { ethers } from 'ethers';
 import contractAddresses from '@/constants/contractAddresses.json';
 import networks from '@/constants/networks.json';
-import nftAbi from '@/constants/DummyNFT.json';
+import nftAbi from '@/constants/HederaHybridNFT.json';
 import entryPointAbi from '@/constants/EntryPoint.json';
 import walletAbi from '@/constants/SmartContractWallet.json';
 import counterAbi from '@/constants/SimpleCounter.json';
 
 export const signMint = async owner => {
     const provider = new ethers.JsonRpcProvider(networks.NFTChain.rpcUrl, networks.NFTChain.id);
-    const nftContract = new ethers.Contract(contractAddresses.DummyNFT, nftAbi, provider);
+    const nftContract = new ethers.Contract(contractAddresses.HederaHybridNFT, nftAbi, provider);
     const tokenId = await nftContract.latestTokenId();
 
     const hash = ethers.solidityPackedKeccak256(['uint256', 'address'], [tokenId + BigInt(1), owner]);
     const signature = await new ethers.Wallet(process.env.HEDERA_TESTNET_PRIVATE_KEY_ADMIN).signMessage(ethers.toBeArray(hash));
 
     return signature;
-};
-
-export const constructLegacyUserOp = async (tokenId, userAddress, userSignature) => {
 };
 
 export const constructUserOp = async (tokenId, userAddress, userSignature) => {
@@ -48,8 +45,9 @@ export const constructUserOp = async (tokenId, userAddress, userSignature) => {
     const gasFees = ethers.concat([maxPriorityFeePerGasBytes, maxFeePerGasBytes]);
 
     const nftChainProvider = new ethers.JsonRpcProvider(networks.NFTChain.rpcUrl, Number(networks.NFTChain.id));
-    const nftContract = new ethers.Contract(contractAddresses.DummyNFT, nftAbi, nftChainProvider);
+    const nftContract = new ethers.Contract(contractAddresses.HederaHybridNFT, nftAbi, nftChainProvider);
     const adminSignature = await nftContract.signatures(tokenId);
+    console.log('adminSignature ', adminSignature)
     const paymasterAndData = ethers.solidityPacked(
         ['address', 'uint128', 'uint128', 'bytes', 'uint256', 'address', 'bytes'],
         [contractAddresses.PayMaster, 200000, 200000, adminSignature, tokenId, userAddress, userSignature]

@@ -5,11 +5,11 @@ import { useAccount, useWriteContract, useWaitForTransactionReceipt } from 'wagm
 import { switchChain } from '@wagmi/core';
 import contractAddresses from '@/constants/contractAddresses.json';
 import networks from '@/constants/networks.json';
-import nftAbi from '@/constants/DummyNFT.json';
+import nftAbi from '@/constants/HederaHybridNFT.json';
 import { randomIntFromInterval } from '@/utils/math';
 import { wagmiConfig } from './wagmiConfig';
 import useIsMounted from '@/hooks/useIsMounted'; 
-import useNFTs from '@/hooks/useNFTs'; 
+import useHederaNFTs from '@/hooks/useHederaNFTs'; 
 import Image from 'next/image';
 import Spinner from './spinner';
 import { toast } from 'sonner';
@@ -19,7 +19,7 @@ export default function MintSection() {
 
     const { address, isConnected } = useAccount();
     const isMounted = useIsMounted();
-    const { data: nfts, error: loadNFTsError, isFetching, refetch } = useNFTs(address);
+    const { data: nfts, error: loadNFTsError, isFetching, refetch } = useHederaNFTs(address);
     const { data: hash, error: writeError, isPending, writeContract } = useWriteContract();
     const { isLoading: isConfirming, isSuccess: isConfirmed } = useWaitForTransactionReceipt({ hash });
     const [isPendingTransition, startTransition] = useTransition();
@@ -48,7 +48,7 @@ export default function MintSection() {
 
             const tokenURI = `/assets/images/Dragon_${randomIntFromInterval(1, 4)}.jpg`;
             writeContract({
-                address: contractAddresses.DummyNFT,
+                address: contractAddresses.HederaHybridNFT,
                 abi: nftAbi,
                 functionName: 'mint',
                 args: [address, tokenURI, signature],

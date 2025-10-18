@@ -11,12 +11,12 @@ import networks from '@/constants/networks.json';
 import counterAbi from '@/constants/SimpleCounter.json';
 import { toast } from 'sonner';
 import { constructUserOp, transmitUserOp } from '@/actions/actions';
-import useNFTs from '@/hooks/useNFTs';
+import useHederaNFTs from '@/hooks/useHederaNFTs';
 
 export default function CounterSection() {
 
     const { address } = useAccount();
-    const { data: nfts, error } = useNFTs(address);
+    const { data: nfts, error } = useHederaNFTs(address);
     const { data: nonce } = useReadContract({
         abi: paymasterAbi,
         address: contractAddresses.PayMaster,

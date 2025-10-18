@@ -1,5 +1,5 @@
 import { buildModule } from "@nomicfoundation/hardhat-ignition/modules";
-import { parseEther } from "viem";
+import { ethers } from "ethers";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -19,7 +19,7 @@ export default buildModule("EthereumContracts", (m) => {
   const account = m.contract("SmartContractWallet", [userAddress]);
 
   m.call(paymaster, "deposit", [], {
-    value: parseEther("0.001"),
+    value: ethers.parseEther("0.01"),
   });
 
   return { counter, paymaster, account };

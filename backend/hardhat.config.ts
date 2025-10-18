@@ -1,10 +1,11 @@
 import type { HardhatUserConfig } from "hardhat/config";
 
-import hardhatToolboxViemPlugin from "@nomicfoundation/hardhat-toolbox-viem";
+import hardhatToolboxMochaEthersPlugin from "@nomicfoundation/hardhat-toolbox-mocha-ethers";
 import { configVariable } from "hardhat/config";
+import "./tasks/verifyHedera";
 
 const config: HardhatUserConfig = {
-  plugins: [hardhatToolboxViemPlugin],
+  plugins: [hardhatToolboxMochaEthersPlugin],
   solidity: {
     profiles: {
       default: {
@@ -34,6 +35,11 @@ const config: HardhatUserConfig = {
       accounts: [configVariable("HEDERA_PRIVATE_KEY")]
     }
   },
+  verify: {
+    etherscan: {
+      apiKey: "G34KVQHHM17W24I1V7YRXQ6VJEBGBDNVKR",
+    },
+  }
 };
 
 export default config;
