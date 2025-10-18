@@ -1,8 +1,8 @@
 import type { HardhatUserConfig } from "hardhat/config";
 
 import hardhatToolboxMochaEthersPlugin from "@nomicfoundation/hardhat-toolbox-mocha-ethers";
-import { configVariable } from "hardhat/config";
-import "./tasks/verifyHedera";
+import { configVariable, task } from "hardhat/config";
+import verifyHedera from "./tasks/verifyHedera.js";
 
 const config: HardhatUserConfig = {
   plugins: [hardhatToolboxMochaEthersPlugin],
@@ -39,7 +39,10 @@ const config: HardhatUserConfig = {
     etherscan: {
       apiKey: "G34KVQHHM17W24I1V7YRXQ6VJEBGBDNVKR",
     },
-  }
+  },
+  tasks: [
+    verifyHedera
+  ]
 };
 
 export default config;

@@ -14,7 +14,7 @@ export default function Header() {
                     height={40}
                     alt='Logo'
                 />
-                <div className='flex items-center font-bold text-sm leading-[0.8rem]'>
+                <div className='flex items-center font-bold text-xs text-shadow-md leading-[0.8rem]'>
                     Cross-Chain<br/>NFT PayMaster
                 </div>
                 </Link>

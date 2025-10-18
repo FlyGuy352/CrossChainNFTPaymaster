@@ -58,6 +58,9 @@ export default function CounterSection() {
                 const error = await transmitUserOp(userOp);
                 if (error) {
                     return toast.error(JSON.stringify(error));
+                } else {
+                    // This optimistic update is a workaround because useWatchContractEvent seems unreliable
+                    setNewCount(prevCount => (prevCount ?? Number(count)) + 1);
                 }
             } catch(error) {
                 toast.error(error.message);

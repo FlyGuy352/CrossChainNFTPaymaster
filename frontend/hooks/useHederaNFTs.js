@@ -1,42 +1,31 @@
 import { useQuery } from '@tanstack/react-query';
-import { createPublicClient, http, parseEventLogs } from 'viem';
-import { hederaTestnet } from 'viem/chains';
+import { AccountId, PrivateKey, Client } from '@hashgraph/sdk';
 import contractAddresses from '@/constants/contractAddresses.json';
-import nftAbi from '@/constants/HederaHybridNFT.json';
+import { decodeBase64 } from '@/utils/typeConverter';
 
 export default function useHederaNFTs(ownerAddress) {
-    const client = createPublicClient({
-        chain: hederaTestnet,
-        transport: http(),
-    });
+    
+    // It seems like these can be insecure values because they are just for reading contracts
+    const accountId = AccountId.fromString('0.0.7013264');
+    const privateKey = PrivateKey.fromStringECDSA('0xbfb2aaae8a4282682fc8930eaec22d7151b3d277e0e7d855aedcb266345fa5f6');
+
+    const client = Client.forTestnet();
+    client.setOperator(accountId, privateKey);
 
     return useQuery({
         queryKey: ['nfts', ownerAddress],
         queryFn: async () => {
-            const logs = await getEventLogsFromMirror(ownerAddress);
-            const tokenIds = logs.map(log => log.args.tokenId);
-            const tokenURIs = await Promise.all(tokenIds.map(tokenId =>
-                client.readContract({
-                    address: contractAddresses.HederaHybridNFT,
-                    abi: nftAbi,
-                    functionName: 'tokenURI',
-                    args: [tokenId]
-                })
-            ));
-            return tokenIds.map((id, index) => ({ id, uri: tokenURIs[index] }));
+            const response = await fetch(
+                `https://testnet.mirrornode.hedera.com/api/v1/accounts/${ownerAddress}/nfts?limit=200&order=desc`
+            );
+            if (!response.ok) {
+                return console.error(`HTTP error when fetching NFTs! Status: ${response.status}`);
+            }
+            const data = await response.json();
+            return data.nfts.filter(({ token_id }) => token_id === contractAddresses.HederaTokenId)
+                .map(token => ({ id: token.serial_number, uri: decodeBase64(token.metadata) }));
         },
         enabled: Boolean(ownerAddress),
         refetchOnWindowFocus: false
     });
-}
-
-async function getEventLogsFromMirror(toAddress) {
-    const result = await fetch(`https://testnet.mirrornode.hedera.com/api/v1/contracts/${contractAddresses.HederaHybridNFT}/results/logs?order=asc`);
-    const data = await result.json();
-
-    if (!data?.logs?.length) {
-        return [];
-    }
-    const logs = parseEventLogs({ abi: nftAbi, logs: data.logs });
-    return logs.filter(log => log.eventName === 'NFTMinted' && log.args.to === toAddress);
 }
