@@ -1,14 +1,43 @@
 'use client'
 
 import { useState } from 'react'
-import { useAccount, useConnect, useDisconnect, usePublicClient, useWalletClient } from 'wagmi'
+import {
+  useAccount,
+  useConnect,
+  useDisconnect,
+  usePublicClient,
+  useWalletClient,
+  useReadContract,
+} from 'wagmi'
 import { injected } from 'wagmi/connectors'
-import { parseEther, zeroAddress } from 'viem';
-import swapAbi from '@/constants/UniswapRouter.json';
+import { parseUnits, formatUnits } from 'viem'
+import swapAbi from '@/constants/UniswapRouter.json'
 
-const UNISWAP_V3_ROUTER = '0x3bFA4769FB09eefC5a80d6E87c3B9C650f7Ae48E' // same router on Sepolia
-const USDC_SEPOLIA = '0x1c7d4b196cb0c7b01d743fbc6116a902379c7238';
-const WETH_SEPOLIA = '0xfff9976782d46cc05630d1f6ebab18b2324d6b14';
+// --- Constants ---
+const UNISWAP_V3_ROUTER = '0x3bFA4769FB09eefC5a80d6E87c3B9C650f7Ae48E'
+const USDC_SEPOLIA = '0x1c7d4b196cb0c7b01d743fbc6116a902379c7238'
+const WETH_SEPOLIA = '0xfff9976782d46cc05630d1f6ebab18b2324d6b14'
+
+// --- Minimal ERC20 ABI ---
+const erc20Abi = [
+  {
+    name: 'approve',
+    type: 'function',
+    stateMutability: 'nonpayable',
+    inputs: [
+      { name: 'spender', type: 'address' },
+      { name: 'amount', type: 'uint256' },
+    ],
+    outputs: [{ name: '', type: 'bool' }],
+  },
+  {
+    name: 'balanceOf',
+    type: 'function',
+    stateMutability: 'view',
+    inputs: [{ name: 'account', type: 'address' }],
+    outputs: [{ name: '', type: 'uint256' }],
+  },
+]
 
 export default function SwapETHToUSDC() {
   const [amount, setAmount] = useState('')
@@ -17,56 +46,64 @@ export default function SwapETHToUSDC() {
 
   const { address, isConnected } = useAccount()
   const { connect } = useConnect({ connector: injected() })
-  const { disconnect } = useDisconnect()
   const { data: walletClient } = useWalletClient()
   const publicClient = usePublicClient()
 
+  // --- Read USDC balance ---
+  const { data: usdcBalance } = useReadContract({
+    address: USDC_SEPOLIA,
+    abi: erc20Abi,
+    functionName: 'balanceOf',
+    args: address ? [address] : undefined
+  })
+
+  const formattedBalance =
+    usdcBalance !== undefined ? Number(formatUnits(usdcBalance, 6)).toFixed(2) : '0.00'
+
+  // --- Swap handler ---
   async function handleSwap() {
     if (!walletClient || !address) {
-      alert('Connect your wallet first.')
+      alert('Please connect your wallet first.')
       return
     }
 
     try {
       setLoading(true)
 
-const erc20Abi = [
-  { name: 'approve', type: 'function', stateMutability: 'nonpayable', inputs: [
-      { name: 'spender', type: 'address' },
-      { name: 'amount', type: 'uint256' }
-    ], outputs: [{ name: '', type: 'bool' }]
-  },
-]
-await walletClient.writeContract({
-  address: USDC_SEPOLIA,
-  abi: erc20Abi,
-  functionName: 'approve',
-  args: [UNISWAP_V3_ROUTER, amount],
-})
+      const parsedAmount = parseUnits(amount, 6) // USDC has 6 decimals
+      const deadline = Math.floor(Date.now() / 1000) + 60 * 10 // 10 minutes
 
-      const deadline = Math.floor(Date.now() / 1000) + 60 * 10
+      // Approve router to spend USDC
+      await walletClient.writeContract({
+        address: USDC_SEPOLIA,
+        abi: erc20Abi,
+        functionName: 'approve',
+        args: [UNISWAP_V3_ROUTER, parsedAmount],
+      })
 
+      // Swap params
+      const swapParams = {
+        tokenIn: USDC_SEPOLIA,
+        tokenOut: WETH_SEPOLIA,
+        fee: 3000, // 0.3% pool fee
+        recipient: address,
+        deadline,
+        amountIn: parsedAmount,
+        amountOutMinimum: 0n,
+        sqrtPriceLimitX96: 0n,
+      }
+
+      // Execute swap
       const tx = await walletClient.writeContract({
         address: UNISWAP_V3_ROUTER,
         abi: swapAbi,
         functionName: 'exactInputSingle',
-        args: [
-          {
-            tokenIn: USDC_SEPOLIA, // ETH
-            tokenOut: WETH_SEPOLIA,
-            fee: 3000, // 0.3% pool fee
-            recipient: address,
-            deadline,
-            amountIn: amount,
-            amountOutMinimum: 0n, // no slippage protection (demo)
-            sqrtPriceLimitX96: 0n,
-          },
-        ],
-        gas: 8000000n,
+        args: [swapParams],
+        gas: 8_000_000n,
       })
 
       setTxHash(tx)
-      console.log('Swap tx:', tx)
+      console.log('Swap successful:', tx)
     } catch (err) {
       console.error(err)
       alert(err.shortMessage || err.message)
@@ -75,22 +112,25 @@ await walletClient.writeContract({
     }
   }
 
+  // --- UI ---
   return (
-    <div className="max-w-md mx-auto mt-10 p-6 border rounded-2xl shadow-sm space-y-4">
-      <h2 className="text-xl font-semibold">Swap USDC → WETH (Sepolia)</h2>
+    <div className="max-w-md mx-auto mt-12 p-6 border rounded-2xl shadow-sm space-y-6 bg-white">
+      <h2 className="text-2xl font-semibold text-gray-800 text-center">
+        Swap USDC → WETH (Sepolia)
+      </h2>
 
       {!isConnected ? (
         <button
-          className="px-4 py-2 bg-blue-600 text-white rounded-xl"
           onClick={() => connect()}
+          className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl transition"
         >
           Connect Wallet
         </button>
       ) : (
-        <div className="flex flex-col space-y-3">
-          <div className="flex justify-between">
-            <span>Wallet:</span>
-            <code>{address.slice(0, 6)}...{address.slice(-4)}</code>
+        <div className="flex flex-col space-y-4">
+          <div className="flex justify-between text-sm text-gray-600">
+            <span>USDC Balance:</span>
+            <code className="text-gray-800 font-mono">{formattedBalance} USDC</code>
           </div>
 
           <input
@@ -100,31 +140,34 @@ await walletClient.writeContract({
             placeholder="Amount in USDC"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
-            className="border p-2 rounded-lg w-full"
+            className="border border-gray-300 focus:ring-2 focus:ring-blue-400 focus:outline-none p-3 rounded-lg w-full text-gray-800"
           />
 
           <button
             disabled={loading || !amount}
             onClick={handleSwap}
-            className="px-4 py-2 bg-green-600 text-white rounded-xl disabled:opacity-50"
+            className={`w-full py-3 font-medium rounded-xl text-white transition ${
+              loading || !amount
+                ? 'bg-green-400 cursor-not-allowed'
+                : 'bg-green-600 hover:bg-green-700'
+            }`}
           >
             {loading ? 'Swapping...' : 'Swap'}
           </button>
 
           {txHash && (
-            <p className="text-sm text-gray-500 break-all">
-              ✅ Tx: <a href={`https://sepolia.etherscan.io/tx/${txHash}`} target="_blank" rel="noreferrer">
+            <p className="text-sm text-gray-600 break-all">
+              ✅ Transaction:{' '}
+              <a
+                href={`https://sepolia.etherscan.io/tx/${txHash}`}
+                target="_blank"
+                rel="noreferrer"
+                className="text-blue-600 hover:underline"
+              >
                 {txHash}
               </a>
             </p>
           )}
-
-          <button
-            className="text-red-500 text-sm underline"
-            onClick={() => disconnect()}
-          >
-            Disconnect
-          </button>
         </div>
       )}
     </div>

@@ -6,7 +6,6 @@ import networks from '@/constants/networks.json';
 import nftAbi from '@/constants/HederaHybridNFT.json';
 import entryPointAbi from '@/constants/EntryPoint.json';
 import walletAbi from '@/constants/SmartContractWallet.json';
-import counterAbi from '@/constants/SimpleCounter.json';
 
 export const signMint = async owner => {
     const provider = new ethers.JsonRpcProvider(networks.NFTChain.rpcUrl, networks.NFTChain.id);
@@ -19,17 +18,19 @@ export const signMint = async owner => {
     return signature;
 };
 
-export const constructUserOpForIncrement = async (tokenId, userAddress, userSignature) => {
+export const constructUserOp = async (
+    contractAddress, contractAbi, functionName, functionArgs, tokenId, userAddress, userSignature
+) => {
     const transactionChainProvider = new ethers.JsonRpcProvider(
         networks.TransactionChain.rpcUrl, networks.TransactionChain.id
     );
 
     const entryPoint = new ethers.Contract(contractAddresses.EntryPoint, entryPointAbi, transactionChainProvider);
     const sender = contractAddresses.SmartContractWallet;
-    const simpleCounter = new ethers.Contract(contractAddresses.SimpleCounter, counterAbi);
+    const simpleCounter = new ethers.Contract(contractAddress, contractAbi);
     const smartContractWallet = new ethers.Contract(contractAddresses.SmartContractWallet, walletAbi);
     const callData = smartContractWallet.interface.encodeFunctionData(
-        'execute', [contractAddresses.SimpleCounter, 0, simpleCounter.interface.encodeFunctionData('increment')]
+        'execute', [contractAddresses.SimpleCounter, 0, simpleCounter.interface.encodeFunctionData(functionName, functionArgs)]
     );
 
     const verificationGasLimit = 200000;

@@ -9,7 +9,7 @@ import { toast } from 'sonner';
 import networks from '@/constants/networks.json';
 import contractAddresses from '@/constants/contractAddresses.json';
 import counterAbi from '@/constants/SimpleCounter.json';
-import { constructUserOpForIncrement, transmitUserOp } from '@/actions/actions';
+import { constructUserOp, transmitUserOp } from '@/actions/actions';
 import { useNotification, useTransactionPopup } from '@blockscout/app-sdk';
 
 export default function Counter({ address, nfts, nonce, startTransition, isPending }) {
@@ -40,7 +40,9 @@ export default function Counter({ address, nfts, nonce, startTransition, isPendi
         startTransition(async () => {
             try {
                 const nonceSignature = await signMessage(wagmiConfig, { message: { raw: keccak256(encodePacked(['address', 'uint256'], [contractAddresses.PayMaster, nonce])) } });
-                const { userOp, userOpHash } = await constructUserOpForIncrement(nfts[0].id, address, nonceSignature);
+                const { userOp, userOpHash } = await constructUserOp(
+                    contractAddresses.SimpleCounter, counterAbi, 'increment', null, nfts[0].id, address, nonceSignature
+                );
                 const userOpHashSignature = await signMessage(wagmiConfig, { message: { raw: userOpHash } });
                 userOp.signature = userOpHashSignature;
                 const { error, txHash } = await transmitUserOp(userOp);
