@@ -1,5 +1,5 @@
 import MintSection from './mintSection';
-import CounterSection from './counterSection';
+import TransactionSection from './transactionSection';
 import { Toaster } from 'sonner';
 
 export default function Page() {
@@ -8,7 +8,7 @@ export default function Page() {
       <Toaster richColors position='top-center'/>
       <div className='grid md:grid-cols-2'>
         <MintSection/>
-        <CounterSection/>
+        <TransactionSection/>
       </div>
     </>
   );

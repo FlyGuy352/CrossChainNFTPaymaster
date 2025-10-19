@@ -1,34 +1,19 @@
 'use client';
 
-import { useState, useTransition } from 'react';
-import { useAccount, useReadContract, useWatchContractEvent, useWalletClient } from 'wagmi';
+import { useState } from 'react';
+import { useReadContract, useWatchContractEvent } from 'wagmi';
 import { signMessage } from '@wagmi/core';
-import { wagmiConfig } from './wagmiConfig';
+import { wagmiConfig } from '@/app/wagmiConfig';
 import { encodePacked, keccak256 } from 'viem';
-import contractAddresses from '@/constants/contractAddresses.json';
-import paymasterAbi from '@/constants/CrossChainNFTPaymaster.json';
-import networks from '@/constants/networks.json';
-import counterAbi from '@/constants/SimpleCounter.json';
 import { toast } from 'sonner';
-import { constructUserOp, transmitUserOp } from '@/actions/actions';
-import useHederaNFTs from '@/hooks/useHederaNFTs';
+import networks from '@/constants/networks.json';
+import contractAddresses from '@/constants/contractAddresses.json';
+import counterAbi from '@/constants/SimpleCounter.json';
+import { constructUserOpForIncrement, transmitUserOp } from '@/actions/actions';
 import { useNotification, useTransactionPopup } from '@blockscout/app-sdk';
 
-export default function CounterSection() {
+export default function Counter({ address, nfts, nonce, startTransition, isPending }) {
 
-    const { address } = useAccount();
-    const { data: nfts } = useHederaNFTs(address);
-
-    const { data: nonce } = useReadContract({
-        abi: paymasterAbi,
-        address: contractAddresses.PayMaster,
-        functionName: 'nonces',
-        args: [address, nfts?.[0]?.id],
-        chainId: networks.TransactionChain.id,
-        query: {
-            enabled: nfts?.length
-        }
-    });
     const { data: count } = useReadContract({
         abi: counterAbi,
         address: contractAddresses.SimpleCounter,
@@ -51,20 +36,11 @@ export default function CounterSection() {
     const { openTxToast } = useNotification();
     const { openPopup } = useTransactionPopup();
 
-    const [isPending, startTransition] = useTransition();
-
-    const showTransactionPopup = () => {
-        openPopup({
-            chainId: networks.TransactionChain.id,
-            address: contractAddresses.SimpleCounter
-        });
-    };
-
     const increment = () => {
         startTransition(async () => {
             try {
                 const nonceSignature = await signMessage(wagmiConfig, { message: { raw: keccak256(encodePacked(['address', 'uint256'], [contractAddresses.PayMaster, nonce])) } });
-                const { userOp, userOpHash } = await constructUserOp(nfts[0].id, address, nonceSignature);
+                const { userOp, userOpHash } = await constructUserOpForIncrement(nfts[0].id, address, nonceSignature);
                 const userOpHashSignature = await signMessage(wagmiConfig, { message: { raw: userOpHash } });
                 userOp.signature = userOpHashSignature;
                 const { error, txHash } = await transmitUserOp(userOp);
@@ -82,8 +58,15 @@ export default function CounterSection() {
         });
     };
 
+    const showTransactionPopup = () => {
+        openPopup({
+            chainId: networks.TransactionChain.id,
+            address: contractAddresses.SimpleCounter
+        });
+    };
+
     return (
-        <div className='h-160 bg-[#C0FF02]'>
+        <>
             <div className='h-136'>
                 <div className='w-full h-full bg-[url("/assets/images/Smart_Contract.png")] bg-no-repeat bg-center flex justify-center items-center'>
                     <span className='text-9xl cursor-pointer' onClick={showTransactionPopup}>{newCount ?? count?.toString() ?? 0}</span>
@@ -98,6 +81,6 @@ export default function CounterSection() {
                     Increment Counter on Ethereum
                 </button>
             </div>
-        </div>
+        </>
     );
 }
