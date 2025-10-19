@@ -20,7 +20,7 @@ export default function Header() {
                 </Link>
                 <ConnectButton />
             </nav>
-            <nav className='flex justify-center gap-72 py-20 font-bold text-[#C6BABA]'>
+            <nav className='flex justify-center gap-24 md:gap-72 py-20 font-bold text-[#C6BABA]'>
                 <Link href='/' className='hover:text-gray-800'>Home</Link>
                 <Link href='/about' className='hover:text-gray-800'>About</Link>
             </nav>

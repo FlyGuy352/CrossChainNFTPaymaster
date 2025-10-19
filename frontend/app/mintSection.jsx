@@ -19,7 +19,7 @@ export default function MintSection() {
 
     const { address, isConnected } = useAccount();
     const isMounted = useIsMounted();
-    const { data: nfts, error: loadNFTsError, isFetching, refetch } = useHederaNFTs(address);
+    const { data: nfts, isFetching, refetch } = useHederaNFTs(address);
     const { data: hash, error: writeError, isPending, writeContract } = useWriteContract();
     const { isLoading: isConfirming, isSuccess: isConfirmed } = useWaitForTransactionReceipt({ hash });
     const [isPendingTransition, startTransition] = useTransition();
@@ -29,7 +29,7 @@ export default function MintSection() {
                 await refetch();
             }
     
-            refetchNFTs().catch(console.error);
+            refetchNFTs().then(() => toast.success('NFT Minted!')).catch(console.error);
         }
     }, [isConfirmed]);
 

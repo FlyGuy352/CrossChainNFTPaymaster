@@ -18,3 +18,9 @@
   --font-BDOGrotesk: 'BDOGrotesk';
   --font-DynaPuff: 'DynaPuff';
 }
+
+.iGDpxw {
+  right: auto !important;
+  left: 50%;
+  transform: translateX(-50%);
+} 

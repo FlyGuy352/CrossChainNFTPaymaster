@@ -47,7 +47,6 @@ export const constructUserOp = async (tokenId, userAddress, userSignature) => {
     const nftChainProvider = new ethers.JsonRpcProvider(networks.NFTChain.rpcUrl, Number(networks.NFTChain.id));
     const nftContract = new ethers.Contract(contractAddresses.HederaHybridNFT, nftAbi, nftChainProvider);
     const adminSignature = await nftContract.signatures(tokenId);
-    console.log('adminSignature ', adminSignature)
     const paymasterAndData = ethers.solidityPacked(
         ['address', 'uint128', 'uint128', 'bytes', 'uint256', 'address', 'bytes'],
         [contractAddresses.PayMaster, 200000, 200000, adminSignature, tokenId, userAddress, userSignature]
@@ -73,11 +72,11 @@ export const transmitUserOp = async userOp => {
     const wallet = new ethers.Wallet(process.env.ETHEREUM_SEPOLIA_PRIVATE_KEY_ADMIN, provider);
     const entryPoint = new ethers.Contract(contractAddresses.EntryPoint, entryPointAbi, wallet);
     try {
-        console.log(userOp);
         const tx = await entryPoint.handleOps([userOp], process.env.ETHEREUM_SEPOLIA_PUBLIC_KEY_ADMIN);
         await tx.wait();
+        return { txHash: tx.hash };
     } catch (error) {
         console.error(`Error transmitting UserOp: ${error}`);
-        return error;
+        return { error };
     }
 };

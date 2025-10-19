@@ -12,11 +12,13 @@ import counterAbi from '@/constants/SimpleCounter.json';
 import { toast } from 'sonner';
 import { constructUserOp, transmitUserOp } from '@/actions/actions';
 import useHederaNFTs from '@/hooks/useHederaNFTs';
+import { useNotification, useTransactionPopup } from '@blockscout/app-sdk';
 
 export default function CounterSection() {
 
     const { address } = useAccount();
-    const { data: nfts, error } = useHederaNFTs(address);
+    const { data: nfts } = useHederaNFTs(address);
+
     const { data: nonce } = useReadContract({
         abi: paymasterAbi,
         address: contractAddresses.PayMaster,
@@ -46,7 +48,17 @@ export default function CounterSection() {
         chainId: networks.TransactionChain.id
     });
 
+    const { openTxToast } = useNotification();
+    const { openPopup } = useTransactionPopup();
+
     const [isPending, startTransition] = useTransition();
+
+    const showTransactionPopup = () => {
+        openPopup({
+            chainId: networks.TransactionChain.id,
+            address: contractAddresses.SimpleCounter
+        });
+    };
 
     const increment = () => {
         startTransition(async () => {
@@ -55,12 +67,14 @@ export default function CounterSection() {
                 const { userOp, userOpHash } = await constructUserOp(nfts[0].id, address, nonceSignature);
                 const userOpHashSignature = await signMessage(wagmiConfig, { message: { raw: userOpHash } });
                 userOp.signature = userOpHashSignature;
-                const error = await transmitUserOp(userOp);
+                const { error, txHash } = await transmitUserOp(userOp);
+
                 if (error) {
                     return toast.error(JSON.stringify(error));
                 } else {
                     // This optimistic update is a workaround because useWatchContractEvent seems unreliable
                     setNewCount(prevCount => (prevCount ?? Number(count)) + 1);
+                    openTxToast(networks.TransactionChain.id, txHash);
                 }
             } catch(error) {
                 toast.error(error.message);
@@ -72,7 +86,7 @@ export default function CounterSection() {
         <div className='h-160 bg-[#C0FF02]'>
             <div className='h-136'>
                 <div className='w-full h-full bg-[url("/assets/images/Smart_Contract.png")] bg-no-repeat bg-center flex justify-center items-center'>
-                    <span className='text-9xl'>{newCount ?? count?.toString() ?? 0}</span>
+                    <span className='text-9xl cursor-pointer' onClick={showTransactionPopup}>{newCount ?? count?.toString() ?? 0}</span>
                 </div>
             </div>
             <div className='flex justify-center'>
