@@ -8,7 +8,7 @@ npx hardhat ignition deploy ignition/modules/EthereumContracts.ts --network sepo
 
 ### Verify NFT Contract on Hedera Testnet
 
-npx hardhat verifyHedera 0x22C159580D114BCfe3DebaD7A0635FF91472A30B contracts/HederaHybridNFT.sol artifacts/build-info/solc-0_8_30-bff177ac84c5c3311fd407aea307e7deea4405fb.output.json
+npx hardhat verifyHedera <contractAddress> contracts/HederaHybridNFT_flat.sol HederaHybridNFT_flat.json
 
 ## Verify Ethereum Sepolia Contracts
 npx hardhat verify --network sepolia <counterAddress>

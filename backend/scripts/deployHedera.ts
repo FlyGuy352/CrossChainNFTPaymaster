@@ -6,7 +6,7 @@ dotenv.config();
 const { ethers } = await network.connect({ network: "hederaTestnet" });
 const [deployer] = await ethers.getSigners();
 
-const hederaHybridNft = await ethers.getContractFactory("HederaHybridNFT", deployer);
+const hederaHybridNft = await ethers.getContractFactory("HederaHybridNFT_flat", deployer);
 const contract = await hederaHybridNft.deploy(process.env.HEDERA_TESTNET_PUBLIC_KEY_ADMIN!);
 await contract.waitForDeployment();
 
