@@ -11,6 +11,7 @@ import contractAddresses from '@/constants/contractAddresses.json';
 import counterAbi from '@/constants/SimpleCounter.json';
 import { constructUserOp, transmitUserOp } from '@/actions/actions';
 import { useNotification, useTransactionPopup } from '@blockscout/app-sdk';
+import Button from '@/components/Button';
 
 export default function Counter({ address, nfts, nonce, dispatch, refetchNonce }) {
 
@@ -97,19 +98,12 @@ export default function Counter({ address, nfts, nonce, dispatch, refetchNonce }
             </div>
             <div className='flex items-center justify-center gap-12'>
                 <button className='w-0 h-0 border-t-12 border-b-12 border-r-20 border-t-transparent border-b-transparent border-r-green-700 hover:border-r-green-900 cursor-pointer transition-colors invisible'></button>
-                <button className='
-                    border border-black rounded-3xl bg-white text-xl font-semibold w-96 p-3 tracking-wide 
-                    disabled:bg-slate-300 disabled:border-slate-600 disabled:text-slate-700 disabled:cursor-not-allowed 
-                    enabled:hover:scale-[1.025] transition flex justify-center items-center gap-3
-                '
-                    onClick={increment}
-                    disabled={status !== 'idle' || nfts === undefined || nfts.length === 0}
+                <Button 
+                    onClick={increment} getButtonText={getButtonText} 
+                    isDisabled={status !== 'idle' || nfts === undefined || nfts.length === 0} 
+                    isLoading={status !== 'idle'} spinnerColor='green-700'
                 >
-                    {status !== 'idle' && (
-                        <span className='animate-spin h-5 w-5 border-4 border-green-700 border-t-transparent rounded-full'></span>
-                    )}
-                    {getButtonText()}
-                </button>
+                </Button>
                 <button className='w-0 h-0 border-t-12 border-b-12 border-l-20 border-t-transparent border-b-transparent border-l-green-700 hover:border-l-green-900 cursor-pointer transition-colors disabled:cursor-not-allowed' disabled={status !== 'idle'} onClick={goToSwap}></button>
             </div>
         </>
