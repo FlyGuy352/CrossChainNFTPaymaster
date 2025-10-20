@@ -1,5 +1,5 @@
 {
-  "EthereumContracts#CrossChainNFTPaymaster": "0x50Cd8822CF7c53db4072993Eb4b72366Be7cceBE",
-  "EthereumContracts#SimpleCounter": "0xb8901CD74e7243AEF0786df85a73377a51694DD4",
-  "EthereumContracts#SmartContractWallet": "0x08934D899774573ecc522C8F0C7CF3156E0FF80e"
+  "EthereumContracts#CrossChainNFTPaymaster": "0xf242265C3F9A4Ff42c46e72dE21d65f053923AFa",
+  "EthereumContracts#SimpleCounter": "0xE768C9c4369A1869f9b21baA736Cb2745d4E64c4",
+  "EthereumContracts#SmartContractWallet": "0x916ce1D11269Bd15C6Eca12de9Aa87Af47451C54"
 }

@@ -18,3 +18,7 @@ npx hardhat verify --network sepolia <smartContractWalletAddress> <userAddress>
 ### Deposit to Paymaster
 
 npx hardhat run scripts/paymasterDeposit.ts
+
+### Run tests (use production profile for optimizer else "Error: Transaction reverted: trying to deploy a contract whose code is too large")
+
+npx hardhat test --build-profile production

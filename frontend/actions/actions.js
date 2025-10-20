@@ -27,10 +27,10 @@ export const constructUserOp = async (
 
     const entryPoint = new ethers.Contract(contractAddresses.EntryPoint, entryPointAbi, transactionChainProvider);
     const sender = contractAddresses.SmartContractWallet;
-    const simpleCounter = new ethers.Contract(contractAddress, contractAbi);
-    const smartContractWallet = new ethers.Contract(contractAddresses.SmartContractWallet, walletAbi);
+    const targetContract = new ethers.Contract(contractAddress, contractAbi);
+    const smartContractWallet = new ethers.Contract(sender, walletAbi);
     const callData = smartContractWallet.interface.encodeFunctionData(
-        'execute', [contractAddresses.SimpleCounter, 0, simpleCounter.interface.encodeFunctionData(functionName, functionArgs)]
+        'execute', [contractAddress, 0, targetContract.interface.encodeFunctionData(functionName, functionArgs)]
     );
 
     const verificationGasLimit = 200000;

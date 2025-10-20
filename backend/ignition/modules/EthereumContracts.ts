@@ -12,11 +12,10 @@ export default buildModule("EthereumContracts", (m) => {
   const counter = m.contract("SimpleCounter");
 
   const paymaster = m.contract("CrossChainNFTPaymaster", [
-    deployerAddress,
-    hederaAdmin,
+    deployerAddress, hederaAdmin, ethers.ZeroAddress 
   ]);
 
-  const account = m.contract("SmartContractWallet", [userAddress]);
+  const account = m.contract("SmartContractWallet", [userAddress, ethers.ZeroAddress]);
 
   m.call(paymaster, "deposit", [], {
     value: ethers.parseEther("0.01"),

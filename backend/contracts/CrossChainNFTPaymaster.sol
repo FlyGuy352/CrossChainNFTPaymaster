@@ -97,11 +97,13 @@ contract CrossChainNFTPaymaster is PaymasterCore, Ownable {
     using MessageHashUtils for bytes32;
 
     address private immutable _admin;
+    address private immutable _entryPoint;
 
     mapping(address user => mapping(uint256 tokenId => uint256 nonce)) public nonces;
 
-    constructor(address owner, address admin) Ownable(owner) {
+    constructor(address owner, address admin, address entryPoint) Ownable(owner) {
         _admin = admin;
+        _entryPoint = entryPoint;
     }
 
     function _validatePaymasterUserOp(
@@ -121,6 +123,17 @@ contract CrossChainNFTPaymaster is PaymasterCore, Ownable {
         }
         nonces[userAddress][tokenId]++;
         return ("", 0);
+    }
+
+    // Ensures the caller is the authorized EntryPoint (defaults to canonical if none set); allows using a mock EntryPoint during testing and reverts if unauthorized
+    function _checkEntryPoint() internal view override {
+        address sender = msg.sender;
+        if (
+            (_entryPoint == address(0) && sender != address(entryPoint())) ||
+            (_entryPoint != address(0) && sender != _entryPoint)
+        ) {
+            revert PaymasterUnauthorized(sender);
+        }
     }
 
     function extractData(bytes memory data) internal pure returns (
