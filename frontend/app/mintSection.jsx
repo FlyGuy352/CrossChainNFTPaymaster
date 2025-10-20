@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useTransition } from 'react';
+import { useEffect, useState } from 'react';
 import { useAccount, useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
 import { switchChain } from '@wagmi/core';
 import contractAddresses from '@/constants/contractAddresses.json';
@@ -20,9 +20,20 @@ export default function MintSection() {
     const { address, isConnected } = useAccount();
     const isMounted = useIsMounted();
     const { data: nfts, isFetching, refetch } = useHederaNFTs(address);
-    const { data: hash, error: writeError, isPending, writeContract } = useWriteContract();
+
+    const [status, setStatus] = useState('idle');
+
+    const getButtonText = () => {
+        switch (status) {
+            case 'idle': return 'Mint NFT on Hedera';
+            case 'minting': return 'Minting NFT...';
+            default: return '...';
+        }
+    };
+
+    const { data: hash, writeContract } = useWriteContract();
     const { isLoading: isConfirming, isSuccess: isConfirmed } = useWaitForTransactionReceipt({ hash });
-    const [isPendingTransition, startTransition] = useTransition();
+
     useEffect(() => {
         if (isConfirmed) {
             const refetchNFTs = async () => {
@@ -33,18 +44,16 @@ export default function MintSection() {
         }
     }, [isConfirmed]);
 
-    const mint = () => {
+    const mint = async () => {
         if (!isConnected) {
             return toast.error('Please connect your wallet');
         }
-        startTransition(async () => {
-            let signature;
-            try {
-                await switchChain(wagmiConfig, { chainId: networks.NFTChain.id });
-                signature = await signMint(address);
-            } catch (error) {
-                return toast.error(error.message);
-            }
+
+        setStatus('minting');
+        let signature;
+        try {
+            await switchChain(wagmiConfig, { chainId: networks.NFTChain.id });
+            signature = await signMint(address);
 
             const tokenURI = `/assets/images/Dragon_${randomIntFromInterval(1, 4)}.jpg`;
             writeContract({
@@ -54,11 +63,15 @@ export default function MintSection() {
                 args: [address, tokenURI, signature],
                 gas: 1000000
             });
-        });
+        } catch (error) {
+            return toast.error(error.message);
+        } finally {
+            setStatus('idle');
+        }
     };
 
     return (
-        <div className='h-160 bg-[#4DD2FF]'>
+        <div className='h-160 bg-[#DBF6FF]'>
             <div className='h-136 flex justify-center items-center'>
                 {
                     (isMounted() && (isFetching || isConfirming)) ? <Spinner/> : (!!nfts?.length && <Image src={nfts[0].uri} width={375} height={375} alt='NFT'/>)
@@ -71,10 +84,10 @@ export default function MintSection() {
                         <button 
                             className='border border-black rounded-3xl bg-white text-xl font-semibold w-96 p-3 tracking-wide disabled:bg-slate-300 disabled:border-slate-600 disabled:text-slate-700 disabled:cursor-not-allowed enabled:hover:scale-[1.025] transition' 
                             onClick={mint}
-                            disabled={!isMounted() || isPendingTransition || isPending || isFetching || isConfirming}
+                            disabled={!isMounted() || status !== 'idle' || isPending || isFetching || isConfirming}
                             suppressHydrationWarning
                         >
-                            Mint NFT on Hedera
+                            {getButtonText}
                         </button>
                 }
             </div>

@@ -6,7 +6,8 @@ const { ethers } = await network.connect({ network: "sepolia" });
 const [deployer] = await ethers.getSigners();
 console.log(`Using account: ${deployer.address}`);
 
-const paymaster = new ethers.Contract("0x50Cd8822CF7c53db4072993Eb4b72366Be7cceBE", metadata.abi, deployer);
+// Verify that this is the latest paymaster address
+const paymaster = new ethers.Contract("0x14eAAfF87532206fBE056c3Bbc082659d19ea17A", metadata.abi, deployer);
 
 const tx = await paymaster.deposit({ value: ethers.parseEther("0.05") });
 console.log(`Depositing 0.05 ETH... tx hash: ${tx.hash}`);

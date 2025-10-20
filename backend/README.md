@@ -12,8 +12,8 @@ npx hardhat verifyHedera <contractAddress> contracts/HederaHybridNFT_flat.sol He
 
 ## Verify Ethereum Sepolia Contracts
 npx hardhat verify --network sepolia <counterAddress>
-npx hardhat verify --network sepolia <paymasterAddress> <deployerAddress> <hederaAdminAddress>
-npx hardhat verify --network sepolia <smartContractWalletAddress> <userAddress>
+npx hardhat verify --network sepolia <paymasterAddress> <deployerAddress> <hederaAdminAddress> 0x0000000000000000000000000000000000000000
+npx hardhat verify --network sepolia <smartContractWalletAddress> <userAddress> 0x0000000000000000000000000000000000000000
 
 ### Deposit to Paymaster
 
