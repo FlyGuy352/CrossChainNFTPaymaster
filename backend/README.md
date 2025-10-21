@@ -1,6 +1,6 @@
 # 👷 Hardhat Backend for Cross-Chain NFT Paymaster
 
-This repository contains all smart contracts and Hardhat scripts used to power the **Cross-Chain NFT Paymaster project**.
+This repository contains all smart contracts and Hardhat scripts used to power the **Cross-Chain NFT Paymaster** project.
 
 ## Commands Overview
 
