@@ -1,4 +1,4 @@
-## Project Structure
+## Frontend Project Structure
 
 This Next.js project follows a modular structure to keep the code organized and maintainable. Below is a brief description of the main folders:
 
