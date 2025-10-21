@@ -34,29 +34,19 @@ export default function TransactionSection() {
 
     return (
         <>
-            <div className='h-160 bg-[#E6FFC0] lg:hidden'>
-                {
-                    state.showCounter && <Counter address={address} nfts={nfts} nonce={nonce} dispatch={dispatch} refetchNonce={refetch}/>
-                }
-                {
-                    state.showSwap && <Swap address={address} nfts={nfts} nonce={nonce} dispatch={dispatch} refetchNonce={refetch}/>
-                }
-            </div>
-            <div className='relative overflow-hidden h-160 bg-[#E6FFC0] hidden lg:block'>
-                <div
-                    className='h-full flex w-[200%] transition-transform duration-400 ease-in-out'
-                    style={{
-                        transform: state.showCounter
-                            ? 'translateX(0%)'
-                            : 'translateX(-50%)'
-                    }}
+            <div className='h-160 bg-[#E6FFC0] lg:relative lg:overflow-hidden'>
+                <div 
+                    className={`
+                        h-full flex justify-center lg:w-[200%] lg:transition-transform lg:duration-400 lg:ease-in-out
+                        ${state.showCounter ? 'lg:translate-x-[0%]' : 'lg:translate-x-[-50%]'}
+                    `}
                 >
-                    <div className='w-1/2 flex-shrink-0'>
+                    <div className='lg:w-1/2 lg:flex-shrink-0 flex flex-col justify-center'>
                         {
                             state.showCounter && <Counter address={address} nfts={nfts} nonce={nonce} dispatch={dispatch} refetchNonce={refetch}/>
                         }
                     </div>
-                    <div className='w-1/2 flex-shrink-0'>
+                    <div className='lg:w-1/2 lg:flex-shrink-0'>
                         {
                             state.showSwap && <Swap address={address} nfts={nfts} nonce={nonce} dispatch={dispatch} refetchNonce={refetch}/>
                         }

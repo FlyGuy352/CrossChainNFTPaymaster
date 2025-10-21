@@ -32,7 +32,6 @@ export default function MintSection() {
             return 'Mint NFT on Hedera';
         }
     };
-
     const { data: hash, isPending, writeContract } = useWriteContract();
     const { isLoading: isConfirming, isSuccess: isConfirmed } = useWaitForTransactionReceipt({ hash });
 
@@ -79,7 +78,7 @@ export default function MintSection() {
                 }
             </div>
             <div className='flex justify-center'>
-                <div className='flex justify-center'>
+                <div className='flex justify-center px-8'>
                     {
                         !!nfts?.length ? 
                             <span className='text-2xl font-DynaPuff p-3 tracking-wide'>You have NFT Token ID {nfts[0].id.toString()} on Hedera</span> :                 

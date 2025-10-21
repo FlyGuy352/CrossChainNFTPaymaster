@@ -12,8 +12,9 @@ import { wagmiConfig } from '@/app/wagmiConfig';
 import { encodePacked, keccak256 } from 'viem';
 import { toast } from 'sonner';
 import { constructUserOp, transmitUserOp } from '@/actions/actions';
-import { useNotification, useTransactionPopup } from '@blockscout/app-sdk';
+import { useNotification } from '@blockscout/app-sdk';
 import Button from '@/components/Button';
+import GreenArrow from '@/components/GreenArrow';
 
 export default function Swap({ address, nfts, nonce, dispatch, refetchNonce }) {
 
@@ -35,7 +36,7 @@ export default function Swap({ address, nfts, nonce, dispatch, refetchNonce }) {
     const [amount, setAmount] = useState('');
     const [txHash, setTxHash] = useState('');
 
-    const { data: usdcBalance } = useReadContract({
+    const { data: usdcBalance, refetch: refetchUsdcBalance } = useReadContract({
         address: contractAddresses.USDC,
         abi: erc20Abi,
         functionName: 'balanceOf',
@@ -48,11 +49,12 @@ export default function Swap({ address, nfts, nonce, dispatch, refetchNonce }) {
         usdcBalance !== undefined ? Number(formatUnits(usdcBalance, 6)).toFixed(2) : '0.00';
 
     const { openTxToast } = useNotification();
-    const { openPopup } = useTransactionPopup();
 
     const swap = async () => {
         const parsedAmount = parseUnits(amount, 6); // USDC has 6 decimals
-
+        if (parsedAmount > usdcBalance) {
+            return toast.error(`Maximum swap amount is ${formattedBalance}!`);
+        }
         try {
             const { error: approveError } = await approve(parsedAmount);
             if (approveError) {
@@ -69,6 +71,7 @@ export default function Swap({ address, nfts, nonce, dispatch, refetchNonce }) {
             toast.error(error.message);
         } finally {
             await refetchNonce(); // Always refetch in case approve succeeds but swap fails
+            await refetchUsdcBalance();
             setStatus('idle');
         }
     };
@@ -121,18 +124,12 @@ export default function Swap({ address, nfts, nonce, dispatch, refetchNonce }) {
         return await transmitUserOp(userOp);
     };
 
-    const showTransactionPopup = () => openPopup({
-        chainId: networks.TransactionChain.id,
-        address: contractAddresses.SimpleCounter
-    });
-
     const goToCounter = () => dispatch({ type: 'VIEW_COUNTER' });
 
     return (
         <div className='h-full flex items-center justify-center'>
-            <div className='flex items-center justify-center gap-12 w-1/2'>
-                <button className='
-                    w-0 h-0 border-t-12 border-b-12 border-r-20 border-t-transparent border-b-transparent border-r-green-700 hover:border-r-green-900 cursor-pointer transition-colors disabled:cursor-not-allowed' disabled={status !== 'idle'} onClick={goToCounter}></button>
+            <div className='flex flex-col sm:flex-row items-center justify-center gap-12 w-1/2'>
+                <GreenArrow direction='left' elementType='button' isVisible onClick={goToCounter} disabled={status !== 'idle'}></GreenArrow>
                 <div className='p-6 border rounded-3xl shadow-sm space-y-6 bg-white'>
                     <h2 className='text-2xl font-semibold text-gray-800 text-center'>
                         Swap USDC → WETH (Sepolia)
@@ -176,7 +173,10 @@ export default function Swap({ address, nfts, nonce, dispatch, refetchNonce }) {
                         </Button>
                     </div>
                 </div>
-                <button className='w-0 h-0 border-t-12 border-b-12 border-l-20 border-t-transparent border-b-transparent border-l-green-700 hover:border-l-green-900 cursor-pointer transition-colors invisible'></button>
+                <GreenArrow direction='right' elementType='button'></GreenArrow>
+                <div className='sm:hidden'>
+                    <GreenArrow direction='left' elementType='div' isVisible onClick={goToCounter} disabled={status !== 'idle'}></GreenArrow>
+                </div>
             </div>
         </div>
     )

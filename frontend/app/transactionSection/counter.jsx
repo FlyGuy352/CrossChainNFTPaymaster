@@ -12,6 +12,7 @@ import counterAbi from '@/constants/SimpleCounter.json';
 import { constructUserOp, transmitUserOp } from '@/actions/actions';
 import { useNotification, useTransactionPopup } from '@blockscout/app-sdk';
 import Button from '@/components/Button';
+import GreenArrow from '@/components/GreenArrow';
 
 export default function Counter({ address, nfts, nonce, dispatch, refetchNonce }) {
 
@@ -91,20 +92,23 @@ export default function Counter({ address, nfts, nonce, dispatch, refetchNonce }
 
     return (
         <>
-            <div className='h-136'>
+            <div className='h-103 sm:h-126'>
                 <div className='w-full h-full bg-[url("/assets/images/Smart_Contract.png")] bg-no-repeat bg-center flex justify-center items-center'>
                     <span className='text-9xl cursor-pointer' onClick={showTransactionPopup}>{newCount ?? count?.toString() ?? 0}</span>
                 </div>
             </div>
             <div className='flex items-center justify-center gap-12'>
-                <button className='w-0 h-0 border-t-12 border-b-12 border-r-20 border-t-transparent border-b-transparent border-r-green-700 hover:border-r-green-900 cursor-pointer transition-colors invisible'></button>
+                <GreenArrow direction='left' elementType='button'></GreenArrow>
                 <Button 
                     onClick={increment} getButtonText={getButtonText} 
                     isDisabled={status !== 'idle' || nfts === undefined || nfts.length === 0} 
                     isLoading={status !== 'idle'} spinnerColor='green-700'
                 >
                 </Button>
-                <button className='w-0 h-0 border-t-12 border-b-12 border-l-20 border-t-transparent border-b-transparent border-l-green-700 hover:border-l-green-900 cursor-pointer transition-colors disabled:cursor-not-allowed' disabled={status !== 'idle'} onClick={goToSwap}></button>
+                <GreenArrow direction='right' elementType='button' isVisible onClick={goToSwap} disabled={status !== 'idle'}></GreenArrow>
+            </div>
+            <div className='sm:hidden mt-12'>
+                <GreenArrow direction='right' elementType='div' isVisible onClick={goToSwap} disabled={status !== 'idle'}></GreenArrow>
             </div>
         </>
     );
