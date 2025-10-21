@@ -61,4 +61,6 @@ npx hardhat test --build-profile production
 
 - **HederaHybridNFT.sol** tracks the source code for the NFT contract for ease of development and debugging. However, it was flattened into **HederaHybridNFT_flat.sol**, and that version was deployed to the Hedera Testnet because the contract verification service failed to resolve OpenZeppelin imports.
 
+- If the Paymaster contract address changes, paymasterDeposit.ts should be updated to reflect the latest address for contract interaction.
+
 - A **custom `verifyHedera.ts` Hardhat task** was implemented since the native `hardhat verify` command does **not** support Hedera Testnet.
