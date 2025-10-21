@@ -14,7 +14,7 @@ export default function RootLayout({ children }) {
     <html lang='en'>
       <body>
         <Providers>
-          <div className='min-h-screen min-w-[385px]'>
+          <div className='min-h-screen min-w-[450px]'>
             <Header />
               <main>
                 {children}
