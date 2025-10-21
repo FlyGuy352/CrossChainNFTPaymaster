@@ -2,7 +2,9 @@
 
 This repository contains all smart contracts and Hardhat scripts used to power the **Cross-Chain NFT Paymaster project**.
 
-## Commands
+## Commands Overview
+
+Below are the main scripts and tasks I wrote to deploy, verify, test, and interact with the contracts.
 
 ## 🚀 Deployment Instructions
 
@@ -34,7 +36,7 @@ npx hardhat verify --network sepolia <paymasterAddress> <deployerAddress> <heder
 npx hardhat verify --network sepolia <smartContractWalletAddress> <userAddress> 0x0000000000000000000000000000000000000000
 ```
 
-## 💰 Function Calls
+## 💸 Contract Interaction
 
 ### 5. Execute Paymaster Deposit to Entrypoint
 
@@ -44,7 +46,9 @@ npx hardhat verify --network sepolia <smartContractWalletAddress> <userAddress> 
 npx hardhat run scripts/paymasterDeposit.ts
 ```
 
-### 6. Run tests
+## 🧪 Running Tests
+
+### 6. Run Tests on Hardhat Network
 
 > **Note:** Use the production build profile for optimizer, otherwise you may encounter  
 > `Error: Transaction reverted: trying to deploy a contract whose code is too large.`
