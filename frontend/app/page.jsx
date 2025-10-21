@@ -6,7 +6,7 @@ export default function Page() {
   return (
     <>
       <Toaster richColors position='top-center'/>
-      <div className='grid md:grid-cols-2'>
+      <div className='grid lg:grid-cols-2'>
         <MintSection/>
         <TransactionSection/>
       </div>
