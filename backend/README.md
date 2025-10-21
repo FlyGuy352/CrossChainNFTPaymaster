@@ -4,7 +4,7 @@ This repository contains all smart contracts and Hardhat scripts used to power t
 
 ## Commands Overview
 
-Below are the main scripts and tasks I wrote to deploy, verify, test, and interact with the contracts.
+Below are the main scripts and tasks used to deploy, verify, test, and interact with the contracts.
 
 ## 🚀 Deployment Instructions
 
