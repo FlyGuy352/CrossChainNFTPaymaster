@@ -111,32 +111,31 @@ contract CrossChainNFTPaymaster is PaymasterCore, Ownable {
         bytes32 userOpHash,
         uint256 maxCost
     ) internal override returns (bytes memory context, uint256 validationData) {
-        (bytes memory adminSignature, uint256 tokenId, address userAddress, bytes memory userSignature) = extractData(userOp.paymasterAndData);
+        (bytes memory adminSignature, uint256 tokenId, address userAddress, bytes memory userSignature) = _extractData(userOp.paymasterAndData);
+        _verifyAdminSignature(userAddress, tokenId, adminSignature);
+
+        uint256 currentNonce = nonces[userAddress][tokenId];
+        _verifyUserSignature(currentNonce, userAddress, userSignature);
+        nonces[userAddress][tokenId]++;
+        
+        return ("", 0);
+    }
+
+    function _verifyAdminSignature(address userAddress, uint256 tokenId, bytes memory adminSignature) internal view {
         bytes32 adminHash = keccak256(abi.encodePacked(tokenId, userAddress));
         if (adminHash.toEthSignedMessageHash().recover(adminSignature) != _admin) {
             revert AdminSignatureFailed();
         }
-        uint256 currentNonce = nonces[userAddress][tokenId];
-        bytes32 userHash = keccak256(abi.encodePacked(address(this), currentNonce));
+    }
+    
+    function _verifyUserSignature(uint256 nonce, address userAddress, bytes memory userSignature) internal view {
+        bytes32 userHash = keccak256(abi.encodePacked(address(this), nonce));
         if (userHash.toEthSignedMessageHash().recover(userSignature) != userAddress) {
             revert UserSignatureFailed();
         }
-        nonces[userAddress][tokenId]++;
-        return ("", 0);
     }
 
-    // Ensures the caller is the authorized EntryPoint (defaults to canonical if none set); allows using a mock EntryPoint during testing and reverts if unauthorized
-    function _checkEntryPoint() internal view override {
-        address sender = msg.sender;
-        if (
-            (_entryPoint == address(0) && sender != address(entryPoint())) ||
-            (_entryPoint != address(0) && sender != _entryPoint)
-        ) {
-            revert PaymasterUnauthorized(sender);
-        }
-    }
-
-    function extractData(bytes memory data) internal pure returns (
+    function _extractData(bytes memory data) internal pure returns (
         bytes memory adminSignature,
         uint256 tokenId,
         address userAddress,
@@ -179,6 +178,17 @@ contract CrossChainNFTPaymaster is PaymasterCore, Ownable {
                     dest := add(dest, 32)
                 }
             }
+        }
+    }
+
+    // Ensures the caller is the authorized EntryPoint (defaults to canonical if none set); allows using a mock EntryPoint during testing and reverts if unauthorized
+    function _checkEntryPoint() internal view override {
+        address sender = msg.sender;
+        if (
+            (_entryPoint == address(0) && sender != address(entryPoint())) ||
+            (_entryPoint != address(0) && sender != _entryPoint)
+        ) {
+            revert PaymasterUnauthorized(sender);
         }
     }
 

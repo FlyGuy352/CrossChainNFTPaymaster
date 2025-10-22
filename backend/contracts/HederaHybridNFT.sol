@@ -67,12 +67,8 @@ contract HederaHybridNFT is HederaTokenService, KeyHelper, Ownable {
             revert TokenNotDeployed();
         }
         uint256 newTokenId = latestTokenId + 1;
-        bytes32 hash = keccak256(abi.encodePacked(newTokenId, owner));
-        address recovered = hash.toEthSignedMessageHash().recover(signature);
-        if (recovered != _admin) {
-            revert SignatureFailed(signature, hash, hash.toEthSignedMessageHash(), recovered);
-        }
-        
+        _verifySignature(owner, newTokenId, signature);
+
         bytes memory metadata = bytes(tokenURI);
         _mintAndSend(owner, metadata);
 
@@ -80,6 +76,14 @@ contract HederaHybridNFT is HederaTokenService, KeyHelper, Ownable {
 
         latestTokenId++;
         return newTokenId;
+    }
+
+    function _verifySignature(address owner, uint256 tokenId, bytes memory signature) internal view {
+        bytes32 hash = keccak256(abi.encodePacked(tokenId, owner));
+        address recovered = hash.toEthSignedMessageHash().recover(signature);
+        if (recovered != _admin) {
+            revert SignatureFailed(signature, hash, hash.toEthSignedMessageHash(), recovered);
+        }
     }
 
     function _mintAndSend(

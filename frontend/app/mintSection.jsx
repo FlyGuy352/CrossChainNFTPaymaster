@@ -14,7 +14,7 @@ import Image from 'next/image';
 import Button from '@/components/Button';
 import Spinner from '@/components/Spinner';
 import { toast } from 'sonner';
-import { signMint } from '@/actions/actions';
+import { adminSign } from '@/actions/actions';
 
 export default function MintSection() {
 
@@ -53,7 +53,7 @@ export default function MintSection() {
         try {
             await switchChain(wagmiConfig, { chainId: networks.NFTChain.id });
             setIsSigning(true);
-            signature = await signMint(address);
+            signature = await adminSign(address);
         } catch (error) {
             return toast.error(error.message);
         } finally {

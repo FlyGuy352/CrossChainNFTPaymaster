@@ -7,7 +7,7 @@ import nftAbi from '@/constants/HederaHybridNFT.json';
 import entryPointAbi from '@/constants/EntryPoint.json';
 import walletAbi from '@/constants/SmartContractWallet.json';
 
-export const signMint = async owner => {
+export const adminSign = async owner => {
     const provider = new ethers.JsonRpcProvider(networks.NFTChain.rpcUrl, networks.NFTChain.id);
     const nftContract = new ethers.Contract(contractAddresses.HederaHybridNFT, nftAbi, provider);
     const tokenId = await nftContract.latestTokenId();
