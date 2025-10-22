@@ -1,1 +1,2 @@
-![Alt text](assets/Sequence%20Diagram.svg)
+![Alt text](./assets/Sequence%20Diagram.svg)
+
