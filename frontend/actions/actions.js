@@ -5,7 +5,9 @@ import contractAddresses from '@/constants/contractAddresses.json';
 import networks from '@/constants/networks.json';
 import nftAbi from '@/constants/HederaHybridNFT.json';
 import entryPointAbi from '@/constants/EntryPoint.json';
+import factoryAbi from '@/constants/SmartContractWalletFactory.json';
 import walletAbi from '@/constants/SmartContractWallet.json';
+import { calculateAddressSalt } from '@/utils/cryptography';
 
 export const adminSign = async owner => {
     const provider = new ethers.JsonRpcProvider(networks.NFTChain.rpcUrl, networks.NFTChain.id);
@@ -26,14 +28,17 @@ export const constructUserOp = async (
     );
 
     const entryPoint = new ethers.Contract(contractAddresses.EntryPoint, entryPointAbi, transactionChainProvider);
-    const sender = contractAddresses.SmartContractWallet;
+    const factoryContract = new ethers.Contract(contractAddresses.SmartContractWalletFactory, factoryAbi, transactionChainProvider);
+    const salt = calculateAddressSalt(userAddress);
+    const sender = await factoryContract.getWalletAddress(userAddress, salt);
     const targetContract = new ethers.Contract(contractAddress, contractAbi);
-    const smartContractWallet = new ethers.Contract(sender, walletAbi);
+    const smartContractWallet = new ethers.Contract(sender, walletAbi, transactionChainProvider);
     const callData = smartContractWallet.interface.encodeFunctionData(
         'execute', [contractAddress, 0, targetContract.interface.encodeFunctionData(functionName, functionArgs)]
     );
 
     const { accountGasLimits, preVerificationGas, gasFees } = constructGasValues();
+    const initCode = await constructInitCode(transactionChainProvider, sender, factoryContract, userAddress, salt);
 
     const nftChainProvider = new ethers.JsonRpcProvider(networks.NFTChain.rpcUrl, Number(networks.NFTChain.id));
     const nftContract = new ethers.Contract(contractAddresses.HederaHybridNFT, nftAbi, nftChainProvider);
@@ -45,7 +50,7 @@ export const constructUserOp = async (
     const userOp = {
         sender,
         nonce: (await entryPoint.getNonce(sender, 0)).toString(),
-        initCode: '0x',
+        initCode,
         callData,
         accountGasLimits,
         preVerificationGas,
@@ -59,8 +64,8 @@ export const constructUserOp = async (
 };
 
 const constructGasValues = () => {
-    const verificationGasLimit = 200000;
-    const callGasLimit = 200000;
+    const verificationGasLimit = 800000;
+    const callGasLimit = 800000;
     const verificationGasLimitBytes = ethers.zeroPadValue(ethers.hexlify(ethers.toBeArray(verificationGasLimit)), 16);
     const callGasLimitLimitBytes = ethers.zeroPadValue(ethers.hexlify(ethers.toBeArray(callGasLimit)), 16);
     const accountGasLimits = ethers.concat([verificationGasLimitBytes, callGasLimitLimitBytes]);
@@ -72,6 +77,17 @@ const constructGasValues = () => {
     const gasFees = ethers.concat([maxPriorityFeePerGasBytes, maxFeePerGasBytes]);
 
     return { accountGasLimits, preVerificationGas: 50000, gasFees };
+};
+
+const constructInitCode = async (provider, sender, factoryContract, userAddress, salt) => {
+    const code = await provider.getCode(sender);
+
+    const initCode = code === '0x' ? ethers.solidityPacked(['address', 'bytes'], [
+        contractAddresses.SmartContractWalletFactory,
+        factoryContract.interface.encodeFunctionData('createWallet', [userAddress, salt])
+    ]) : '0x'; // initCode is needed if and only if the account is not yet on-chain and needs to be created
+
+    return initCode;
 };
 
 export const transmitUserOp = async userOp => {

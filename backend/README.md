@@ -14,7 +14,7 @@ Below are the main scripts and tasks used to deploy, verify, test, and interact 
 npx hardhat run scripts/deployHedera.ts
 ```
 
-### 2. Deploy Paymaster, Smart Contract Wallet, and Counter Contracts to Ethereum Sepolia
+### 2. Deploy Paymaster, Wallet Factory, and Counter Contracts to Ethereum Sepolia
 
 ```bash
 npx hardhat ignition deploy ignition/modules/EthereumContracts.ts --network sepolia
@@ -33,7 +33,7 @@ npx hardhat verifyHedera <contractAddress> contracts/HederaHybridNFT_flat.sol He
 ```bash
 npx hardhat verify --network sepolia <counterAddress>
 npx hardhat verify --network sepolia <paymasterAddress> <deployerAddress> <hederaAdminAddress> 0x0000000000000000000000000000000000000000
-npx hardhat verify --network sepolia <smartContractWalletAddress> <userAddress> 0x0000000000000000000000000000000000000000
+npx hardhat verify --network sepolia <walletFactoryAddress> 0x4337084d9e255ff0702461cf8895ce9e3b5ff108
 ```
 
 ## 💸 Contract Interaction

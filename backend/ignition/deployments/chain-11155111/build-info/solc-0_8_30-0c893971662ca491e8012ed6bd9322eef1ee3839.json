@@ -1,10 +1,10 @@
 {
   "_format": "hh3-sol-build-info-1",
-  "id": "solc-0_8_30-9db2459d9b0e4e1805a78d7e40c6b6e45cf35e8b",
+  "id": "solc-0_8_30-0c893971662ca491e8012ed6bd9322eef1ee3839",
   "solcVersion": "0.8.30",
   "solcLongVersion": "0.8.30+commit.73712a01",
   "userSourceNameMap": {
-    "contracts/SmartContractWallet.sol": "project/contracts/SmartContractWallet.sol"
+    "contracts/SmartContractWalletFactory.sol": "project/contracts/SmartContractWalletFactory.sol"
   },
   "input": {
     "language": "Solidity",
@@ -76,6 +76,9 @@
       },
       "project/contracts/SmartContractWallet.sol": {
         "content": "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.30;\r\n\r\nimport {Account} from \"@openzeppelin/contracts/account/Account.sol\";\r\nimport \"@openzeppelin/contracts/utils/cryptography/ECDSA.sol\";\r\nimport \"@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol\";\r\n\r\ncontract SmartContractWallet is Account {\r\n\r\n    using ECDSA for bytes32;\r\n    using MessageHashUtils for bytes32;\r\n    \r\n    address private immutable _owner;\r\n    address private immutable _entryPoint;\r\n\r\n    constructor(address owner, address entryPoint) {\r\n        _owner = owner;\r\n        _entryPoint = entryPoint;\r\n    }\r\n\r\n    function execute(address dest, uint256 value, bytes calldata func) external onlyEntryPointOrSelf {\r\n        _call(dest, value, func);\r\n    }\r\n\r\n    function _call(address target, uint256 value, bytes memory data) internal {\r\n        (bool success, bytes memory result) = target.call{value: value}(data);\r\n        if (!success) {\r\n            assembly {\r\n                revert(add(result, 32), mload(result))\r\n            }\r\n        }\r\n    }\r\n\r\n    // Ensures the caller is the authorized EntryPoint (defaults to canonical if none set); allows using a mock EntryPoint during testing and reverts if unauthorized\r\n    function _checkEntryPoint() internal view override {\r\n        address sender = msg.sender;\r\n        if (\r\n            (_entryPoint == address(0) && sender != address(entryPoint())) ||\r\n            (_entryPoint != address(0) && sender != _entryPoint)\r\n        ) {\r\n            revert AccountUnauthorized(sender);\r\n        }\r\n    }\r\n\r\n    function _rawSignatureValidation(\r\n        bytes32 hash,\r\n        bytes calldata signature\r\n    ) internal view override returns (bool) {\r\n        address recovered = hash.toEthSignedMessageHash().recover(signature);\r\n        return recovered == _owner;\r\n    }\r\n}"
+      },
+      "project/contracts/SmartContractWalletFactory.sol": {
+        "content": "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.30;\r\n\r\nimport \"./SmartContractWallet.sol\";\r\n\r\ncontract SmartContractWalletFactory {\r\n\r\n    event WalletCreated(address indexed wallet, address indexed owner);\r\n\r\n    address private immutable _entryPoint;\r\n\r\n    constructor(address entryPoint) {\r\n        _entryPoint = entryPoint;\r\n    }\r\n\r\n    function createWallet(address owner, bytes32 salt) external returns (address wallet) {\r\n        bytes memory bytecode = getWalletBytecode(owner);\r\n        // Deploy using CREATE2\r\n        assembly {\r\n            wallet := create2(0, add(bytecode, 32), mload(bytecode), salt)\r\n            if iszero(wallet) { revert(0, 0) }\r\n        }\r\n        emit WalletCreated(wallet, owner);\r\n    }\r\n\r\n    function getWalletAddress(address owner, bytes32 salt) external view returns (address) {\r\n        bytes32 hash = keccak256(\r\n            abi.encodePacked(\r\n                bytes1(0xff),\r\n                address(this),\r\n                salt,\r\n                keccak256(getWalletBytecode(owner))\r\n            )\r\n        );\r\n        return address(uint160(uint256(hash)));\r\n    }\r\n\r\n    function getWalletBytecode(address owner) internal view returns (bytes memory) {\r\n        return abi.encodePacked(\r\n            type(SmartContractWallet).creationCode,\r\n            abi.encode(owner, _entryPoint)\r\n        );\r\n    }\r\n}"
       }
     }
   }

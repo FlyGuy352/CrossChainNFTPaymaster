@@ -7,12 +7,14 @@ import routerAbi from '@/constants/UniswapRouter.json';
 import networks from '@/constants/networks.json';
 import contractAddresses from '@/constants/contractAddresses.json';
 import erc20Abi from '@/constants/ERC20.json';
+import factoryAbi from '@/constants/SmartContractWalletFactory.json';
 import { signMessageHash, signHashValue } from '@/utils/cryptography';
 import { toast } from 'sonner';
 import { constructUserOp, transmitUserOp } from '@/actions/actions';
 import { useNotification } from '@blockscout/app-sdk';
 import Button from '@/components/Button';
 import GreenArrow from '@/components/GreenArrow';
+import { calculateAddressSalt } from '@/utils/cryptography';
 
 export default function Swap({ address, nfts, nonce, dispatch, refetchNonce }) {
 
@@ -34,13 +36,24 @@ export default function Swap({ address, nfts, nonce, dispatch, refetchNonce }) {
     const [amount, setAmount] = useState('');
     const [txHash, setTxHash] = useState('');
 
+    const salt = calculateAddressSalt(address);
+    const { data: smartContractWalletAddress } = useReadContract({
+        address: contractAddresses.SmartContractWalletFactory,
+        abi: factoryAbi,
+        functionName: 'getWalletAddress',
+        args: [address, salt],
+        chainId: networks.TransactionChain.id,
+        enabled: address
+    });
+
     const { data: usdcBalance, refetch: refetchUsdcBalance } = useReadContract({
         address: contractAddresses.USDC,
         abi: erc20Abi,
         functionName: 'balanceOf',
-        args: [contractAddresses.SmartContractWallet],
-        chainId: networks.TransactionChain.id
-    })
+        args: [smartContractWalletAddress],
+        chainId: networks.TransactionChain.id,
+        enabled: smartContractWalletAddress
+    });
 
     const formattedUsdcBalance =
         usdcBalance !== undefined ? Number(formatUnits(usdcBalance, 6)).toFixed(2) : '0.00';
@@ -52,8 +65,7 @@ export default function Swap({ address, nfts, nonce, dispatch, refetchNonce }) {
         args: [address],
         chainId: networks.TransactionChain.id,
         enabled: address
-    })
-    console.log(wethBalance , 'wethBalance');
+    });
 
     const formattedWethBalance =
         wethBalance !== undefined ? Number(formatUnits(wethBalance, 18)).toFixed(10) : '0.00';

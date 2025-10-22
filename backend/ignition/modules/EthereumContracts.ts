@@ -15,11 +15,9 @@ export default buildModule("EthereumContracts", (m) => {
     deployerAddress, hederaAdmin, ethers.ZeroAddress 
   ]);
 
-  const account = m.contract("SmartContractWallet", [userAddress, ethers.ZeroAddress]);
+  const factory = m.contract("SmartContractWalletFactory", ["0x4337084d9e255ff0702461cf8895ce9e3b5ff108"]);
 
-  m.call(paymaster, "deposit", [], {
-    value: ethers.parseEther("0.01"),
-  });
+  m.call(paymaster, "deposit", [], { value: ethers.parseEther("0.01") });
 
-  return { counter, paymaster, account };
+  return { counter, paymaster, factory };
 });

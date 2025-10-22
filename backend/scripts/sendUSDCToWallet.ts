@@ -13,7 +13,7 @@ const usdc = new ethers.Contract("0x1c7d4b196cb0c7b01d743fbc6116a902379c7238", [
 }], deployer);
 
 // Verify that this is the latest smart contract wallet address
-const smartContractWalletAddress = "0x03F45949d4a36dFB585e29F558941D8aD2fC2b53";
+const smartContractWalletAddress = "0x54dCE0a0195b923d7F73fC24AD73697b4b281403";
 
 const tx = await usdc.transfer(smartContractWalletAddress, ethers.parseUnits("3", 6));
 console.log(`Transferring 3 USDC... tx hash: ${tx.hash}`);
