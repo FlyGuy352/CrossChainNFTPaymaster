@@ -118,7 +118,7 @@ contract CrossChainNFTPaymaster is PaymasterCore, Ownable {
         _verifyUserSignature(currentNonce, userAddress, userSignature);
         nonces[userAddress][tokenId]++;
         
-        return ("", 0);
+        return ("", ERC4337Utils.SIG_VALIDATION_SUCCESS);
     }
 
     function _verifyAdminSignature(address userAddress, uint256 tokenId, bytes memory adminSignature) internal view {

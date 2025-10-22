@@ -7,9 +7,7 @@ import routerAbi from '@/constants/UniswapRouter.json';
 import networks from '@/constants/networks.json';
 import contractAddresses from '@/constants/contractAddresses.json';
 import erc20Abi from '@/constants/ERC20.json';
-import { signMessage } from '@wagmi/core';
-import { wagmiConfig } from '@/app/wagmiConfig';
-import { encodePacked, keccak256 } from 'viem';
+import { signMessageHash, signHashValue } from '@/utils/cryptography';
 import { toast } from 'sonner';
 import { constructUserOp, transmitUserOp } from '@/actions/actions';
 import { useNotification } from '@blockscout/app-sdk';
@@ -79,7 +77,7 @@ export default function Swap({ address, nfts, nonce, dispatch, refetchNonce }) {
     const approve = async parsedAmount => {
         console.log(`Signing nonce for approve: ${nonce}`);
         setStatus('signingApproveNonce');
-        const nonceSignature = await signMessage(wagmiConfig, { message: { raw: keccak256(encodePacked(['address', 'uint256'], [contractAddresses.PayMaster, nonce])) } });
+        const nonceSignature = await signMessageHash(['address', 'uint256'], [contractAddresses.PayMaster, nonce]);
 
         setStatus('constructingApprove');
         const { userOp, userOpHash } = await constructUserOp(
@@ -87,7 +85,7 @@ export default function Swap({ address, nfts, nonce, dispatch, refetchNonce }) {
         );
 
         setStatus('signingApproveUserOp');
-        const userOpHashSignature = await signMessage(wagmiConfig, { message: { raw: userOpHash } });
+        const userOpHashSignature = await signHashValue(userOpHash);
         userOp.signature = userOpHashSignature;
 
         setStatus('transmittingApprove');
@@ -98,7 +96,7 @@ export default function Swap({ address, nfts, nonce, dispatch, refetchNonce }) {
         const { data: updatedNonce } = await refetchNonce();
         console.log(`Signing nonce for swap: ${updatedNonce}`);
         setStatus('signingSwapNonce');
-        const nonceSignature = await signMessage(wagmiConfig, { message: { raw: keccak256(encodePacked(['address', 'uint256'], [contractAddresses.PayMaster, updatedNonce])) } });
+        const nonceSignature = await signMessageHash(['address', 'uint256'], [contractAddresses.PayMaster, updatedNonce]);
 
         setStatus('constructingSwap');
         const deadline = Math.floor(Date.now() / 1000) + 60 * 10; // 10 minutes
@@ -117,7 +115,7 @@ export default function Swap({ address, nfts, nonce, dispatch, refetchNonce }) {
         );
 
         setStatus('signingSwapUserOp');
-        const userOpHashSignature = await signMessage(wagmiConfig, { message: { raw: userOpHash } });
+        const userOpHashSignature = await signHashValue(userOpHash);
         userOp.signature = userOpHashSignature;
 
         setStatus('transmittingSwap');

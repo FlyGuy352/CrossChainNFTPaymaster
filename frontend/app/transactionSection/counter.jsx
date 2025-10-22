@@ -2,9 +2,7 @@
 
 import { useState } from 'react';
 import { useReadContract, useWatchContractEvent } from 'wagmi';
-import { signMessage } from '@wagmi/core';
-import { wagmiConfig } from '@/app/wagmiConfig';
-import { encodePacked, keccak256 } from 'viem';
+import { signMessageHash, signHashValue } from '@/utils/cryptography';
 import { toast } from 'sonner';
 import networks from '@/constants/networks.json';
 import contractAddresses from '@/constants/contractAddresses.json';
@@ -54,7 +52,7 @@ export default function Counter({ address, nfts, nonce, dispatch, refetchNonce }
         try {
             console.log(`Signing nonce for increment: ${nonce}`);
             setStatus('signingNonce');
-            const nonceSignature = await signMessage(wagmiConfig, { message: { raw: keccak256(encodePacked(['address', 'uint256'], [contractAddresses.PayMaster, nonce])) } });
+            const nonceSignature = await signMessageHash(['address', 'uint256'], [contractAddresses.PayMaster, nonce]);
 
             setStatus('constructing');
             const { userOp, userOpHash } = await constructUserOp(
@@ -62,7 +60,7 @@ export default function Counter({ address, nfts, nonce, dispatch, refetchNonce }
             );
 
             setStatus('signingUserOp');
-            const userOpHashSignature = await signMessage(wagmiConfig, { message: { raw: userOpHash } });
+            const userOpHashSignature = await signHashValue(userOpHash);
             userOp.signature = userOpHashSignature;
 
             setStatus('transmitting');
