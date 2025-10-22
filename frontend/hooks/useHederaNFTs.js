@@ -19,7 +19,8 @@ export default function useHederaNFTs(ownerAddress) {
                 `https://testnet.mirrornode.hedera.com/api/v1/accounts/${ownerAddress}/nfts?limit=200&order=desc`
             );
             if (!response.ok) {
-                return console.error(`HTTP error when fetching NFTs! Status: ${response.status}`);
+                console.error(`HTTP error when fetching NFTs! Status: ${response.status}`);
+                return [];
             }
             const data = await response.json();
             return data.nfts.filter(({ token_id }) => token_id === contractAddresses.HederaTokenId)

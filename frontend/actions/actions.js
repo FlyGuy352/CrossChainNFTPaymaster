@@ -33,17 +33,7 @@ export const constructUserOp = async (
         'execute', [contractAddress, 0, targetContract.interface.encodeFunctionData(functionName, functionArgs)]
     );
 
-    const verificationGasLimit = 200000;
-    const callGasLimit = 200000;
-    const verificationGasLimitBytes = ethers.zeroPadValue(ethers.hexlify(ethers.toBeArray(verificationGasLimit)), 16);
-    const callGasLimitLimitBytes = ethers.zeroPadValue(ethers.hexlify(ethers.toBeArray(callGasLimit)), 16);
-    const accountGasLimits = ethers.concat([verificationGasLimitBytes, callGasLimitLimitBytes]);
-
-    const maxPriorityFeePerGas = ethers.parseUnits('5', 'gwei');
-    const maxFeePerGas = ethers.parseUnits('10', 'gwei');
-    const maxPriorityFeePerGasBytes = ethers.zeroPadValue(ethers.hexlify(ethers.toBeArray(maxPriorityFeePerGas)), 16);
-    const maxFeePerGasBytes = ethers.zeroPadValue(ethers.hexlify(ethers.toBeArray(maxFeePerGas)), 16);
-    const gasFees = ethers.concat([maxPriorityFeePerGasBytes, maxFeePerGasBytes]);
+    const { accountGasLimits, preVerificationGas, gasFees } = constructGasValues();
 
     const nftChainProvider = new ethers.JsonRpcProvider(networks.NFTChain.rpcUrl, Number(networks.NFTChain.id));
     const nftContract = new ethers.Contract(contractAddresses.HederaHybridNFT, nftAbi, nftChainProvider);
@@ -58,7 +48,7 @@ export const constructUserOp = async (
         initCode: '0x',
         callData,
         accountGasLimits,
-        preVerificationGas: 50000,
+        preVerificationGas,
         gasFees,
         paymasterAndData,
         signature: '0x'
@@ -66,6 +56,22 @@ export const constructUserOp = async (
     const userOpHash = await entryPoint.getUserOpHash(userOp);
 
     return { userOp, userOpHash };
+};
+
+const constructGasValues = () => {
+    const verificationGasLimit = 200000;
+    const callGasLimit = 200000;
+    const verificationGasLimitBytes = ethers.zeroPadValue(ethers.hexlify(ethers.toBeArray(verificationGasLimit)), 16);
+    const callGasLimitLimitBytes = ethers.zeroPadValue(ethers.hexlify(ethers.toBeArray(callGasLimit)), 16);
+    const accountGasLimits = ethers.concat([verificationGasLimitBytes, callGasLimitLimitBytes]);
+
+    const maxPriorityFeePerGas = ethers.parseUnits('5', 'gwei');
+    const maxFeePerGas = ethers.parseUnits('10', 'gwei');
+    const maxPriorityFeePerGasBytes = ethers.zeroPadValue(ethers.hexlify(ethers.toBeArray(maxPriorityFeePerGas)), 16);
+    const maxFeePerGasBytes = ethers.zeroPadValue(ethers.hexlify(ethers.toBeArray(maxFeePerGas)), 16);
+    const gasFees = ethers.concat([maxPriorityFeePerGasBytes, maxFeePerGasBytes]);
+
+    return { accountGasLimits, preVerificationGas: 50000, gasFees };
 };
 
 export const transmitUserOp = async userOp => {

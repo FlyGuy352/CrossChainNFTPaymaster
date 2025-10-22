@@ -38,20 +38,32 @@ export default function Swap({ address, nfts, nonce, dispatch, refetchNonce }) {
         address: contractAddresses.USDC,
         abi: erc20Abi,
         functionName: 'balanceOf',
+        args: [contractAddresses.SmartContractWallet],
+        chainId: networks.TransactionChain.id
+    })
+
+    const formattedUsdcBalance =
+        usdcBalance !== undefined ? Number(formatUnits(usdcBalance, 6)).toFixed(2) : '0.00';
+
+    const { data: wethBalance, refetch: refetchWethBalance } = useReadContract({
+        address: contractAddresses.WETH,
+        abi: erc20Abi,
+        functionName: 'balanceOf',
         args: [address],
         chainId: networks.TransactionChain.id,
         enabled: address
     })
+    console.log(wethBalance , 'wethBalance');
 
-    const formattedBalance =
-        usdcBalance !== undefined ? Number(formatUnits(usdcBalance, 6)).toFixed(2) : '0.00';
+    const formattedWethBalance =
+        wethBalance !== undefined ? Number(formatUnits(wethBalance, 18)).toFixed(10) : '0.00';
 
     const { openTxToast } = useNotification();
 
     const swap = async () => {
         const parsedAmount = parseUnits(amount, 6); // USDC has 6 decimals
         if (parsedAmount > usdcBalance) {
-            return toast.error(`Maximum swap amount is ${formattedBalance}!`);
+            return toast.error(`Maximum swap amount is ${formattedUsdcBalance}!`);
         }
         try {
             const { error: approveError } = await approve(parsedAmount);
@@ -70,6 +82,7 @@ export default function Swap({ address, nfts, nonce, dispatch, refetchNonce }) {
         } finally {
             await refetchNonce(); // Always refetch in case approve succeeds but swap fails
             await refetchUsdcBalance();
+            await refetchWethBalance();
             setStatus('idle');
         }
     };
@@ -133,10 +146,16 @@ export default function Swap({ address, nfts, nonce, dispatch, refetchNonce }) {
                         Swap USDC → WETH (Sepolia)
                     </h2>
 
-                    <div className='flex flex-col space-y-4'>
-                        <div className='flex justify-between text-sm text-gray-400'>
-                            <span>USDC Balance:</span>
-                            <code className='font-mono'>{formattedBalance} USDC</code>
+                    <div className='flex flex-col space-y-7'>
+                        <div>
+                            <div className='flex justify-between text-sm text-gray-400'>
+                                <span>USDC Balance:</span>
+                                <code className='font-mono'>{formattedUsdcBalance} USDC</code>
+                            </div>
+                            <div className='flex justify-between text-sm text-gray-400'>
+                                <span>WETH Balance:</span>
+                                <code className='font-mono'>{formattedWethBalance} WETH</code>
+                            </div>
                         </div>
 
                         <input

@@ -46,9 +46,17 @@ npx hardhat verify --network sepolia <smartContractWalletAddress> <userAddress> 
 npx hardhat run scripts/paymasterDeposit.ts
 ```
 
+### 6. Send USDC to Smart Contract Wallet
+
+> The smart contract wallet must hold a USDC balance because, on the frontend, swapping USDC to WETH entails withdrawing the USDC amount from it (and not from the user's EOA).
+
+```bash
+npx hardhat run scripts/sendUSDCToWallet.ts
+```
+
 ## 🧪 Running Tests
 
-### 6. Run Tests on Hardhat Network
+### 7. Run Tests on Hardhat Network
 
 > **Note:** Use the production build profile for optimizer, otherwise you may encounter  
 > `Error: Transaction reverted: trying to deploy a contract whose code is too large.`
