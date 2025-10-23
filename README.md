@@ -23,9 +23,9 @@
 </details>
 
 <details>
-<summary>2️⃣ Incrementing Counter via Paymaster</summary>
+<summary><strong>2️⃣ Incrementing Counter via Paymaster</strong></summary>
 <br>
-&nbsp;&nbsp;&nbsp;&nbsp;2: User clicks Increment button on frontend.<br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<strong>2:</strong> User clicks Increment button on frontend.<br><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.1: Frontend calls <code>signMessageHash()</code> function with <code>paymasterAddress</code> and <code>nonce</code> which prevents paymaster replay attacks. This prompts user to sign the message via his connected wallet.<br><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.2: User's connected wallet returns <code>nonceSignature</code> to frontend.<br><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.3: Frontend calls <code>constructUserOp()</code> function on backend with <code>tokenId</code>, <code>userAddress</code>, and <code>nonceSignature</code>.<br><br>
