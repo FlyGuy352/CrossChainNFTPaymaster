@@ -67,8 +67,12 @@ npx hardhat test --build-profile production
 
 ## ⚙️ Important Notes
 
-- **HederaHybridNFT.sol** tracks the source code for the NFT contract for ease of development and debugging. However, it was flattened into **HederaHybridNFT_flat.sol**, and that version was deployed to the Hedera Testnet because the contract verification service failed to resolve OpenZeppelin imports.
+- `HederaHybridNFT.sol` tracks the source code for the NFT contract for ease of development and debugging. However, it was flattened into `HederaHybridNFT_flat.sol`, and that version was deployed to the Hedera Testnet because the contract verification service failed to resolve OpenZeppelin imports.
 
 - If the Paymaster contract address changes, paymasterDeposit.ts should be updated to reflect the latest address for contract interaction.
 
 - A **custom `verifyHedera.ts` Hardhat task** was implemented since the native `hardhat verify` command does **not** support Hedera Testnet.
+
+- The deployment scripts do **not** deploy `Entrypoint_flat.sol` to any real network. It is included only for local end-to-end testing within the test suite. On Ethereum Sepolia, both the Paymaster and wallet factory reference the **canonical Entrypoint contract address**.
+
+- The deployment scripts do **not** deploy `SmartContractWallet.sol`. Smart contract wallets are instead deployed **on-demand** by the wallet factory contract on the frontend when a user submits their first transaction and no wallet exists for them yet.
