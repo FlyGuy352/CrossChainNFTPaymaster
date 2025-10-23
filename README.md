@@ -8,8 +8,10 @@
 
 ![Alt text](./assets/Sequence%20Diagram.svg)
 
+<small>
 <details>
 <summary>1️⃣ Minting an NFT</summary>
+
 
 1. User clicks Mint button on frontend.<br><br>
     1.1 Frontend calls `adminSign()` backend function with `userAddress`.<br><br>
@@ -25,6 +27,7 @@
 
 <details>
 <summary>2️⃣ Incrementing Counter via Paymaster</summary>
+
 
 2. User clicks Increment button on frontend.<br><br>
     2.1 Frontend calls `signMessageHash()` function with `paymasterAddress` and `nonce` which prevents paymaster replay attacks. This prompts user to sign the message via his connected wallet.<br><br>
@@ -57,8 +60,9 @@
     2.28 Wallet Contract calls `increment()` function on Counter Contract.<br><br>
     2.29 Entrypoint Contract internally calls `_compensate` function with `adminAccountAddress` and `gasFees` to transfer fees to the Admin Account.<br><br>
     2.30 Ethereum Sepolia blockchain returns transaction confirmation to backend.<br><br>
-    2.31 Backend returns transaction confirmation to backend.<br><br>
+    2.31 Backend returns transaction confirmation to backend.
 
 </details>
+</small>
 
 ## 🚧 Future Roadmap & Enhancements
