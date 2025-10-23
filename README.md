@@ -11,7 +11,7 @@
 <details>
 
 <summary>1️⃣ Minting an NFT</summary>
-<div style="margin-top:8px">
+
 1. User clicks Mint button on frontend.<br><br>
     1.1 Frontend calls `adminSign()` backend function with `userAddress`.<br><br>
     1.2 Backend returns `adminSignature` of concatentation of `tokenId` and `userAddress` to frontend.<br><br>
@@ -21,12 +21,12 @@
     1.6 NFT Contract internally calls `_verifySignature()` function with `userAddress`, `tokenId`, and `adminSignature` before minting NFT.<br><br>
     1.7 Hedera network returns transaction confirmation to frontend.<br><br>
     1.8 Frontend calls `refetchNFTs()` function with `userAddress` to retrieve the newly minted NFT information.
-</div>
+
 </details>
 
 <details>
 <summary>2️⃣ Incrementing Counter via Paymaster</summary>
-<div style="margin-top:8px">
+<div style="margin-top:8px"></div>
 2. User clicks Increment button on frontend.<br><br>
     2.1 Frontend calls `signMessageHash()` function with `paymasterAddress` and `nonce` which prevents paymaster replay attacks. This prompts user to sign the message via his connected wallet.<br><br>
     2.2 User's connected wallet returns `nonceSignature` to frontend.<br><br>
@@ -59,7 +59,7 @@
     2.29 Entrypoint Contract internally calls `_compensate` function with `adminAccountAddress` and `gasFees` to transfer fees to the Admin Account.<br><br>
     2.30 Ethereum Sepolia blockchain returns transaction confirmation to backend.<br><br>
     2.31 Backend returns transaction confirmation to backend.
-</div>
+
 </details>
 
 ## 🚧 Future Roadmap & Enhancements
