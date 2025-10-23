@@ -11,8 +11,7 @@
 <small>
 <details>
 <summary>1️⃣ Minting an NFT</summary>
-
-
+<br><br>
 1. User clicks Mint button on frontend.<br><br>
     1.1 Frontend calls `adminSign()` backend function with `userAddress`.<br><br>
     1.2 Backend returns `adminSignature` of concatentation of `tokenId` and `userAddress` to frontend.<br><br>
@@ -21,14 +20,13 @@
     1.5 Frontend calls `mint()` function on NFT Contract with `userAddress`, `tokenURI`, and `adminSignature`.<br><br>
     1.6 NFT Contract internally calls `_verifySignature()` function with `userAddress`, `tokenId`, and `adminSignature` before minting NFT.<br><br>
     1.7 Hedera network returns transaction confirmation to frontend.<br><br>
-    1.8 Frontend calls `refetchNFTs()` function with `userAddress` to retrieve the newly minted NFT information.<br><br>
+    1.8 Frontend calls `refetchNFTs()` function with `userAddress` to retrieve the newly minted NFT information.
 
 </details>
 
 <details>
 <summary>2️⃣ Incrementing Counter via Paymaster</summary>
-
-
+<br><br>
 2. User clicks Increment button on frontend.<br><br>
     2.1 Frontend calls `signMessageHash()` function with `paymasterAddress` and `nonce` which prevents paymaster replay attacks. This prompts user to sign the message via his connected wallet.<br><br>
     2.2 User's connected wallet returns `nonceSignature` to frontend.<br><br>
