@@ -7,7 +7,7 @@ const [deployer] = await ethers.getSigners();
 console.log(`Using account: ${deployer.address}`);
 
 // Verify that this is the latest paymaster address
-const paymaster = new ethers.Contract("0x30076d379B084BFD9F9d6ef09ca1c381e9b63957", metadata.abi, deployer);
+const paymaster = new ethers.Contract("0x4Ec758bfAE91CD9Bf3b1598520DbA6a29DaF6360", metadata.abi, deployer);
 
 const tx = await paymaster.deposit({ value: ethers.parseEther("0.05") });
 console.log(`Depositing 0.05 ETH... tx hash: ${tx.hash}`);

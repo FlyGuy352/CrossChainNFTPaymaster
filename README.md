@@ -9,9 +9,9 @@
 ![Alt text](./assets/Sequence%20Diagram.svg)
 
 <details>
-<summary>1️⃣ Minting an NFT</summary>
+<summary>**1️⃣ Minting an NFT**</summary>
 <br>
-&nbsp;&nbsp;&nbsp;&nbsp;1: User clicks Mint button on frontend.<br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;**1:** User clicks Mint button on frontend.<br><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.1: Frontend calls <code>adminSign()</code> backend function with <code>userAddress</code>.<br><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.2: Backend returns <code>adminSignature</code> of concatentation of <code>tokenId</code> and <code>userAddress</code> to frontend.<br><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.3: Frontend prompts user wallet.<br><br>
