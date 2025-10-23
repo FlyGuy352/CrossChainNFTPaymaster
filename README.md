@@ -24,7 +24,7 @@
 
 <details>
 <summary>2️⃣ Incrementing Counter via Paymaster</summary>
-<br><br>
+<br>
 2. User clicks Increment button on frontend.<br><br>
 &nbsp;&nbsp;&nbsp;&nbsp;2.1 Frontend calls `signMessageHash()` function with `paymasterAddress` and `nonce` which prevents paymaster replay attacks. This prompts user to sign the message via his connected wallet.<br><br>
 &nbsp;&nbsp;&nbsp;&nbsp;2.2 User's connected wallet returns `nonceSignature` to frontend.<br><br>
