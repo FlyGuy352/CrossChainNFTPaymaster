@@ -10,7 +10,7 @@
 
 <details>
 <summary>1️⃣ Minting an NFT</summary>
-<br><pre>
+<br>
 &nbsp;&nbsp;&nbsp;&nbsp;1: User clicks Mint button on frontend.<br><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.1: Frontend calls `adminSign()` backend function with `userAddress`.<br><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.2: Backend returns `adminSignature` of concatentation of `tokenId` and `userAddress` to frontend.<br><br>
@@ -20,16 +20,15 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.6: NFT Contract internally calls `_verifySignature()` function with `userAddress`, `tokenId`, and `adminSignature` before minting NFT.<br><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.7: Hedera network returns transaction confirmation to frontend.<br><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.8: Frontend calls `refetchNFTs()` function with `userAddress` to retrieve the newly minted NFT information.
-</pre>
 </details>
 
 <details>
 <summary>2️⃣ Incrementing Counter via Paymaster</summary>
-<br><pre>
+<br>
 &nbsp;&nbsp;&nbsp;&nbsp;2: User clicks Increment button on frontend.<br><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.1: Frontend calls `signMessageHash()` function with `paymasterAddress` and `nonce` which prevents paymaster replay attacks. This prompts user to sign the message via his connected wallet.<br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.1: Frontend calls <pre>signMessageHash()</pre> function with `paymasterAddress` and `nonce` which prevents paymaster replay attacks. This prompts user to sign the message via his connected wallet.<br><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.2: User's connected wallet returns `nonceSignature` to frontend.<br><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.3: Frontend calls `constructUserOp()` function on backend with `tokenId`, `userAddress`, and `nonceSignature`.<br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.3: Frontend calls <code>constructUserOp</code> function on backend with `tokenId`, `userAddress`, and `nonceSignature`.<br><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.4: Backend internally calls `calculateAddress()` function with `userAddress` to generate `salt`.<br><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.5: Backend calls `getWalletAddress()` function on Factory Contract with `userAddress` and `salt`.<br><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.6: Factory Contract returns `walletAddress` to backend.<br><br>
@@ -58,7 +57,6 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.29: Entrypoint Contract internally calls `_compensate` function with `adminAccountAddress` and `gasFees` to transfer fees to the Admin Account.<br><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.30: Ethereum Sepolia blockchain returns transaction confirmation to backend.<br><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.31: Backend returns transaction confirmation to backend.
-</pre>
 </details>
 
 ## 🚧 Future Roadmap & Enhancements
