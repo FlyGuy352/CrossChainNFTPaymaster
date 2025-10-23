@@ -8,10 +8,9 @@
 
 ![Alt text](./assets/Sequence%20Diagram.svg)
 
-<small>
 <details>
 <summary>1️⃣ Minting an NFT</summary>
-<br><br>
+<br>
 1. User clicks Mint button on frontend.<br><br>
     1.1 Frontend calls `adminSign()` backend function with `userAddress`.<br><br>
     1.2 Backend returns `adminSignature` of concatentation of `tokenId` and `userAddress` to frontend.<br><br>
@@ -26,7 +25,7 @@
 
 <details>
 <summary>2️⃣ Incrementing Counter via Paymaster</summary>
-<br><br>
+
 2. User clicks Increment button on frontend.<br><br>
     2.1 Frontend calls `signMessageHash()` function with `paymasterAddress` and `nonce` which prevents paymaster replay attacks. This prompts user to sign the message via his connected wallet.<br><br>
     2.2 User's connected wallet returns `nonceSignature` to frontend.<br><br>
@@ -61,6 +60,5 @@
     2.31 Backend returns transaction confirmation to backend.
 
 </details>
-</small>
 
 ## 🚧 Future Roadmap & Enhancements
