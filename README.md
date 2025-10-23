@@ -9,8 +9,9 @@
 ![Alt text](./assets/Sequence%20Diagram.svg)
 
 <details>
+
 <summary>1️⃣ Minting an NFT</summary>
-<br>
+
 1. User clicks Mint button on frontend.<br><br>
     1.1 Frontend calls `adminSign()` backend function with `userAddress`.<br><br>
     1.2 Backend returns `adminSignature` of concatentation of `tokenId` and `userAddress` to frontend.<br><br>
