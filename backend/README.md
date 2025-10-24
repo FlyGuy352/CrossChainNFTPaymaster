@@ -38,29 +38,29 @@ For simplicity, the same account is currently used to deploy the Hedera NFT cont
 
 Below are the main scripts and tasks used to deploy, verify, test, and interact with the contracts.
 
-## 🚀 Deployment Instructions
+### 🚀 Deployment Instructions
 
-### 1. Deploy NFT Contract to Hedera Testnet
+#### 1. Deploy NFT Contract to Hedera Testnet
 
 ```bash
 npx hardhat run scripts/deployHedera.ts
 ```
 
-### 2. Deploy Paymaster, Wallet Factory, and Counter Contracts to Ethereum Sepolia
+#### 2. Deploy Paymaster, Wallet Factory, and Counter Contracts to Ethereum Sepolia
 
 ```bash
 npx hardhat ignition deploy ignition/modules/EthereumContracts.ts --network sepolia
 ```
 
-## 🔍 Contract Verification
+### 🔍 Contract Verification
 
-### 3. Verify NFT Contract on Hedera Testnet
+#### 3. Verify NFT Contract on Hedera Testnet
 
 ```bash
 npx hardhat verifyHedera <contractAddress> contracts/HederaHybridNFT_flat.sol HederaHybridNFT_flat.json
 ```
 
-### 4. Verify Ethereum Sepolia Contracts
+#### 4. Verify Ethereum Sepolia Contracts
 
 ```bash
 npx hardhat verify --network sepolia <counterAddress>
@@ -68,9 +68,9 @@ npx hardhat verify --network sepolia <paymasterAddress> <deployerAddress> <heder
 npx hardhat verify --network sepolia <walletFactoryAddress> 0x4337084d9e255ff0702461cf8895ce9e3b5ff108
 ```
 
-## 💸 Contract Interaction
+### 💸 Contract Interaction
 
-### 5. Execute Paymaster Deposit to Entrypoint
+#### 5. Execute Paymaster Deposit to Entrypoint
 
 > The initial Paymaster deployment script also deposits some Ether into the Entrypoint contract. The next script can be run after the Paymaster has sponsored a few transactions and the deposit runs low.
 
@@ -78,7 +78,7 @@ npx hardhat verify --network sepolia <walletFactoryAddress> 0x4337084d9e255ff070
 npx hardhat run scripts/paymasterDeposit.ts
 ```
 
-### 6. Send USDC to Smart Contract Wallet
+#### 6. Send USDC to Smart Contract Wallet
 
 > The smart contract wallet must hold a USDC balance because, on the frontend, swapping USDC to WETH entails withdrawing the USDC amount from it (and not from the user's EOA).
 
@@ -86,7 +86,7 @@ npx hardhat run scripts/paymasterDeposit.ts
 npx hardhat run scripts/sendUSDCToWallet.ts
 ```
 
-### 7. Set Up Demo User
+#### 7. Set Up Demo User
 
 > This script will perform the necessary actions to set up a user's EOA to be used across Hedera Testnet and Ethereum Sepolia.
 
@@ -94,9 +94,9 @@ npx hardhat run scripts/sendUSDCToWallet.ts
 npx hardhat run scripts/setupDemoUser.ts
 ```
 
-## 🧪 Running Tests
+### 🧪 Running Tests
 
-### 8. Run Tests on Hardhat Network
+#### 8. Run Tests on Hardhat Network
 
 > **Note:** Use the production build profile for optimizer, otherwise you may encounter  
 > `Error: Transaction reverted: trying to deploy a contract whose code is too large.`
