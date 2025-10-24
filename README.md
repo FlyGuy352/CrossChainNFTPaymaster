@@ -59,7 +59,7 @@ The NFT contract on Hedera manages minting and ownership verification for cross-
 - **Verifies Hedera Admin Signature of Token ID and User Address**  
   When a user mints an NFT, the contract validates the admin's signature over the combination of the **Token ID** and **User Address**, ensuring each NFT is securely linked to the correct user.
 
-### 🟩 Ethereum: Smart Contract Wallet
+### 🟩 Ethereum: Smart Contract Wallet Contract
 
 Each user interacts on Ethereum via an ERC-4337-compatible Smart Contract Wallet.
 
@@ -83,6 +83,7 @@ The Paymaster enables **gasless transactions** for users who own valid NFTs on H
   Validates the user's NFT ownership by verifying **Token ID** and **User Address** against the **Hedera Admin Signature**.
 
 Importantly, since the same **User Address** is validated in both verification flows, this ensures that the **same user** who owns the NFT on Hedera is also the one intending to transact on Ethereum.
+<br><br>
 
 ## 🔁 Workflow Overview
 
