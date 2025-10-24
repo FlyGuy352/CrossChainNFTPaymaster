@@ -54,7 +54,7 @@ In our project, ERC-4337 is crucial for enabling gasless and flexible transactio
 The NFT contract on Hedera manages minting and ownership verification for cross-chain use.
 
 - **Stores Hedera Admin Address**  
-> The admin address is the trusted signer authorized to mint NFTs and issue signatures proving legitimate ownership.
+> Tracks the public key whose corresponding private key is authorized to sign NFT mints.
 
 - **Verifies Hedera Admin Signature of Token ID and User Address**  
 > When a user mints an NFT, the contract validates the admin's signature over the combination of the **Token ID** and **User Address**, ensuring each NFT is securely linked to the correct user.
@@ -64,7 +64,7 @@ The NFT contract on Hedera manages minting and ownership verification for cross-
 Each user interacts on Ethereum via an ERC-4337-compatible Smart Contract Wallet.
 
 - **Stores User Address**
-> Keeps track of the user's Ethereum address that controls the wallet.
+> Tracks the user's Ethereum address that controls the wallet.
 
 - **Verifies User Signature of User Operation**
 > Ensures that any UserOperation (ERC-4337 transaction) is properly signed by the user before execution, maintaining transaction authenticity.
@@ -74,7 +74,7 @@ Each user interacts on Ethereum via an ERC-4337-compatible Smart Contract Wallet
 The Paymaster enables **gasless transactions** for users who own valid NFTs on Hedera.
 
 - **Stores Hedera Admin Address**
-> Used later in the admin signature verification flow.
+> Tracks the public key of the Hedera Admin to be used for signature verification.
 
 - **Verifies Hedera Admin Signature of Token ID and User Address**
 > Validates the user's NFT ownership by verifying **Token ID** and **User Address** against the **Hedera Admin Signature**.
