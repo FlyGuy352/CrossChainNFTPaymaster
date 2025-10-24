@@ -21,7 +21,8 @@ Below is a brief description of the deployed contracts and their roles within th
 
 - **SimpleCounter** - [`0x231d9845694b7eCbdb76f69f6bD9724622C05840`](https://sepolia.etherscan.io/address/0x231d9845694b7eCbdb76f69f6bD9724622C05840)<br>
   Example contract demonstrating stateful interactions, integrated with the Paymaster for gasless transactions on Ethereum Sepolia.
-<br><br>
+
+<br>
 
 ## 👤 Accounts Overview
 
