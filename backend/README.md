@@ -5,20 +5,6 @@ This repository contains all smart contracts and Hardhat scripts used to power t
 ## Project Setup
 
 This project uses the **default Hardhat 3 framework**, so all standard Hardhat commands and workflows apply. The main thing to take note of is how the environment and keystore variables are configured.
-
-| Variable Name                       | Description                             |
-|-------------------------------------|-----------------------------------------|
-| `HEDERA_RPC_URL`                     | RPC endpoint for the Hedera network     |
-| `HEDERA_PRIVATE_KEY`                 | Private key of the Hedera admin         |
-| `SEPOLIA_RPC_URL`                    | RPC endpoint for Ethereum Sepolia       |
-| `SEPOLIA_PRIVATE_KEY`                | Private key of the Ethereum admin       |
-
-| Variable Name                       | Description                             |
-|-------------------------------------|-----------------------------------------|
-| `HEDERA_TESTNET_PUBLIC_KEY_ADMIN`    | Public key of the Hedera admin          |
-| `ETHEREUM_SEPOLIA_PUBLIC_KEY_ADMIN` | Public key of the Ethereum admin        |
-| `PUBLIC_KEY_USER`          
-
 These values are referenced in `hardhat.config.ts` and their keys have to be set in the production keystore
 
 HEDERA_RPC_URL
