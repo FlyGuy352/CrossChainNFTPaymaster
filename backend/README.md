@@ -1,10 +1,12 @@
 # 👷 Hardhat Backend for Cross-Chain NFT Paymaster
 
 This repository contains all smart contracts and Hardhat scripts used to power the **Cross-Chain NFT Paymaster** project.
+<br><br>
 
 ## Project Setup
 
 This project uses the **default Hardhat 3 framework**, so all standard Hardhat commands and workflows apply. The main thing to take note of is how the environment and keystore variables are configured.
+<br><br>
 
 ### 1️⃣ Keystore Configuration
 
@@ -20,6 +22,7 @@ npx hardhat keystore set <VARIABLE_NAME>
 | `HEDERA_PRIVATE_KEY` | Private key of the Hedera Testnet admin |
 | `SEPOLIA_RPC_URL` | RPC endpoint for Ethereum Sepolia |
 | `SEPOLIA_PRIVATE_KEY` | Private key of the Ethereum Sepolia admin |
+<br><br>
 
 ### 2️⃣ Deployment Script Configuration
 
@@ -32,10 +35,12 @@ These values are referenced in the deployment scripts and must be defined in a `
 | `PUBLIC_KEY_USER` | Public key of a demo user; same on both Hedera Testnet and Ethereum Sepolia |
 
 For simplicity, the same account is currently used to deploy the Hedera NFT contract and serve as the admin for signing NFT minting. While these roles can be separated, doing so will involve at a minimum minor refactoring of the deployment scripts.
+<br><br>
 
 ## Commands Overview
 
 Below are the main scripts and tasks used to deploy, verify, test, and interact with the contracts.
+<br><br>
 
 ## 🚀 Deployment Instructions
 
@@ -50,6 +55,7 @@ npx hardhat run scripts/deployHedera.ts
 ```bash
 npx hardhat ignition deploy ignition/modules/EthereumContracts.ts --network sepolia
 ```
+<br><br>
 
 ## 🔍 Contract Verification
 
@@ -66,6 +72,7 @@ npx hardhat verify --network sepolia <counterAddress>
 npx hardhat verify --network sepolia <paymasterAddress> <deployerAddress> <hederaAdminAddress> 0x0000000000000000000000000000000000000000
 npx hardhat verify --network sepolia <walletFactoryAddress> 0x4337084d9e255ff0702461cf8895ce9e3b5ff108
 ```
+<br><br>
 
 ## 💸 Contract Interaction
 
@@ -76,6 +83,7 @@ npx hardhat verify --network sepolia <walletFactoryAddress> 0x4337084d9e255ff070
 ```bash
 npx hardhat run scripts/paymasterDeposit.ts
 ```
+<br><br>
 
 ### 6. Send USDC to Smart Contract Wallet
 
@@ -84,6 +92,7 @@ npx hardhat run scripts/paymasterDeposit.ts
 ```bash
 npx hardhat run scripts/sendUSDCToWallet.ts
 ```
+<br><br>
 
 ### 7. Set Up Demo User
 
@@ -92,6 +101,7 @@ npx hardhat run scripts/sendUSDCToWallet.ts
 ```bash
 npx hardhat run scripts/setupDemoUser.ts
 ```
+<br><br>
 
 ## 🧪 Running Tests
 
@@ -103,6 +113,7 @@ npx hardhat run scripts/setupDemoUser.ts
 ```bash
 npx hardhat test --build-profile production
 ```
+<br><br>
 
 ## ⚙️ Important Notes
 
