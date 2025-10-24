@@ -1,4 +1,4 @@
-# 💵 Cross-Chain NFT Paymaster
+# 💸 Cross-Chain NFT Paymaster
 
 **X-Chain NFTPaymaster** bridges **Hedera** and **Ethereum** by allowing users to mint NFTs on Hedera and then perform **gasless transactions on Ethereum**. It demonstrates a practical cross-chain design where ownership on one network unlocks utility on another through **ECDSA-based signature verification**. The system leverages **Hedera's low-cost minting** and **Ethereum's Account Abstraction (ERC-4337)** to create a secure, user-friendly experience. A **Next.js frontend** handles minting, wallet connections, and cross-network interactions, while a **Hardhat backend** manages smart contract deployment and verification. Overall, the project showcases seamless interoperability between EVM-compatible chains through cryptographic proofs of ownership.
 
@@ -8,13 +8,15 @@ This README does not provide a comprehensive overview of **ERC-4337**. The conce
 
 ## 👤 Accounts Overview
 
+
+
 ## 🌉 Interoperability Overview
 
-![Alt text](./assets/Interoperability%20Diagram.svg)
+![Interoperability Diagram](./assets/Interoperability%20Diagram.svg)
 
 ## 🔁 Workflow Overview
 
-![Alt text](./assets/Sequence%20Diagram.svg)
+![Sequence Diagram](./assets/Sequence%20Diagram.svg)
 
 <details>
 <summary><strong>1️⃣ Minting an NFT</strong></summary>
@@ -69,7 +71,7 @@ This README does not provide a comprehensive overview of **ERC-4337**. The conce
 
 ## 🚧 Future Roadmap & Enhancements
 
-### ⚠️ Resolve Security Issue
+### ⚠️ 1. Resolve Security Issue
 
 Although we assume a secure backend generates the admin signature which is required for the NFT contract's <code>mint()</code> function, this value is passed to the frontend since the user executes the mint transaction himself on Hedera testnet. This creates a small window where the signature could be exposed on the frontend, which is not ideal from a security perspective.
 
@@ -101,10 +103,10 @@ Lastly, the solution could simply involve designing an authenticated or gated fr
 
 While this approach is simpler to implement, it does not eliminate the exposure risk entirely - it merely restricts access to trusted users. Therefore, it serves best as a complementary measure alongside one of the off-chain signing strategies described above.
 
-### 📦 Use an Actual Bundler API
+### 📦 2. Use an Actual Bundler API
 
 Currently, the User Operation is submitted directly from the backend to the Entrypoint contract. A natural improvement would be to integrate a bundler API, which would more closely simulate the full end-to-end ERC-4337 flow. This project does not implement that approach purely due to cost constraints - as of October 2025, no free bundler API was available for Entrypoint v0.8.
 
-### 🧛🏻‍♀️ Soulbound NFT
+### 🧛🏻‍♀️ 3. Soulbound NFT
 
 The current design assumes the NFT remains permanently associated with the user's address. However, this approach breaks down if the token is transferred or burned, as it invalidates the ownership proof used for cross-chain verification. Converting the collection into Soulbound NFTs would eliminate this issue by making tokens non-transferable, ensuring that ownership on Hedera remains cryptographically tied to a single user identity across chains.
