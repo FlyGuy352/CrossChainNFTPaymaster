@@ -82,7 +82,7 @@ The Paymaster enables **gasless transactions** for users who own valid NFTs on H
 - **Verifies Hedera Admin Signature of Token ID and User Address**  
   Validates the user's NFT ownership by verifying **Token ID** and **User Address** against the **Hedera Admin Signature**.
 
-IMPT: Since the same **User Address** is validated in both verification flows, this ensures that the **same user** who owns the NFT on Hedera is also the one intending to transact on Ethereum.
+Importantly, since the same **User Address** is validated in both verification flows, this ensures that the **same user** who owns the NFT on Hedera is also the one intending to transact on Ethereum.
 
 ## 🔁 Workflow Overview
 
