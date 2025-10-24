@@ -1,5 +1,4 @@
 import { network } from "hardhat";
-import { configVariable } from "hardhat/config";
 import { AccountId, PrivateKey, Client, AccountCreateTransaction, Hbar } from "@hashgraph/sdk"; 
 import metadata from "../artifacts/contracts/SmartContractWalletFactory.sol/SmartContractWalletFactory.json";
 import dotenv from "dotenv";
