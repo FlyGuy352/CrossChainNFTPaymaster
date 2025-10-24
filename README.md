@@ -49,6 +49,41 @@ In our project, ERC-4337 is crucial for enabling gasless and flexible transactio
 
 ![Interoperability Diagram](./assets/Interoperability%20Diagram.svg)
 
+### 🟦 Hedera: NFT Contract
+
+The NFT contract on Hedera manages minting and ownership verification for cross-chain use.
+
+- **Stores Hedera Admin Address**  
+  The admin address is the trusted signer authorized to mint NFTs and issue signatures proving legitimate ownership.
+
+- **Verifies Hedera Admin Signature of Token ID and User Address**  
+  When a user mints an NFT, the contract validates the admin's signature over the combination of the **Token ID** and **User Address**, ensuring each NFT is securely linked to the correct user.
+
+## 🟩 Ethereum: Smart Contract Wallet
+
+Each user interacts on Ethereum via an ERC-4337-compatible Smart Contract Wallet.
+
+- **Stores User Address**  
+  Keeps track of the user's Ethereum address that controls the wallet.
+
+- **Verifies User Signature of User Operation**
+  Ensures that any UserOperation (ERC-4337 transaction) is properly signed by the user before execution, maintaining transaction authenticity.
+
+## 🟩 Ethereum: Paymaster Contract
+
+The Paymaster enables **gasless transactions** for users who own valid NFTs on Hedera.
+
+- **Stores Hedera Admin Address**  
+  Used later in the admin signature verification flow.
+
+- **Verifies User Signature of Concatenation of Paymaster Address and Nonce**  
+  Prevents replay attacks by requiring users to sign a unique combination of the **Paymaster Address** and a **Nonce**.
+
+- **Verifies Hedera Admin Signature of Token ID and User Address**  
+  Validates the user's NFT ownership by verifying **Token ID** and **User Address** against the **Hedera Admin Signature**.
+
+Since the same **User Address** is validated in both verification flows, this ensures that the **same user** who owns the NFT on Hedera is also the one intending to transact on Ethereum.
+
 ## 🔁 Workflow Overview
 
 ![Sequence Diagram](./assets/Sequence%20Diagram.svg)
