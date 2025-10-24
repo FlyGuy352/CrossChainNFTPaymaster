@@ -1,6 +1,7 @@
 # 👷 Hardhat Backend for Cross-Chain NFT Paymaster
 
-This repository contains all smart contracts and Hardhat scripts used to power the **Cross-Chain NFT Paymaster** project.
+This repository contains all smart contracts and Hardhat scripts used to power the **Cross-Chain NFT Paymaster** project. It includes the full suite of contracts, deployment configurations, and automation scripts required to compile, test, deploy and manage the system across **Hedera Testnet** and **Ethereum Sepolia**.
+<br><br>
 
 ## Project Setup
 
