@@ -22,6 +22,8 @@ Below is a brief description of the deployed contracts and their roles within th
 
 ## 👤 Accounts Overview
 
+## 💱 User Operation Usage
+
 In our project, ERC-4337 is crucial for enabling gasless and flexible transactions. Each `UserOperation` encapsulates all the information needed to execute a user's action on Ethereum, from who is sending it to how gas is paid. This structure allows third parties, like bundlers, to submit authenticated transactions on behalf of the user without requiring the user to pay gas directly.
 
 - `sender`: Counterfactual address of the user's **SmartContractWallet**, obtained by calling `getWalletAddress()` on the **SmartContractWalletFactory**.
