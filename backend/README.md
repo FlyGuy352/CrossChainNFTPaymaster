@@ -1,7 +1,6 @@
 # 👷 Hardhat Backend for Cross-Chain NFT Paymaster
 
 This repository contains all smart contracts and Hardhat scripts used to power the **Cross-Chain NFT Paymaster** project.
-<br><br>
 
 ## Project Setup
 
@@ -105,6 +104,7 @@ npx hardhat run scripts/setupDemoUser.ts
 ```bash
 npx hardhat test --build-profile production
 ```
+<br><br>
 
 ## ⚙️ Important Notes
 
