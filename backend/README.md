@@ -12,6 +12,7 @@ These values are referenced in `hardhat.config.ts` and must be set in the produc
 
 ```bash
 npx hardhat keystore set <VARIABLE_NAME>
+```
 
 | Variable Name | Description |
 |-------------------------------------|-----------------------------------------|
@@ -30,7 +31,7 @@ These values are referenced in the deployment scripts and must be defined in a `
 | `ETHEREUM_SEPOLIA_PUBLIC_KEY_ADMIN` | Public key of the Ethereum Sepolia admin |
 | `PUBLIC_KEY_USER` | Public key of a demo user; same on both Hedera Testnet and Ethereum Sepolia |
 
-For ease of development, the same account is used to deploy the Hedera NFT contract and also serve as the admin for signing NFT minting. However, it is possible to separate the two although refactoring of the deployment scripts will be required.
+For simplicity, the same account is currently used to deploy the Hedera NFT contract and serve as the admin for signing NFT minting. While these roles can be separated, doing so will involve at a minimum minor refactoring of the deployment scripts.
 
 ## Commands Overview
 
