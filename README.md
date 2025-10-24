@@ -54,33 +54,33 @@ In our project, ERC-4337 is crucial for enabling gasless and flexible transactio
 The NFT contract on Hedera manages minting and ownership verification for cross-chain use.
 
 - **Stores Hedera Admin Address**  
-  The admin address is the trusted signer authorized to mint NFTs and issue signatures proving legitimate ownership.
+> The admin address is the trusted signer authorized to mint NFTs and issue signatures proving legitimate ownership.
 
 - **Verifies Hedera Admin Signature of Token ID and User Address**  
-  When a user mints an NFT, the contract validates the admin's signature over the combination of the **Token ID** and **User Address**, ensuring each NFT is securely linked to the correct user.
+> When a user mints an NFT, the contract validates the admin's signature over the combination of the **Token ID** and **User Address**, ensuring each NFT is securely linked to the correct user.
 
 ### 🟩 Ethereum: Smart Contract Wallet Contract
 
 Each user interacts on Ethereum via an ERC-4337-compatible Smart Contract Wallet.
 
-- **Stores User Address**  
-  Keeps track of the user's Ethereum address that controls the wallet.
+- **Stores User Address**
+> Keeps track of the user's Ethereum address that controls the wallet.
 
 - **Verifies User Signature of User Operation**
-  Ensures that any UserOperation (ERC-4337 transaction) is properly signed by the user before execution, maintaining transaction authenticity.
+> Ensures that any UserOperation (ERC-4337 transaction) is properly signed by the user before execution, maintaining transaction authenticity.
 
 ### 🟩 Ethereum: Paymaster Contract
 
 The Paymaster enables **gasless transactions** for users who own valid NFTs on Hedera.
 
-- **Stores Hedera Admin Address**  
-  Used later in the admin signature verification flow.
+- **Stores Hedera Admin Address**
+> Used later in the admin signature verification flow.
 
-- **Verifies Hedera Admin Signature of Token ID and User Address**  
-  Validates the user's NFT ownership by verifying **Token ID** and **User Address** against the **Hedera Admin Signature**.
+- **Verifies Hedera Admin Signature of Token ID and User Address**
+> Validates the user's NFT ownership by verifying **Token ID** and **User Address** against the **Hedera Admin Signature**.
 
-- **Verifies User Signature of Paymaster Address and Nonce**  
-  Prevents replay attacks by requiring users to sign a combination of the **Paymaster Address** and a **Nonce**.
+- **Verifies User Signature of Paymaster Address and Nonce**
+> Prevents replay attacks by requiring users to sign a combination of the **Paymaster Address** and a **Nonce**.
 
 Importantly, since the same **User Address** is validated in both verification flows, this ensures that the **same user** who owns the NFT on Hedera is also the one intending to transact on Ethereum.
 <br><br>
@@ -138,7 +138,7 @@ Importantly, since the same **User Address** is validated in both verification f
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.29: Entrypoint Contract internally calls <code>_compensate</code> function with <code>adminAccountAddress</code> and <code>gasFees</code> to transfer fees to the Admin Account.<br><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.30: Ethereum Sepolia blockchain returns transaction confirmation to backend.<br><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.31: Backend returns transaction confirmation to backend.
-<br>
+<br><br>
 </details>
 
 ## 🚧 Future Roadmap & Enhancements
