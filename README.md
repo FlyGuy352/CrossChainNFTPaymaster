@@ -4,9 +4,13 @@
 
 This README does not provide a comprehensive overview of **ERC-4337**. The concept of Account Abstraction introduces a new **User Operation** flow and validation layer on top of traditional externally owned accounts (EOAs). For readers new to this standard or seeking a deeper understanding of its architecture, please visit the [official ERC-4337 documentation](https://docs.erc4337.io/index.html).
 
-## 👤 Contracts Overview
+## 📜 Contracts Overview
 
 ## 👤 Accounts Overview
+
+## 🌉 Interoperability Overview
+
+![Alt text](./assets/Interoperability%20Diagram.svg)
 
 ## 🔁 Workflow Overview
 
@@ -75,24 +79,32 @@ There are three potential approaches to mitigate this issue, each carrying diffe
 
 ---
 
-##### 1️⃣ Off-chain Signing Process (Onchain → Offchain)
+#### 1️⃣ Off-chain Signing Process (Onchain → Offchain)
+
 The NFT contract's <code>mint()</code> function could be redesigned to remove the need for an admin signature at the time of minting. Instead, the function could trigger an oracle that initiates an off-chain signing process. Once the off-chain computation is complete, the resulting admin signature would be submitted back to the contract in a separate transaction, ensuring the signature is never exposed to the frontend.
 
 This approach shifts the trust assumptions to the reliability of the oracle infrastructure and the integrity of the off-chain signing service.
 
 ---
 
-##### 2️⃣ Off-chain Signing Process (Offchain → Onchain)
+#### 2️⃣ Off-chain Signing Process (Offchain → Onchain)
+
 A variation of the first approach would involve an off-chain service that proactively generates and submits admin signatures to the contract, either on demand or in scheduled batches. This removes the need for real-time oracle calls and allows more flexible management of signing workflows.
 
 While this approach simplifies onchain interactions, it shifts full trust to the availability, security, and correctness of the off-chain signing infrastructure.
 
 ---
 
-##### 3️⃣ Authenticated Frontend
+#### 3️⃣ Authenticated Frontend
+
 Lastly, the solution could simply involve designing an authenticated or gated frontend. In this model, only verified users or sessions would be able to request and receive the admin signature from the backend. This can be achieved through authentication tokens, wallet-based access control, or short-lived API sessions.
 
 While this approach is simpler to implement, it does not eliminate the exposure risk entirely - it merely restricts access to trusted users. Therefore, it serves best as a complementary measure alongside one of the off-chain signing strategies described above.
 
 ### 📦 Use an Actual Bundler API
 
+Currently, the User Operation is submitted directly from the backend to the Entrypoint contract. A natural improvement would be to integrate a bundler API, which would more closely simulate the full end-to-end ERC-4337 flow. This project does not implement that approach purely due to cost constraints - as of October 2025, no free bundler API was available for Entrypoint v0.8.
+
+### 🧛🏻‍♀️ Soulbound NFT
+
+The current design assumes the NFT remains permanently associated with the user's address. However, this approach breaks down if the token is transferred or burned, as it invalidates the ownership proof used for cross-chain verification. Converting the collection into Soulbound NFTs would eliminate this issue by making tokens non-transferable, ensuring that ownership on Hedera remains cryptographically tied to a single user identity across chains.
