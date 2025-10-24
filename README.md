@@ -15,7 +15,7 @@ Below is a brief description of the deployed contracts and their roles within th
   Sponsorship contract on Ethereum Sepolia that validates NFT ownership and pays for user operations.
 
 - **SmartContractWalletFactory** - [`0x9eE3BCf1Cf484Ee406efE4f84b86B50AA9A5eD27`](https://sepolia.etherscan.io/address/0x9eE3BCf1Cf484Ee406efE4f84b86B50AA9A5eD27)<br>
-  Factory contract for creating user smart contract wallets on Ethereum Sepolia.
+  Factory contract for creating smart contract wallets for user on Ethereum Sepolia.
 
 - **SimpleCounter** - [`0x231d9845694b7eCbdb76f69f6bD9724622C05840`](https://sepolia.etherscan.io/address/0x231d9845694b7eCbdb76f69f6bD9724622C05840)<br>
   Example contract demonstrating stateful interactions, integrated with the Paymaster for gasless transactions on Ethereum Sepolia.
