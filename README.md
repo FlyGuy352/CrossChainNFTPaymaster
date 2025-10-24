@@ -138,7 +138,7 @@ Importantly, since the same **User Address** is validated in both verification f
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.29: Entrypoint Contract internally calls <code>_compensate</code> function with <code>adminAccountAddress</code> and <code>gasFees</code> to transfer fees to the Admin Account.<br><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.30: Ethereum Sepolia blockchain returns transaction confirmation to backend.<br><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.31: Backend returns transaction confirmation to backend.
-<br><br>
+<br>
 </details>
 
 ## 🚧 Future Roadmap & Enhancements
