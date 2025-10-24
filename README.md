@@ -54,10 +54,10 @@ In our project, ERC-4337 is crucial for enabling gasless and flexible transactio
 The NFT contract on Hedera manages minting and ownership verification for cross-chain use.
 
 - **Stores Hedera Admin Address**  
-> Tracks the public key whose corresponding private key is authorized to sign NFT mints.
+ > Tracks the public key whose corresponding private key is authorized to sign NFT mints.
 
 - **Verifies Hedera Admin Signature of Token ID and User Address**  
-> When a user mints an NFT, the contract validates the admin's signature over the combination of the **Token ID** and **User Address**, ensuring each NFT is securely linked to the correct user.
+  > When a user mints an NFT, the contract validates the admin's signature over the combination of the **Token ID** and **User Address**, ensuring each NFT is securely linked to the correct user.
 
 ### 🟩 Ethereum: Smart Contract Wallet Contract
 
