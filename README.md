@@ -74,7 +74,7 @@ Each user interacts on Ethereum via an ERC-4337-compatible Smart Contract Wallet
 The Paymaster enables **gasless transactions** for users who own valid NFTs on Hedera.
 
 - **Stores Hedera Admin Address**
- > Tracks the public key of the Hedera Admin to be used for signature verification.
+> Tracks the public key of the Hedera Admin to be used for signature verification.
 
 - **Verifies Hedera Admin Signature of Token ID and User Address**
  > Validates the user's NFT ownership by verifying **Token ID** and **User Address** against the **Hedera Admin Signature**.
