@@ -139,6 +139,6 @@ While this approach is simpler to implement, it does not eliminate the exposure 
 
 Currently, the User Operation is submitted directly from the backend to the Entrypoint contract. A natural improvement would be to integrate a bundler API, which would more closely simulate the full end-to-end ERC-4337 flow. This project does not implement that approach purely due to cost constraints - as of October 2025, no free bundler API was available for Entrypoint v0.8.
 
-### 🧛🏻‍♀️ 3. Soulbound NFT
+### 🧛🏻‍♀️ 3. Propose Soulbound NFT
 
 The current design assumes the NFT remains permanently associated with the user's address. However, this approach breaks down if the token is transferred or burned, as it invalidates the ownership proof used for cross-chain verification. Converting the collection into Soulbound NFTs would eliminate this issue by making tokens non-transferable, ensuring that ownership on Hedera remains cryptographically tied to a single user identity across chains.
