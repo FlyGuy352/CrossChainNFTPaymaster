@@ -70,6 +70,7 @@ This README does not provide a comprehensive overview of **ERC-4337**. The conce
 Although we assume a secure backend generates the admin signature which is required for the NFT contract's <code>mint()</code> function, this value is passed to the frontend since the user executes the mint transaction himself on Hedera testnet. This creates a small window where the signature could be exposed on the frontend, which is not ideal from a security perspective.
 
 #### 🛠️ Mitigation Strategies
+
 There are three potential approaches to mitigate this issue, each carrying different trust and architectural trade-offs.
 
 ---
