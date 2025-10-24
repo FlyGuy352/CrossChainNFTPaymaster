@@ -24,11 +24,13 @@ npx hardhat keystore set <VARIABLE_NAME>
 
 ### 2️⃣ Deployment Script Configuration
 
-These values are referenced in the deployment scripts and must be defined in a `.env` file:
+These values are referenced in the deployment and automation scripts and must be defined in a `.env` file:
 
 | Variable Name | Description |
 |-------------------------------------|-----------------------------------------|
 | `HEDERA_TESTNET_PUBLIC_KEY_ADMIN` | Public key of the Hedera Testnet admin |
+| `HEDERA_TESTNET_PRIVATE_KEY_ADMIN` | Private key of the Hedera Testnet admin |
+| `HEDERA_TESTNET_ACCOUNT_ID_ADMIN` | Account ID of the Testnet admin (e.g., `0.0.7013264`) |
 | `ETHEREUM_SEPOLIA_PUBLIC_KEY_ADMIN` | Public key of the Ethereum Sepolia admin |
 | `PUBLIC_KEY_USER` | Public key of a demo user; same on both Hedera Testnet and Ethereum Sepolia |
 

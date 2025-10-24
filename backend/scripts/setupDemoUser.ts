@@ -1,10 +1,13 @@
 import { network } from "hardhat";
+import { configVariable } from "hardhat/config";
 import { AccountId, PrivateKey, Client, AccountCreateTransaction, Hbar } from "@hashgraph/sdk"; 
 import metadata from "../artifacts/contracts/SmartContractWalletFactory.sol/SmartContractWalletFactory.json";
+import dotenv from "dotenv";
 
-// It seems like these can be insecure values
-const accountId = AccountId.fromString("0.0.7013264");
-const privateKey = PrivateKey.fromStringECDSA("0xbfb2aaae8a4282682fc8930eaec22d7151b3d277e0e7d855aedcb266345fa5f6");
+dotenv.config();
+
+const accountId = AccountId.fromString(process.env.HEDERA_TESTNET_ACCOUNT_ID_ADMIN!);
+const privateKey = PrivateKey.fromStringECDSA(process.env.HEDERA_TESTNET_PRIVATE_KEY_ADMIN!);
 
 const hederaClient = Client.forTestnet();
 hederaClient.setOperator(accountId, privateKey);
@@ -13,7 +16,7 @@ const userAccountPrivateKey = PrivateKey.generateECDSA();
 console.log(`User Private Key: 0x${userAccountPrivateKey.toStringRaw()}`);
 const createAccountTx = new AccountCreateTransaction()
     .setECDSAKeyWithAlias(userAccountPrivateKey)
-    .setInitialBalance(new Hbar(100));
+    .setInitialBalance(new Hbar(10));
 const createAccountTxResponse = await createAccountTx.execute(hederaClient);
 const createAccountTxReceipt = await createAccountTxResponse.getReceipt(hederaClient);
 const createAccountTxReceiptStatus = createAccountTxReceipt.status.toString();
@@ -36,6 +39,8 @@ const factoryAddress = "0x9eE3BCf1Cf484Ee406efE4f84b86B50AA9A5eD27"; // Verify l
 const walletFactory = new ethers.Contract(factoryAddress, metadata.abi, deployer);
 const createWalletTx = await walletFactory.createWallet(userEvmAddress, salt);
 console.log(`Creating User Wallet On Ethereum... Tx Hash: ${createWalletTx.hash}`);
+const userWalletAddress = await walletFactory.getWalletAddress(userEvmAddress, salt);
+console.log(`Ethereum User Wallet Address: ${userWalletAddress}`);
 const createWalletTxReceipt = await createWalletTx.wait();
 console.log(`Transaction confirmed in block ${createWalletTxReceipt.blockNumber}`);
 
@@ -46,7 +51,7 @@ const usdc = new ethers.Contract(usdcAddress, [{
     ],
     outputs: [ { name: "", type: "bool" } ]
 }], deployer);
-const transferTx = await usdc.transfer(userEvmAddress, ethers.parseUnits("1", 6));
-console.log(`Transferring 1 USDC to User On Ethereum... Tx Hash: ${transferTx.hash}`);
+const transferTx = await usdc.transfer(userWalletAddress, ethers.parseUnits("1", 6));
+console.log(`Transferring 1 USDC to User Wallet On Ethereum... Tx Hash: ${transferTx.hash}`);
 const transferTxReceipt = await transferTx.wait();
 console.log(`Transfer confirmed in block ${transferTxReceipt.blockNumber}`);
