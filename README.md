@@ -8,7 +8,7 @@ Note: this README does not provide a comprehensive overview of **ERC-4337**. The
 
 Below is a brief description of the deployed contracts and their roles within the system:
 
-- **HederaHybridNFT** - [`0x48406589006611b2Dd7FD6794Ed88094EC3C312f`](https://hashscan.io/testnet/contract/0.0.7107952)
+- **HederaHybridNFT** - [`0x48406589006611b2Dd7FD6794Ed88094EC3C312f`](https://hashscan.io/testnet/contract/0.0.7107952)<br>
   Manages the NFT collection on Hedera Testnet, including minting and metadata.
 
 - **CrossChainNFTPaymaster** - [`0x4Ec758bfAE91CD9Bf3b1598520DbA6a29DaF6360`](https://sepolia.etherscan.io/address/0x4Ec758bfAE91CD9Bf3b1598520DbA6a29DaF6360)
