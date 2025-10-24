@@ -2,7 +2,7 @@
 
 **X-Chain NFTPaymaster** bridges **Hedera** and **Ethereum** by allowing users to mint NFTs on Hedera and then perform **gasless transactions on Ethereum**. It demonstrates a practical cross-chain design where ownership on one network unlocks utility on another through **ECDSA-based signature verification**. The system leverages **Hedera's low-cost minting** and **Ethereum's Account Abstraction (ERC-4337)** to create a secure, user-friendly experience. A **Next.js frontend** handles minting, wallet connections, and cross-network interactions, while a **Hardhat backend** manages smart contract deployment and verification. Overall, the project showcases seamless interoperability between EVM-compatible chains through cryptographic proofs of ownership.
 
-This README does not provide a comprehensive overview of **ERC-4337**. The concept of Account Abstraction introduces a new **User Operation** flow and validation layer on top of traditional externally owned accounts (EOAs). For readers new to this standard or seeking a deeper understanding of its architecture, please visit the [official ERC-4337 documentation](https://docs.erc4337.io/index.html).<a href="http://example.com/" target="_blank">Hello, world!</a>
+This README does not provide a comprehensive overview of **ERC-4337**. The concept of Account Abstraction introduces a new **User Operation** flow and validation layer on top of traditional externally owned accounts (EOAs). For readers new to this standard or seeking a deeper understanding of its architecture, please visit the [official ERC-4337 documentation](https://docs.erc4337.io/index.html).
 
 ## 📜 Contracts Overview
 
@@ -11,7 +11,7 @@ Below is a brief description of the deployed contracts and their roles within th
 - **HederaHybridNFT** - [`0x48406589006611b2Dd7FD6794Ed88094EC3C312f`](https://hashscan.io/testnet/contract/0.0.7107952)
   Manages the NFT collection on Hedera Testnet, including minting and metadata.
 
-- **CrossChainNFTPaymaster** - <a href="https://sepolia.etherscan.io/address/0x4Ec758bfAE91CD9Bf3b1598520DbA6a29DaF6360" target="_blank"><code>0x4Ec758bfAE91CD9Bf3b1598520DbA6a29DaF6360</code></a>
+- **CrossChainNFTPaymaster** - [`0x4Ec758bfAE91CD9Bf3b1598520DbA6a29DaF6360`](https://sepolia.etherscan.io/address/0x4Ec758bfAE91CD9Bf3b1598520DbA6a29DaF6360)
   Sponsorship contract on Ethereum Sepolia that validates NFT ownership and pays for user operations.
 
 - **SmartContractWalletFactory** - [`0x9eE3BCf1Cf484Ee406efE4f84b86B50AA9A5eD27`](https://sepolia.etherscan.io/address/0x9eE3BCf1Cf484Ee406efE4f84b86B50AA9A5eD27) 
@@ -22,7 +22,17 @@ Below is a brief description of the deployed contracts and their roles within th
 
 ## 👤 Accounts Overview
 
+In our project, ERC-4337 is crucial for enabling gasless and flexible transactions. Each `UserOperation` encapsulates all the information needed to execute a user's action on Ethereum, from who is sending it to how gas is paid. This structure allows third parties, like bundlers, to submit authenticated transactions on behalf of the user without requiring the user to pay gas directly.
 
+- `sender`: Counterfactual address of the user's **SmartContractWallet**, obtained by calling `getWalletAddress()` on the **SmartContractWalletFactory**.
+- `nonce`: The **Entrypoint** nonce to prevent replay attacks and ensure unique operations from each account.
+- `initCode`: Code directing the **SmartContractWalletFactory** to create a new **SmartContractWallet** for the user if it does not yet exist.
+- `callData`: Doubly encoded data representing the `execute()` function call on the **SmartContractWallet**. The arguments passed to `execute()` themselves encode the `increment()` function call on the **SimpleCounter** contract.
+- `accountGasLimits`: Specifies the gas limits for executing the main call, verification, and other sub-processes.
+- `preVerificationGas`: Gas required to process the operation before the main execution, including signature verification, account creation checks, and other validation logic.
+- `gasFees`: Maximum fees the user is willing to pay for the operation, including `maxFeePerGas` and `maxPriorityFeePerGas`.
+- `paymasterAndData`: Passed to the **Paymaster** contract for it to sponsor the transaction gas. Contains the necessary information to authenticate the same user's ownership of a Hedera NFT and his intent to perform the transaction. This includes the (1) Hedera admin's signature, the (2) token ID and (3) user's address it signs over, and a (4) user signature over concatentation of the Paymaster contract address and Paymaster-maintained nonce.
+- `signature`: The user's cryptographic signature over a hash of the entire `UserOperation` struct, ensuring that all fields are valid and tamper-proof.
 
 ## 🌉 Interoperability Overview
 
