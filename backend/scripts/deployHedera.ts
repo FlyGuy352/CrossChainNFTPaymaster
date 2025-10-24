@@ -16,7 +16,7 @@ const tx = await contract.createNFTCollection("MyHederaNFT", "HNFT", {
     value: ethers.parseEther("15")
 });
 await tx.wait();
-console.log(`createNFTCollection() tx hash: ${tx.hash}`);
+console.log(`createNFTCollection() Tx Hash: ${tx.hash}`);
 
 const contractAddress = await contract.getAddress();
 console.log(`HederaHybridNFT address: ${contractAddress}`);

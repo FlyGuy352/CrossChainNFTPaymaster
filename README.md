@@ -104,7 +104,6 @@ In our project, ERC-4337 is crucial for enabling gasless and flexible transactio
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.31: Backend returns transaction confirmation to backend.
 </details>
 
-
 ## 🚧 Future Roadmap & Enhancements
 
 ### ⚠️ 1. Resolve Security Issue

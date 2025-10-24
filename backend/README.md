@@ -2,6 +2,38 @@
 
 This repository contains all smart contracts and Hardhat scripts used to power the **Cross-Chain NFT Paymaster** project.
 
+## Project Setup
+
+This project uses the **default Hardhat 3 framework**, so all standard Hardhat commands and workflows apply. The main thing to take note of is how the environment and keystore variables are configured.
+
+| Variable Name                       | Description                             |
+|-------------------------------------|-----------------------------------------|
+| `HEDERA_RPC_URL`                     | RPC endpoint for the Hedera network     |
+| `HEDERA_PRIVATE_KEY`                 | Private key of the Hedera admin         |
+| `SEPOLIA_RPC_URL`                    | RPC endpoint for Ethereum Sepolia       |
+| `SEPOLIA_PRIVATE_KEY`                | Private key of the Ethereum admin       |
+
+| Variable Name                       | Description                             |
+|-------------------------------------|-----------------------------------------|
+| `HEDERA_TESTNET_PUBLIC_KEY_ADMIN`    | Public key of the Hedera admin          |
+| `ETHEREUM_SEPOLIA_PUBLIC_KEY_ADMIN` | Public key of the Ethereum admin        |
+| `PUBLIC_KEY_USER`          
+
+These values are referenced in `hardhat.config.ts` and their keys have to be set in the production keystore
+
+HEDERA_RPC_URL
+HEDERA_PRIVATE_KEY
+SEPOLIA_RPC_URL
+SEPOLIA_PRIVATE_KEY
+
+These values are referenced in deployment scripts and have to be set in .env file:
+
+HEDERA_TESTNET_PUBLIC_KEY_ADMIN
+ETHEREUM_SEPOLIA_PUBLIC_KEY_ADMIN
+PUBLIC_KEY_USER
+
+For ease of development, the same account is used to deploy the Hedera NFT contract and also serve as the admin for signing NFT minting. However, it is possible to separate the two although refactoring of the deployment scripts will be required.
+
 ## Commands Overview
 
 Below are the main scripts and tasks used to deploy, verify, test, and interact with the contracts.
@@ -54,9 +86,17 @@ npx hardhat run scripts/paymasterDeposit.ts
 npx hardhat run scripts/sendUSDCToWallet.ts
 ```
 
+### 7. Set Up Demo User
+
+> This script will perform the necessary actions to set up a user's EOA to be used across Hedera Testnet and Ethereum Sepolia.
+
+```bash
+npx hardhat run scripts/setupDemoUser.ts
+```
+
 ## 🧪 Running Tests
 
-### 7. Run Tests on Hardhat Network
+### 8. Run Tests on Hardhat Network
 
 > **Note:** Use the production build profile for optimizer, otherwise you may encounter  
 > `Error: Transaction reverted: trying to deploy a contract whose code is too large.`
@@ -69,7 +109,9 @@ npx hardhat test --build-profile production
 
 - `HederaHybridNFT.sol` tracks the source code for the NFT contract for ease of development and debugging. However, it was flattened into `HederaHybridNFT_flat.sol`, and that version was deployed to the Hedera Testnet because the contract verification service failed to resolve OpenZeppelin imports.
 
-- If the Paymaster contract address changes, paymasterDeposit.ts should be updated to reflect the latest address for contract interaction.
+- If the Paymaster contract address changes, `paymasterDeposit.ts` should be updated to reflect the latest address for contract interaction.
+
+- If the Wallet Factory contract address changes, `setupDemoUser.ts` should be updated to reflect the latest address for contract interaction.
 
 - A **custom `verifyHedera.ts` Hardhat task** was implemented since the native `hardhat verify` command does **not** support Hedera Testnet.
 

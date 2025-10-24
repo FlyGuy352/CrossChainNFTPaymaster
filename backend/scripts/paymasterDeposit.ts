@@ -10,6 +10,6 @@ console.log(`Using account: ${deployer.address}`);
 const paymaster = new ethers.Contract("0x4Ec758bfAE91CD9Bf3b1598520DbA6a29DaF6360", metadata.abi, deployer);
 
 const tx = await paymaster.deposit({ value: ethers.parseEther("0.05") });
-console.log(`Depositing 0.05 ETH... tx hash: ${tx.hash}`);
+console.log(`Depositing 0.05 ETH... Tx Hash: ${tx.hash}`);
 const receipt = await tx.wait();
 console.log(`Deposit confirmed in block ${receipt.blockNumber}`);
