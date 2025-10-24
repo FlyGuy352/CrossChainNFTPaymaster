@@ -104,7 +104,7 @@ npx hardhat run scripts/setupDemoUser.ts
 ```bash
 npx hardhat test --build-profile production
 ```
-<br><br>
+<br>
 
 ## ⚙️ Important Notes
 
