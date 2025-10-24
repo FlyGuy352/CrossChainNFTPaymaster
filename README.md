@@ -47,7 +47,7 @@ In our project, ERC-4337 is crucial for enabling gasless and flexible transactio
 
 ## 🌉 Interoperability Overview
 
-![Interoperability Diagram](./assets/Interoperability%20Diagram - Copy.png)
+![Interoperability Diagram](./assets/Interoperability%20Diagram%20-%20Copy.png)
 
 ### 🟦 Hedera: NFT Contract
 
