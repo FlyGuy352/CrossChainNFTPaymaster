@@ -103,7 +103,7 @@ In our project, ERC-4337 is crucial for enabling gasless and flexible transactio
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.30: Ethereum Sepolia blockchain returns transaction confirmation to backend.<br><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.31: Backend returns transaction confirmation to backend.
 </details>
-<br><br>
+<br>
 
 ## 🚧 Future Roadmap & Enhancements
 
