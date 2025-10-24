@@ -1,5 +1,9 @@
 # 💵 Cross-Chain NFT Paymaster
 
+**X-Chain NFTPaymaster** bridges **Hedera** and **Ethereum** by allowing users to mint NFTs on Hedera and then perform **gasless transactions on Ethereum**. It demonstrates a practical cross-chain design where ownership on one network unlocks utility on another through **ECDSA-based signature verification**. The system leverages **Hedera's low-cost minting** and **Ethereum's Account Abstraction (ERC-4337)** to create a secure, user-friendly experience. A **Next.js frontend** handles minting, wallet connections, and cross-network interactions, while a **Hardhat backend** manages smart contract deployment and verification. Overall, the project showcases seamless interoperability between EVM-compatible chains through cryptographic proofs of ownership.
+
+This README does not provide a comprehensive overview of **ERC-4337**. The concept of Account Abstraction introduces a new **User Operation** flow and validation layer on top of traditional externally owned accounts (EOAs). For readers new to this standard or seeking a deeper understanding of its architecture, please visit the [official ERC-4337 documentation](https://docs.erc4337.io/index.html).
+
 ## 👤 Contracts Overview
 
 ## 👤 Accounts Overview
@@ -60,3 +64,34 @@
 </details>
 
 ## 🚧 Future Roadmap & Enhancements
+
+### ⚠️ Resolve Security Issue
+
+Although we assume a secure backend generates the admin signature which is required for the NFT contract's <code>mint()</code> function, this value is passed to the frontend since the user executes the mint transaction himself on Hedera testnet. This creates a small window where the signature could be exposed on the frontend, which is not ideal from a security perspective.
+
+#### 🛠️ Mitigation Strategies
+There are three potential approaches to mitigate this issue, each carrying different trust and architectural trade-offs.
+
+---
+
+##### 1️⃣ Off-chain Signing Process (Onchain → Offchain)
+The NFT contract's <code>mint()</code> function could be redesigned to remove the need for an admin signature at the time of minting. Instead, the function could trigger an oracle that initiates an off-chain signing process. Once the off-chain computation is complete, the resulting admin signature would be submitted back to the contract in a separate transaction, ensuring the signature is never exposed to the frontend.
+
+This approach shifts the trust assumptions to the reliability of the oracle infrastructure and the integrity of the off-chain signing service.
+
+---
+
+##### 2️⃣ Off-chain Signing Process (Offchain → Onchain)
+A variation of the first approach would involve an off-chain service that proactively generates and submits admin signatures to the contract, either on demand or in scheduled batches. This removes the need for real-time oracle calls and allows more flexible management of signing workflows.
+
+While this approach simplifies onchain interactions, it shifts full trust to the availability, security, and correctness of the off-chain signing infrastructure.
+
+---
+
+##### 3️⃣ Authenticated Frontend
+Lastly, the solution could simply involve designing an authenticated or gated frontend. In this model, only verified users or sessions would be able to request and receive the admin signature from the backend. This can be achieved through authentication tokens, wallet-based access control, or short-lived API sessions.
+
+While this approach is simpler to implement, it does not eliminate the exposure risk entirely - it merely restricts access to trusted users. Therefore, it serves best as a complementary measure alongside one of the off-chain signing strategies described above.
+
+### 📦 Use an Actual Bundler API
+
