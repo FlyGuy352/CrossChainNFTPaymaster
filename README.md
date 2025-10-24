@@ -28,7 +28,7 @@ While multiple account roles exist in the system, we sometimes combine roles int
 2. **Ethereum Admin** - Deploys and manages the Ethereum smart contracts. Responsible for administrative tasks such as topping up the Paymaster's deposit to Entrypoint.
 3. **User** - Mints NFTs on Hedera and performs gasless transactions on Ethereum.
 
-## 🗃️ User Operation Usage
+## 🗃️ UserOperation Usage
 
 In our project, ERC-4337 is crucial for enabling gasless and flexible transactions. Each `UserOperation` encapsulates all the information needed to execute a user's action on Ethereum, from who is sending it to how gas is paid. This structure allows third parties, like bundlers, to submit authenticated transactions on behalf of the user without requiring the user to pay gas directly.
 
