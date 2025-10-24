@@ -7,6 +7,7 @@ This README does not provide a comprehensive overview of **ERC-4337**. The conce
 <br><br>
 
 ## 📜 Contracts Overview
+<br>
 
 Below is a brief description of the deployed contracts and their roles within the system:
 
@@ -21,8 +22,10 @@ Below is a brief description of the deployed contracts and their roles within th
 
 - **SimpleCounter** - [`0x231d9845694b7eCbdb76f69f6bD9724622C05840`](https://sepolia.etherscan.io/address/0x231d9845694b7eCbdb76f69f6bD9724622C05840) 
   Example contract demonstrating stateful interactions, integrated with the Paymaster for gasless transactions on Ethereum Sepolia.
+<br><br>
 
 ## 👤 Accounts Overview
+<br>
 
 In our project, ERC-4337 is crucial for enabling gasless and flexible transactions. Each `UserOperation` encapsulates all the information needed to execute a user's action on Ethereum, from who is sending it to how gas is paid. This structure allows third parties, like bundlers, to submit authenticated transactions on behalf of the user without requiring the user to pay gas directly.
 
@@ -35,6 +38,7 @@ In our project, ERC-4337 is crucial for enabling gasless and flexible transactio
 - `gasFees`: Maximum fees the user is willing to pay for the operation, including `maxFeePerGas` and `maxPriorityFeePerGas`.
 - `paymasterAndData`: Passed to the **Paymaster** contract for it to sponsor the transaction gas. Contains the necessary information to authenticate the same user's ownership of a Hedera NFT and his intent to perform the transaction. This includes the (1) Hedera admin's signature, the (2) token ID and (3) user's address it signs over, and a (4) user signature over concatentation of the Paymaster contract address and Paymaster-maintained nonce.
 - `signature`: The user's cryptographic signature over a hash of the entire `UserOperation` struct, ensuring that all fields are valid and tamper-proof.
+<br><br>
 
 ## 🌉 Interoperability Overview
 
