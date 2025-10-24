@@ -5,18 +5,30 @@ This repository contains all smart contracts and Hardhat scripts used to power t
 ## Project Setup
 
 This project uses the **default Hardhat 3 framework**, so all standard Hardhat commands and workflows apply. The main thing to take note of is how the environment and keystore variables are configured.
-These values are referenced in `hardhat.config.ts` and their keys have to be set in the production keystore
 
-HEDERA_RPC_URL
-HEDERA_PRIVATE_KEY
-SEPOLIA_RPC_URL
-SEPOLIA_PRIVATE_KEY
+### 1️⃣ Keystore Configuration
 
-These values are referenced in deployment scripts and have to be set in .env file:
+These values are referenced in `hardhat.config.ts` and must be set in the production keystore using:
 
-HEDERA_TESTNET_PUBLIC_KEY_ADMIN
-ETHEREUM_SEPOLIA_PUBLIC_KEY_ADMIN
-PUBLIC_KEY_USER
+```bash
+npx hardhat keystore set <VARIABLE_NAME>
+
+| Variable Name | Description |
+|-------------------------------------|-----------------------------------------|
+| `HEDERA_RPC_URL` | RPC endpoint for Hedera Testnet |
+| `HEDERA_PRIVATE_KEY` | Private key of the Hedera Testnet admin |
+| `SEPOLIA_RPC_URL` | RPC endpoint for Ethereum Sepolia |
+| `SEPOLIA_PRIVATE_KEY` | Private key of the Ethereum Sepolia admin |
+
+### 2️⃣ Deployment Script Configuration
+
+These values are referenced in the deployment scripts and must be defined in a `.env` file:
+
+| Variable Name | Description |
+|-------------------------------------|-----------------------------------------|
+| `HEDERA_TESTNET_PUBLIC_KEY_ADMIN` | Public key of the Hedera Testnet admin |
+| `ETHEREUM_SEPOLIA_PUBLIC_KEY_ADMIN` | Public key of the Ethereum Sepolia admin |
+| `PUBLIC_KEY_USER` | Public key of a demo user; same on both Hedera Testnet and Ethereum Sepolia |
 
 For ease of development, the same account is used to deploy the Hedera NFT contract and also serve as the admin for signing NFT minting. However, it is possible to separate the two although refactoring of the deployment scripts will be required.
 
