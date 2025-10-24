@@ -2,7 +2,7 @@
 
 **Cross-Chain NFT Paymaster** bridges **Hedera** and **Ethereum** by allowing users to mint NFTs on Hedera and then perform **gasless transactions on Ethereum**. It demonstrates a practical cross-chain design where ownership on one network unlocks utility on another through **ECDSA-based signature verification**. The system leverages **Hedera's low-cost minting** and **Ethereum's Account Abstraction (ERC-4337)** to create a secure, user-friendly experience. A **Next.js frontend** handles minting, wallet connections, and cross-network interactions, while a **Hardhat backend** manages smart contract deployment and verification. Overall, the project showcases seamless interoperability between EVM-compatible chains through cryptographic proofs of ownership.
 
-This README does not provide a comprehensive overview of **ERC-4337**. The concept of Account Abstraction introduces a new **User Operation** flow and validation layer on top of traditional externally owned accounts (EOAs). For readers new to this standard or seeking a deeper understanding of its architecture, please visit the [official ERC-4337 documentation](https://docs.erc4337.io/index.html).
+Note: this README does not provide a comprehensive overview of **ERC-4337**. The concept of Account Abstraction introduces a new **User Operation** flow and validation layer on top of traditional externally owned accounts (EOAs). For readers new to this standard or seeking a deeper understanding of its architecture, please visit the [official ERC-4337 documentation](https://docs.erc4337.io/index.html).
 
 ## 📜 Contracts Overview
 
