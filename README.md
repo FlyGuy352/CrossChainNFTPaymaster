@@ -1,12 +1,24 @@
 # 💸 Cross-Chain NFT Paymaster
 
-
 **X-Chain NFTPaymaster** bridges **Hedera** and **Ethereum** by allowing users to mint NFTs on Hedera and then perform **gasless transactions on Ethereum**. It demonstrates a practical cross-chain design where ownership on one network unlocks utility on another through **ECDSA-based signature verification**. The system leverages **Hedera's low-cost minting** and **Ethereum's Account Abstraction (ERC-4337)** to create a secure, user-friendly experience. A **Next.js frontend** handles minting, wallet connections, and cross-network interactions, while a **Hardhat backend** manages smart contract deployment and verification. Overall, the project showcases seamless interoperability between EVM-compatible chains through cryptographic proofs of ownership.
 
 This README does not provide a comprehensive overview of **ERC-4337**. The concept of Account Abstraction introduces a new **User Operation** flow and validation layer on top of traditional externally owned accounts (EOAs). For readers new to this standard or seeking a deeper understanding of its architecture, please visit the [official ERC-4337 documentation](https://docs.erc4337.io/index.html).
 
-
 ## 📜 Contracts Overview
+
+Below is a brief description of the deployed contracts and their roles within the system:
+
+- **HederaHybridNFT** – `0x48406589006611b2Dd7FD6794Ed88094EC3C312f`  
+  Manages the NFT collection on Hedera, including minting and metadata.
+
+- **CrossChainNFTPaymaster** – `0x4Ec758bfAE91CD9Bf3b1598520DbA6a29DaF6360`  
+  Sponsorship contract on Ethereum Sepolia that validates NFT ownership and pays for user operations.
+
+- **SmartContractWalletFactory** – `0x9eE3BCf1Cf484Ee406efE4f84b86B50AA9A5eD27`  
+  Factory contract for creating user smart contract wallets on Ethereum.
+
+- **SimpleCounter** – `0x231d9845694b7eCbdb76f69f6bD9724622C05840`  
+  Example contract demonstrating stateful interactions, integrated with the Paymaster for gasless transactions.
 
 ## 👤 Accounts Overview
 
