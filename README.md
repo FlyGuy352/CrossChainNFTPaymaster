@@ -3,7 +3,7 @@
 **Cross-Chain NFT Paymaster** bridges **Hedera** and **Ethereum** by allowing users to mint NFTs on Hedera and then perform **gasless transactions on Ethereum**. It demonstrates a practical cross-chain design where ownership on one network unlocks utility on another through **ECDSA-based signature verification**. The system leverages **Hedera's low-cost minting** and **Ethereum's Account Abstraction (ERC-4337)** to create a secure, user-friendly experience. A **Next.js frontend** handles minting, wallet connections, and cross-network interactions, while a **Hardhat backend** manages smart contract deployment and verification. Overall, the project showcases seamless interoperability between EVM-compatible chains through cryptographic proofs of ownership.
 
 Note: this README does not provide a comprehensive overview of **ERC-4337**. The concept of Account Abstraction introduces a new **User Operation** flow and validation layer on top of traditional externally owned accounts (EOAs). For readers new to this standard or seeking a deeper understanding of its architecture, please visit the [official ERC-4337 documentation](https://docs.erc4337.io/index.html).
-
+<br>
 ## 📜 Contracts Overview
 
 Below is a brief description of the deployed contracts and their roles within the system:
@@ -19,7 +19,7 @@ Below is a brief description of the deployed contracts and their roles within th
 
 - **SimpleCounter** - [`0x231d9845694b7eCbdb76f69f6bD9724622C05840`](https://sepolia.etherscan.io/address/0x231d9845694b7eCbdb76f69f6bD9724622C05840)<br>
   Example contract demonstrating stateful interactions, integrated with the Paymaster for gasless transactions on Ethereum Sepolia.
-
+<br><br>
 ## 👤 Accounts Overview
 
 While multiple account roles exist in the system, we sometimes combine roles into a single account for convenience. The three main accounts involved are:
