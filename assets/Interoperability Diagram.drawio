@@ -31,55 +31,55 @@
         <mxCell id="KC56qq5b5jGIS_n7gMEu-52" value="- Stores &lt;b style=&quot;background-color: rgb(228, 167, 241);&quot;&gt;Hedera Admin Address&lt;/b&gt;" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" parent="KC56qq5b5jGIS_n7gMEu-39" vertex="1">
           <mxGeometry x="5" y="43" width="210" height="27" as="geometry" />
         </mxCell>
-        <mxCell id="KC56qq5b5jGIS_n7gMEu-53" value="- Verifies&amp;nbsp;&lt;span style=&quot;background-color: rgb(255, 204, 255);&quot;&gt;&lt;b&gt;Hedera Admin Signa&lt;/b&gt;&lt;b&gt;tur&lt;/b&gt;&lt;b&gt;e&lt;/b&gt;&lt;/span&gt;&amp;nbsp;&lt;div&gt;over (Token ID +&amp;nbsp;&lt;b style=&quot;background-color: rgb(255, 217, 102);&quot;&gt;User Address&lt;/b&gt;)&lt;/div&gt;" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" parent="KC56qq5b5jGIS_n7gMEu-39" vertex="1">
+        <mxCell id="KC56qq5b5jGIS_n7gMEu-53" value="- Verifies&amp;nbsp;&lt;span style=&quot;background-color: rgb(0, 0, 0);&quot;&gt;&lt;font style=&quot;color: rgb(228, 167, 241);&quot;&gt;&lt;b style=&quot;&quot;&gt;Hedera Admin Signa&lt;/b&gt;&lt;b style=&quot;&quot;&gt;tur&lt;/b&gt;&lt;b style=&quot;&quot;&gt;e&lt;/b&gt;&lt;/font&gt;&lt;/span&gt;&amp;nbsp;&lt;div&gt;over (Token ID +&amp;nbsp;&lt;b style=&quot;background-color: rgb(255, 217, 102);&quot;&gt;User Address&lt;/b&gt;)&lt;/div&gt;" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" parent="KC56qq5b5jGIS_n7gMEu-39" vertex="1">
           <mxGeometry x="5" y="99" width="210" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="KC56qq5b5jGIS_n7gMEu-54" value="- Verifies&amp;nbsp;&lt;b style=&quot;background-color: rgb(255, 244, 195);&quot;&gt;User Signature&lt;/b&gt;&amp;nbsp;over (Paymaster Address + Nonce)" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" parent="KC56qq5b5jGIS_n7gMEu-39" vertex="1">
+        <mxCell id="KC56qq5b5jGIS_n7gMEu-54" value="- Verifies&amp;nbsp;&lt;b&gt;&lt;font style=&quot;color: rgb(255, 217, 102); background-color: rgb(0, 0, 0);&quot;&gt;User Signature&lt;/font&gt;&lt;/b&gt;&amp;nbsp;over (Paymaster Address + Nonce)" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" parent="KC56qq5b5jGIS_n7gMEu-39" vertex="1">
           <mxGeometry x="5" y="153" width="210" height="30" as="geometry" />
         </mxCell>
         <mxCell id="KC56qq5b5jGIS_n7gMEu-42" value="&lt;b&gt;&lt;font style=&quot;font-size: 14px;&quot;&gt;Paymaster&lt;/font&gt;&lt;/b&gt;" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=#CCCCCC;align=center;verticalAlign=middle;rounded=0;" parent="KC56qq5b5jGIS_n7gMEu-39" vertex="1">
           <mxGeometry width="210" height="22" as="geometry" />
         </mxCell>
-        <mxCell id="fDk4n6QxhRCfy_g7gNL2-8" value="" style="group" vertex="1" connectable="0" parent="1">
+        <mxCell id="fDk4n6QxhRCfy_g7gNL2-8" value="" style="group" parent="1" vertex="1" connectable="0">
           <mxGeometry x="400" y="187" width="220" height="210" as="geometry" />
         </mxCell>
-        <mxCell id="fDk4n6QxhRCfy_g7gNL2-9" value="" style="whiteSpace=wrap;html=1;aspect=fixed;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" vertex="1" parent="fDk4n6QxhRCfy_g7gNL2-8">
+        <mxCell id="fDk4n6QxhRCfy_g7gNL2-9" value="" style="whiteSpace=wrap;html=1;aspect=fixed;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="fDk4n6QxhRCfy_g7gNL2-8" vertex="1">
           <mxGeometry width="210" height="210" as="geometry" />
         </mxCell>
-        <mxCell id="fDk4n6QxhRCfy_g7gNL2-10" value="" style="endArrow=none;html=1;rounded=0;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" edge="1" parent="fDk4n6QxhRCfy_g7gNL2-8">
+        <mxCell id="fDk4n6QxhRCfy_g7gNL2-10" value="" style="endArrow=none;html=1;rounded=0;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="fDk4n6QxhRCfy_g7gNL2-8" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint y="22" as="sourcePoint" />
             <mxPoint x="210" y="22" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="fDk4n6QxhRCfy_g7gNL2-11" value="- Stores&amp;nbsp;&lt;b style=&quot;background-color: rgb(255, 217, 102);&quot;&gt;User Address&lt;/b&gt;" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" vertex="1" parent="fDk4n6QxhRCfy_g7gNL2-8">
+        <mxCell id="fDk4n6QxhRCfy_g7gNL2-11" value="- Stores&amp;nbsp;&lt;b style=&quot;background-color: rgb(255, 217, 102);&quot;&gt;User Address&lt;/b&gt;" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" parent="fDk4n6QxhRCfy_g7gNL2-8" vertex="1">
           <mxGeometry x="5" y="43" width="210" height="27" as="geometry" />
         </mxCell>
-        <mxCell id="fDk4n6QxhRCfy_g7gNL2-12" value="- Verifies&amp;nbsp;&lt;b style=&quot;background-color: rgb(255, 244, 195);&quot;&gt;User Signature&lt;/b&gt;&amp;nbsp;over User Operation" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" vertex="1" parent="fDk4n6QxhRCfy_g7gNL2-8">
+        <mxCell id="fDk4n6QxhRCfy_g7gNL2-12" value="- Verifies&amp;nbsp;&lt;b style=&quot;background-color: rgb(0, 0, 0);&quot;&gt;&lt;font style=&quot;color: rgb(255, 217, 102);&quot;&gt;User Signature&lt;/font&gt;&lt;/b&gt;&amp;nbsp;over User Operation" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" parent="fDk4n6QxhRCfy_g7gNL2-8" vertex="1">
           <mxGeometry x="5" y="99" width="210" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="fDk4n6QxhRCfy_g7gNL2-14" value="&lt;b&gt;&lt;font style=&quot;font-size: 14px;&quot;&gt;Smart Contract Wallet&lt;/font&gt;&lt;/b&gt;" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=#CCCCCC;align=center;verticalAlign=middle;rounded=0;" vertex="1" parent="fDk4n6QxhRCfy_g7gNL2-8">
+        <mxCell id="fDk4n6QxhRCfy_g7gNL2-14" value="&lt;b&gt;&lt;font style=&quot;font-size: 14px;&quot;&gt;Smart Contract Wallet&lt;/font&gt;&lt;/b&gt;" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=#CCCCCC;align=center;verticalAlign=middle;rounded=0;" parent="fDk4n6QxhRCfy_g7gNL2-8" vertex="1">
           <mxGeometry width="210" height="22" as="geometry" />
         </mxCell>
-        <mxCell id="fDk4n6QxhRCfy_g7gNL2-15" value="" style="group" vertex="1" connectable="0" parent="1">
+        <mxCell id="fDk4n6QxhRCfy_g7gNL2-15" value="" style="group" parent="1" vertex="1" connectable="0">
           <mxGeometry x="120" y="187" width="220" height="210" as="geometry" />
         </mxCell>
-        <mxCell id="fDk4n6QxhRCfy_g7gNL2-16" value="" style="whiteSpace=wrap;html=1;aspect=fixed;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" vertex="1" parent="fDk4n6QxhRCfy_g7gNL2-15">
+        <mxCell id="fDk4n6QxhRCfy_g7gNL2-16" value="" style="whiteSpace=wrap;html=1;aspect=fixed;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="fDk4n6QxhRCfy_g7gNL2-15" vertex="1">
           <mxGeometry width="210" height="210" as="geometry" />
         </mxCell>
-        <mxCell id="fDk4n6QxhRCfy_g7gNL2-17" value="" style="endArrow=none;html=1;rounded=0;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" edge="1" parent="fDk4n6QxhRCfy_g7gNL2-15">
+        <mxCell id="fDk4n6QxhRCfy_g7gNL2-17" value="" style="endArrow=none;html=1;rounded=0;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="fDk4n6QxhRCfy_g7gNL2-15" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint y="22" as="sourcePoint" />
             <mxPoint x="210" y="22" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="fDk4n6QxhRCfy_g7gNL2-18" value="- Stores&amp;nbsp;&lt;b style=&quot;background-color: light-dark(rgb(228, 167, 241), rgb(228, 167, 241));&quot;&gt;Hedera Admin Address&lt;/b&gt;" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" vertex="1" parent="fDk4n6QxhRCfy_g7gNL2-15">
+        <mxCell id="fDk4n6QxhRCfy_g7gNL2-18" value="- Stores&amp;nbsp;&lt;b style=&quot;background-color: light-dark(rgb(228, 167, 241), rgb(228, 167, 241));&quot;&gt;Hedera Admin Address&lt;/b&gt;" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" parent="fDk4n6QxhRCfy_g7gNL2-15" vertex="1">
           <mxGeometry x="5" y="43" width="210" height="27" as="geometry" />
         </mxCell>
-        <mxCell id="fDk4n6QxhRCfy_g7gNL2-19" value="- Verifies&amp;nbsp;&lt;b style=&quot;background-color: rgb(255, 204, 230);&quot;&gt;Hedera Admin Signature&lt;/b&gt;&amp;nbsp;&lt;div&gt;over (Token ID +&amp;nbsp;&lt;b style=&quot;background-color: rgb(255, 217, 102);&quot;&gt;User Address&lt;/b&gt;)&lt;/div&gt;" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" vertex="1" parent="fDk4n6QxhRCfy_g7gNL2-15">
+        <mxCell id="fDk4n6QxhRCfy_g7gNL2-19" value="- Verifies&amp;nbsp;&lt;b style=&quot;background-color: rgb(0, 0, 0);&quot;&gt;&lt;font style=&quot;color: rgb(228, 167, 241);&quot;&gt;Hedera Admin Signature&lt;/font&gt;&lt;/b&gt;&amp;nbsp;&lt;div&gt;over (Token ID +&amp;nbsp;&lt;b style=&quot;background-color: rgb(255, 217, 102);&quot;&gt;User Address&lt;/b&gt;)&lt;/div&gt;" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" parent="fDk4n6QxhRCfy_g7gNL2-15" vertex="1">
           <mxGeometry x="5" y="99" width="210" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="fDk4n6QxhRCfy_g7gNL2-20" value="&lt;b&gt;&lt;font style=&quot;font-size: 14px;&quot;&gt;NFT&lt;/font&gt;&lt;/b&gt;" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=#CCCCCC;align=center;verticalAlign=middle;rounded=0;" vertex="1" parent="fDk4n6QxhRCfy_g7gNL2-15">
+        <mxCell id="fDk4n6QxhRCfy_g7gNL2-20" value="&lt;b&gt;&lt;font style=&quot;font-size: 14px;&quot;&gt;NFT&lt;/font&gt;&lt;/b&gt;" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=#CCCCCC;align=center;verticalAlign=middle;rounded=0;" parent="fDk4n6QxhRCfy_g7gNL2-15" vertex="1">
           <mxGeometry width="210" height="22" as="geometry" />
         </mxCell>
       </root>
