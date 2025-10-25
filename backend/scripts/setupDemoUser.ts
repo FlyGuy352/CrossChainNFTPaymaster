@@ -15,7 +15,8 @@ const userAccountPrivateKey = PrivateKey.generateECDSA();
 console.log(`User Private Key: 0x${userAccountPrivateKey.toStringRaw()}`);
 const createAccountTx = new AccountCreateTransaction()
     .setECDSAKeyWithAlias(userAccountPrivateKey)
-    .setInitialBalance(new Hbar(5));
+    .setInitialBalance(new Hbar(5))
+    .setMaxAutomaticTokenAssociations(-1); // Unlimited token auto-associations
 const createAccountTxResponse = await createAccountTx.execute(hederaClient);
 const createAccountTxReceipt = await createAccountTxResponse.getReceipt(hederaClient);
 const createAccountTxReceiptStatus = createAccountTxReceipt.status.toString();
