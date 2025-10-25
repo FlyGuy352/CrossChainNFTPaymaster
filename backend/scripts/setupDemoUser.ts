@@ -12,7 +12,7 @@ const hederaClient = Client.forTestnet();
 hederaClient.setOperator(accountId, privateKey);
 
 const userAccountPrivateKey = PrivateKey.generateECDSA();
-console.log(`User Private Key: 0x${userAccountPrivateKey.toStringRaw()}`);
+console.log(`User Private Key: 0x${userAccountPrivateKey.toStringRaw()}`); // Never do this in production - we doing it just for demo
 const createAccountTx = new AccountCreateTransaction()
     .setECDSAKeyWithAlias(userAccountPrivateKey)
     .setInitialBalance(new Hbar(5))
